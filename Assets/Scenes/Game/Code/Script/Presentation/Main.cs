@@ -7,7 +7,8 @@ using UnityEngine.InputSystem;
 public class MainScript : MonoBehaviour
 {
     public RetrieveWordsFromDictionaryUsecase retrieveWordsFromDictionaryUsecase;
-    public ProcessKeyStrokeUsecase processKeyStrokeUsecase;
+    public PickTileUsecase pickTileUsecase;
+    public ReturnTileUsecase returnTileUsecase;
     public ProcessWordUsecase processWordUsecase;
     public GenerateCharTilesUsecase generateCharTilesUsecase;
 
@@ -19,7 +20,7 @@ public class MainScript : MonoBehaviour
         Key.Enter, Key.Backspace
     };
 
-    private List<char> allowedChars;
+    private List<Tile> allowedTiles;
 
     private readonly Stack<char> currentWordStack = new();
 
@@ -29,7 +30,7 @@ public class MainScript : MonoBehaviour
     void Start()
     {
         dictionary = retrieveWordsFromDictionaryUsecase.Invoke();
-        RestartAllowedChar();
+        RestartAllowedTiles();
     }
 
     // Update is called once per frame
@@ -56,18 +57,17 @@ public class MainScript : MonoBehaviour
                 string word = GetCurrentWordStackAsString();
                 currentWordStack.Clear();
                 processWordUsecase.Invoke(word, dictionary);
-                RestartAllowedChar();
+                RestartAllowedTiles();
                 break;
             case Key.Backspace:
                 if (currentWordStack.Any())
                 {
                     char removedChar = currentWordStack.Pop();
-                    allowedChars.Add(removedChar);
-
+                    returnTileUsecase.Invoke(removedChar, allowedTiles);
                 }
                 break;
             default:
-                char c = processKeyStrokeUsecase.Invoke(key, allowedChars);
+                char c = pickTileUsecase.Invoke(key, allowedTiles);
                 if (c != '\0')
                     currentWordStack.Push(c);
                 break;
@@ -76,7 +76,7 @@ public class MainScript : MonoBehaviour
         if (key != Key.Enter)
         {
             string word = GetCurrentWordStackAsString();
-            Debug.Log($"{string.Join(",", allowedChars)} == {word}");
+            Debug.Log($"{string.Join(",", allowedTiles)} == {word}");
         }
     }
 
@@ -85,10 +85,10 @@ public class MainScript : MonoBehaviour
         return new(currentWordStack.Reverse().ToArray());
     }
 
-    private void RestartAllowedChar()
+    private void RestartAllowedTiles()
     {
-        allowedChars = generateCharTilesUsecase.Invoke();
+        allowedTiles = generateCharTilesUsecase.Invoke();
 
-        Debug.Log($"Available tiles: {string.Join(",", allowedChars)}");
+        Debug.Log($"Available tiles: {string.Join(",", allowedTiles)}");
     }
 }

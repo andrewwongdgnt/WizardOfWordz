@@ -12,12 +12,18 @@ public class GenerateCharTilesUsecase
 
     public int num;
 
-    public List<char> Invoke()
+    public List<Tile> Invoke()
     {
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         System.Random random = new();
         return Enumerable.Repeat(chars, num)
-            .Select(s => s[random.Next(s.Length)]).ToList();
+            .Select(s =>
+                {
+                    char c = s[random.Next(s.Length)];
+                    return new Tile(c);
+                }
+            )
+            .ToList();
     }
 
 }

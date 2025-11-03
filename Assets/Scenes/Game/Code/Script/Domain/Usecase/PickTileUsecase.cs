@@ -3,16 +3,21 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [System.Serializable]
-public class ProcessKeyStrokeUsecase
+public class PickTileUsecase
 {
 
     public char Invoke(
         Key key,
-        List<char> allowedChars
+        List<Tile> allowedTiles
         )
     {
         char c = GetCharFromKey(key);
-        return c == '\0' || !allowedChars.Remove(c) ? '\0' : c;
+        if (c == '\0') return '\0';
+
+        Tile foundTile = allowedTiles.Find(t => t.value == c && t.pickable);
+        if (foundTile == null) return '\0';
+        foundTile.pickable = false;
+        return c;
     }
 
     private char GetCharFromKey(Key key)
