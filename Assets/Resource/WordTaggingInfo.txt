@@ -1,0 +1,36 @@
+CC: coordinating conjunction
+CD: cardinal digit
+DT: determiner
+EX: existential there
+FW: foreign word
+IN: preposition/subordinating conjunction
+JJ: adjective (e.g., large)
+JJR: adjective, comparative (e.g., larger)
+JJS: adjective, superlative (e.g., largest)
+LS: list item marker
+MD: modal (e.g., could, will)
+NN: noun, singular
+NNS: noun plural
+NNP: proper noun, singular
+NNPS: proper noun, plural
+PDT: predeterminer
+POS: possessive ending (e.g., parent's)
+PRP: personal pronoun (e.g., hers, himself)
+PRP$: dollar-sign possessive pronoun (e.g., her, my)
+RB: adverb (e.g., occasionally, swiftly)
+RBR: adverb, comparative (e.g., greater)
+RBS: adverb, superlative (e.g., biggest)
+RP: particle (e.g., about)
+SYM: symbol
+TO: infinite marker (e.g., to)
+UH: interjection (e.g., goodbye)
+VB: verb (e.g., ask)
+VBG: verb gerund (e.g., judging)
+VBD: verb past tense (e.g., pleaded)
+VBN: verb past participle (e.g., reunified)
+VBP: verb, present tense not 3rd person singular (e.g., wrap)
+VBZ: verb, present tense with 3rd person singular (e.g., bases)
+WDT: wh-determiner (e.g., that, what)
+WP: wh- pronoun (e.g., who)
+WP$: possessive wh-pronoun
+WRB: wh- adverb (e.g., how)

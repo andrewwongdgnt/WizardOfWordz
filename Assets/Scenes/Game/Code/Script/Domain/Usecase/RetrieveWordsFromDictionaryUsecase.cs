@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class WordReader
+public class RetrieveWordsFromDictionaryUsecase
 {
     public TextAsset csvFile;
 
-    public List<Word> Get()
+    public List<Word> Invoke()
     {
-        List<Word> wordTags = new List<Word>();
+        List<Word> wordTags = new();
 
         if (csvFile == null)
         {

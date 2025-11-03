@@ -1,14 +1,15 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
 
 public class MainScript : MonoBehaviour
 {
-    public WordReader wordReader;
+    public RetrieveWordsFromDictionaryUsecase retrieveWordsFromDictionaryUsecase;
+    public ProcessKeyStrokeUsecase processKeyStrokeUsecase;
+    public ProcessWordUsecase processWordUsecase;
+    public GenerateCharTilesUsecase generateCharTilesUsecase;
 
     private readonly List<Key> monitoredKeys = new()
     {
@@ -18,17 +19,17 @@ public class MainScript : MonoBehaviour
         Key.Enter, Key.Backspace
     };
 
-    private readonly List<Key> allowedChars = new();
+    private List<char> allowedChars;
 
     private readonly Stack<char> currentWordStack = new();
 
-    private List<Word> allWords;
+    private List<Word> dictionary;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        allWords = wordReader.Get();
-        allowedChars.Add(Key.A);
+        dictionary = retrieveWordsFromDictionaryUsecase.Invoke();
+        RestartAllowedChar();
     }
 
     // Update is called once per frame
@@ -52,22 +53,26 @@ public class MainScript : MonoBehaviour
         switch (key)
         {
             case Key.Enter:
-                ProcessCurrentWord();
+                string word = GetCurrentWordStackAsString();
+                currentWordStack.Clear();
+                processWordUsecase.Invoke(word, dictionary);
+                RestartAllowedChar();
                 break;
             case Key.Backspace:
                 if (currentWordStack.Any())
                     currentWordStack.Pop();
                 break;
             default:
-                char c = GetCharFromKey(key);
-                currentWordStack.Push(c);
+                char c = processKeyStrokeUsecase.Invoke(key, allowedChars);
+                if (c != '\0')
+                    currentWordStack.Push(c);
                 break;
         }
 
         if (key != Key.Enter)
         {
-            String word = GetCurrentWordStackAsString();
-            Debug.Log(word);
+            string word = GetCurrentWordStackAsString();
+            Debug.Log($"{string.Join(",", allowedChars)} == {word}");
         }
     }
 
@@ -76,25 +81,10 @@ public class MainScript : MonoBehaviour
         return new(currentWordStack.Reverse().ToArray());
     }
 
-    private void ProcessCurrentWord()
+    private void RestartAllowedChar()
     {
-        String word = GetCurrentWordStackAsString();
-        currentWordStack.Clear();
+        allowedChars = generateCharTilesUsecase.Invoke();
 
-        Word foundWord = allWords.Find(w => w.word.ToLower() == word.ToLower());
-
-        Debug.Log(foundWord != null ? $"{word} is a word and it is {foundWord.tag}" : $"{word} is not a word");
-    }
-
-    private char GetCharFromKey(Key key)
-    {
-        if (key >= Key.A && key <= Key.Z)
-        {
-            // 'A' + (offset from Key.A)
-            char baseChar = (char)('A' + (key - Key.A));
-            return baseChar;
-        }
-
-        return '\0'; // null character if not A–Z
+        Debug.Log($"Available tiles: {string.Join(",", allowedChars)}");
     }
 }
