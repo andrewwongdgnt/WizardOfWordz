@@ -4,19 +4,19 @@ using UnityEngine;
 [System.Serializable]
 public class RetrieveWordsFromDictionaryUsecase
 {
-    public TextAsset csvFile;
+    public TextAsset dictionaryFileAsCSV;
 
     public List<Word> Invoke()
     {
         List<Word> wordTags = new();
 
-        if (csvFile == null)
+        if (dictionaryFileAsCSV == null)
         {
             Debug.LogError("CSV file not found!");
             return wordTags;
         }
 
-        string[] lines = csvFile.text.Split('\n');
+        string[] lines = dictionaryFileAsCSV.text.Split('\n');
         foreach (string line in lines)
         {
             if (string.IsNullOrWhiteSpace(line))

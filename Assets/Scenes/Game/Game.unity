@@ -164,8 +164,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   retrieveWordsFromDictionaryUsecase:
-    csvFile: {fileID: 4900000, guid: 6ce61768a46abc14293becb920521758, type: 3}
+    dictionaryFileAsCSV: {fileID: 4900000, guid: 6ce61768a46abc14293becb920521758, type: 3}
   generateCharTilesUsecase:
+    letterDist: {fileID: 4900000, guid: ff977d7fdad4b85489d174b2aef0fd32, type: 3}
     num: 8
 --- !u!1 &519420028
 GameObject:
