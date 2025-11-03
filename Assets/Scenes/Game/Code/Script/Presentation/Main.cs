@@ -60,7 +60,11 @@ public class MainScript : MonoBehaviour
                 break;
             case Key.Backspace:
                 if (currentWordStack.Any())
-                    currentWordStack.Pop();
+                {
+                    char removedChar = currentWordStack.Pop();
+                    allowedChars.Add(removedChar);
+
+                }
                 break;
             default:
                 char c = processKeyStrokeUsecase.Invoke(key, allowedChars);
