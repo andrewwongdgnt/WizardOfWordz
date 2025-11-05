@@ -1,0 +1,110 @@
+{
+  "CC": {
+    "description": "coordinating conjunction"
+  },
+  "CD": {
+    "description": "cardinal digit"
+  },
+  "DT": {
+    "description": "determiner"
+  },
+  "EX": {
+    "description": "existential there"
+  },
+  "FW": {
+    "description": "foreign word"
+  },
+  "IN": {
+    "description": "preposition/subordinating conjunction"
+  },
+  "JJ": {
+    "description": "adjective (e.g., large)"
+  },
+  "JJR": {
+    "description": "adjective, comparative (e.g., larger)"
+  },
+  "JJS": {
+    "description": "adjective, superlative (e.g., largest)"
+  },
+  "LS": {
+    "description": "list item marker"
+  },
+  "MD": {
+    "description": "modal (e.g., could, will)"
+  },
+  "NN": {
+    "description": "noun, singular"
+  },
+  "NNS": {
+    "description": "noun plural"
+  },
+  "NNP": {
+    "description": "proper noun, singular"
+  },
+  "NNPS": {
+    "description": "proper noun, plural"
+  },
+  "PDT": {
+    "description": "predeterminer"
+  },
+  "POS": {
+    "description": "possessive ending (e.g., parent's)"
+  },
+  "PRP": {
+    "description": "personal pronoun (e.g., hers, himself)"
+  },
+  "PRP$": {
+    "description": "dollar-sign possessive pronoun (e.g., her, my)"
+  },
+  "RB": {
+    "description": "adverb (e.g., occasionally, swiftly)"
+  },
+  "RBR": {
+    "description": "adverb, comparative (e.g., greater)"
+  },
+  "RBS": {
+    "description": "adverb, superlative (e.g., biggest)"
+  },
+  "RP": {
+    "description": "particle (e.g., about)"
+  },
+  "SYM": {
+    "description": "symbol"
+  },
+  "TO": {
+    "description": "infinite marker (e.g., to)"
+  },
+  "UH": {
+    "description": "interjection (e.g., goodbye)"
+  },
+  "VB": {
+    "description": "verb (e.g., ask)"
+  },
+  "VBG": {
+    "description": "verb gerund (e.g., judging)"
+  },
+  "VBD": {
+    "description": "verb past tense (e.g., pleaded)"
+  },
+  "VBN": {
+    "description": "verb past participle (e.g., reunified)"
+  },
+  "VBP": {
+    "description": "verb, present tense not 3rd person singular (e.g., wrap)"
+  },
+  "VBZ": {
+    "description": "verb, present tense with 3rd person singular (e.g., bases)"
+  },
+  "WDT": {
+    "description": "wh-determiner (e.g., that, what)"
+  },
+  "WP": {
+    "description": "wh- pronoun (e.g., who)"
+  },
+  "WP$": {
+    "description": "possessive wh-pronoun"
+  },
+  "WRB": {
+    "description": "wh- adverb (e.g., how)"
+  }
+}
