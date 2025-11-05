@@ -14,7 +14,7 @@ public class PickTileUsecase
         char c = GetCharFromKey(key);
         if (c == '\0') return '\0';
 
-        Tile foundTile = allowedTiles.Find(t => t.value == c && t.pickable);
+        Tile foundTile = allowedTiles.Find(t => t.Value == c && t.pickable);
         if (foundTile == null) return '\0';
         foundTile.pickable = false;
         return c;

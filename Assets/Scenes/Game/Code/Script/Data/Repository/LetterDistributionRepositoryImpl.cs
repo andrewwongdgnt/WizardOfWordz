@@ -6,7 +6,7 @@ using UnityEngine;
 public class LetterDistributionRepositoryImpl : LetterDistributionRepository
 {
 
-    public List<LetterEntity> Get()
+    public List<Tile> Get()
     {
         TextAsset csvFile = Resources.Load<TextAsset>("LetterDistribution");
 
@@ -18,7 +18,7 @@ public class LetterDistributionRepositoryImpl : LetterDistributionRepository
             string count = p[1].Trim();
             string score = p[2].Trim();
 
-            return new LetterEntity(
+            return new Tile(
                 char.Parse(letter),
                 int.Parse(count),
                 int.Parse(score)

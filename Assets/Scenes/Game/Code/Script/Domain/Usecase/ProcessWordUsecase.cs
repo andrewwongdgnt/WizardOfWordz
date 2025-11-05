@@ -1,19 +1,52 @@
 
 
 
-using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
+using Zenject;
 
 [System.Serializable]
 public class ProcessWordUsecase
 {
-    public void Invoke(
-        string word,
-        List<Word> dictionary
+    private readonly LetterDistributionRepository letterDistributionRepository;
+
+    private readonly Dictionary<char, int> tileScoreMap;
+
+    [Inject]
+    public ProcessWordUsecase(
+        LetterDistributionRepository letterDistributionRepository
         )
     {
-        Word foundWord = dictionary.Find(w => w.value.ToLower() == word.ToLower());
+        this.letterDistributionRepository = letterDistributionRepository;
+        tileScoreMap = letterDistributionRepository.Get().ToDictionary(t => t.Value, t => t.Score);
+    }
+    public void Invoke(
+        string word,
+        Dictionary<string, Word> dictionary
+        )
+    {
 
-        Debug.Log(foundWord != null ? $"{word} is a word and it is {foundWord.posTag}" : $"{word} is not a word");
+        dictionary.TryGetValue(word.ToUpper(), out Word foundWord);
+        if (foundWord != null)
+        {
+            int score = word.ToUpper().ToCharArray()
+                .Aggregate(0, (acc, c) =>
+                {
+
+                    tileScoreMap.TryGetValue(c, out int tileScore);
+
+                    return acc + tileScore;
+                });
+            Debug.Log($"{word} is a word worth {score} and it is {foundWord.Tag}");
+
+        }
+        else
+        {
+            Debug.Log($"{word} is not a word");
+
+        }
+
     }
 }

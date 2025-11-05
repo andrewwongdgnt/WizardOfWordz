@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class Word
 {
-    public string value;
-    public string posTag;
+    public string Value { get; }
+    public string Tag { get; }
 
-    public Word(string value, string posTag)
+    public Word(string value, string tag)
     {
-        this.value = value;
-        this.posTag = posTag;
+        Value = value;
+        Tag = tag;
     }
 }

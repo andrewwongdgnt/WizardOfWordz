@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
@@ -21,13 +22,11 @@ public class GenerateCharTilesUsecase
 
         List<Tile> tiles = new();
 
-        letterDistributionRepository.Get().ForEach(letter =>
+        letterDistributionRepository.Get().ForEach(tile =>
         {
-            foreach (var item in Enumerable.Repeat(letter, letter.Count))
+            foreach (var item in Enumerable.Repeat(tile, tile.Count))
             {
-                tiles.Add(new Tile(
-                    item.Value
-                    ));
+                tiles.Add(tile.Clone());
             }
         });
 

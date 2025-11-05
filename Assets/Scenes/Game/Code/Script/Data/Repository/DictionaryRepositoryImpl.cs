@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DictionaryRepositoryImpl : DictionaryRepository
 {
-    public List<WordEntity> Get()
+    public List<Word> Get()
     {
         TextAsset csvFile = Resources.Load<TextAsset>("Dictionary");
 
@@ -14,12 +14,10 @@ public class DictionaryRepositoryImpl : DictionaryRepository
         return parts.Select(p =>
         {
             string word = p[1].Trim();
-            string index = p[0].Trim();
             string tag = p[2].Trim();
 
-            return new WordEntity(
+            return new Word(
                 word,
-                int.Parse(index),
                 tag
                 );
 

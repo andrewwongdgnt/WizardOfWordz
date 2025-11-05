@@ -34,7 +34,7 @@ public class MainScript : MonoBehaviour
 
     private readonly Stack<char> currentWordStack = new();
 
-    private List<Word> dictionary;
+    private Dictionary<string, Word> dictionary;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

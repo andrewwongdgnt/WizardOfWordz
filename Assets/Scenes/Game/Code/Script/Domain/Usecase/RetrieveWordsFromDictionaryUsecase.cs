@@ -16,11 +16,9 @@ public class RetrieveWordsFromDictionaryUsecase
         this.dictionaryRepository = dictionaryRepository;
     }
 
-    public List<Word> Invoke()
+    public Dictionary<string, Word> Invoke()
     {
-        return dictionaryRepository.Get()
-            .Select(w => new Word(w.Value, w.Tag))
-            .ToList();
+        return dictionaryRepository.Get().ToDictionary(w => w.Value.ToUpper(), w => w );
     }
 
 }

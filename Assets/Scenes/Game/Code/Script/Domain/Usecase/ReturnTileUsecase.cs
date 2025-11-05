@@ -7,7 +7,7 @@ public class ReturnTileUsecase
 {
     public void Invoke(char removedChar, List<Tile> allowedTiles)
     {
-        Tile foundTile = allowedTiles.FindLast(t => t.value == removedChar && !t.pickable);
+        Tile foundTile = allowedTiles.FindLast(t => t.Value == removedChar && !t.pickable);
         if (foundTile != null)
         {
             foundTile.pickable = true;

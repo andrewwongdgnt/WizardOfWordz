@@ -3,5 +3,5 @@ using System.Collections.Generic;
 
 public interface DictionaryRepository
 {
-    public List<WordEntity> Get();
+    public List<Word> Get();
 }
