@@ -20,19 +20,25 @@ public class GenerateCharTilesUsecase
 
         List<Tile> tiles = new();
 
-        letterDistributionRepository.Get().ForEach(tile =>
+        letterDistributionRepository.Get().ForEach(t =>
         {
-            foreach (var item in Enumerable.Repeat(tile, tile.Count))
+            foreach (var item in Enumerable.Repeat(t, t.Count))
             {
-                tiles.Add(tile.Clone());
+                tiles.Add(new Tile(
+                    t.Value,
+                    t.Score
+                    ));
             }
         });
 
         System.Random random = new();
         return Enumerable.Repeat(tiles, num)
-            .Select(s =>
+            .Select(ts =>
                 {
-                    return s[random.Next(s.Count)];
+                    int index = random.Next(ts.Count);
+                    Tile pickedTile = ts[index];
+                    ts.RemoveAt(index);
+                    return pickedTile;
                 }
             )
             .ToList();

@@ -7,7 +7,7 @@ public class LetterDistributionRepositoryImpl : LetterDistributionRepository
 {
     private readonly TextAsset csvFile = Resources.Load<TextAsset>("LetterDistribution");
 
-    public List<Tile> Get()
+    public List<TileInfo> Get()
     {
         List<string[]> parts = CSVHelper.parse(csvFile);
 
@@ -17,7 +17,7 @@ public class LetterDistributionRepositoryImpl : LetterDistributionRepository
             string count = p[1].Trim();
             string score = p[2].Trim();
 
-            return new Tile(
+            return new TileInfo(
                 char.Parse(letter),
                 int.Parse(count),
                 int.Parse(score)
