@@ -7,11 +7,16 @@ using Zenject;
 
 public class MainScript : MonoBehaviour
 {
+    public List<EnemyArg> enemyArgs;
+
     [Inject]
     private readonly RetrieveWordsFromDictionaryUsecase retrieveWordsFromDictionaryUsecase;
 
     [Inject]
     private readonly PickTileUsecase pickTileUsecase;
+
+    [Inject]
+    private readonly PopulateEnemiesUsecase populateEnemiesUsecase;
 
     [Inject]
     private readonly ReturnTileUsecase returnTileUsecase;
@@ -31,6 +36,7 @@ public class MainScript : MonoBehaviour
     };
 
     private List<Tile> allowedTiles;
+    private List<Enemy> enemies;
 
     private readonly Stack<char> currentWordStack = new();
 
@@ -40,7 +46,7 @@ public class MainScript : MonoBehaviour
     void Start()
     {
         dictionary = retrieveWordsFromDictionaryUsecase.Invoke();
-        RestartAllowedTiles();
+        Restart();
     }
 
     // Update is called once per frame
@@ -67,7 +73,7 @@ public class MainScript : MonoBehaviour
                 string word = GetCurrentWordStackAsString();
                 currentWordStack.Clear();
                 processWordUsecase.Invoke(word, dictionary);
-                RestartAllowedTiles();
+                Restart();
                 break;
             case Key.Backspace:
                 if (currentWordStack.Any())
@@ -93,6 +99,17 @@ public class MainScript : MonoBehaviour
     private string GetCurrentWordStackAsString()
     {
         return new(currentWordStack.Reverse().ToArray());
+    }
+
+    private void Restart()
+    {
+        PopulateEnemies();
+        RestartAllowedTiles();
+    }
+
+    private void PopulateEnemies()
+    {
+        enemies = populateEnemiesUsecase.Invoke(enemyArgs);
     }
 
     private void RestartAllowedTiles()

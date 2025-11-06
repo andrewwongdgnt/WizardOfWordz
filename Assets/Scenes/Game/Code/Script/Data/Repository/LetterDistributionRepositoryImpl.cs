@@ -5,11 +5,10 @@ using UnityEngine;
 
 public class LetterDistributionRepositoryImpl : LetterDistributionRepository
 {
+    private readonly TextAsset csvFile = Resources.Load<TextAsset>("LetterDistribution");
 
     public List<Tile> Get()
     {
-        TextAsset csvFile = Resources.Load<TextAsset>("LetterDistribution");
-
         List<string[]> parts = CSVHelper.parse(csvFile);
 
         return parts.Select(p =>

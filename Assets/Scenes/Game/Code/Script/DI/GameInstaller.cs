@@ -8,11 +8,13 @@ public class GameInstaller : MonoInstaller
     {
         // Repository
         Container.Bind<DictionaryRepository>().To<DictionaryRepositoryImpl>().AsSingle();
+        Container.Bind<EnemyInfoRepository>().To<EnemyInfoRepositoryImpl>().AsSingle();
         Container.Bind<LetterDistributionRepository>().To<LetterDistributionRepositoryImpl>().AsSingle();
 
         // Usecase
         Container.Bind<GenerateCharTilesUsecase>().AsSingle();
         Container.Bind<PickTileUsecase>().AsSingle();
+        Container.Bind<PopulateEnemiesUsecase>().AsSingle();
         Container.Bind<ProcessWordUsecase>().AsSingle();
         Container.Bind<RetrieveWordsFromDictionaryUsecase>().AsSingle();
         Container.Bind<ReturnTileUsecase>().AsSingle();

@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.InputSystem;
 
-[System.Serializable]
 public class PickTileUsecase
 {
 

@@ -1,0 +1,83 @@
+{
+  "Note": {
+    "description": "Note desc",
+    "health": {
+      "common": 6,
+      "uncommon": 7,
+      "rare": 8,
+      "epic": 10,
+      "legendary": 15
+    },
+    "moves": [
+      {
+        "type": "Attack",
+        "title": "Paper cut",
+        "damage": {
+          "common": 3,
+          "uncommon": 3,
+          "rare": 4,
+          "epic": 5,
+          "legendary": 8
+        },
+        "wait": {
+          "common": 4,
+          "uncommon": 4,
+          "rare": 3,
+          "epic": 3,
+          "legendary": 2
+        },
+        "weight": 100
+      }
+    ]
+  },
+  "Notebook": {
+    "description": "Notebook desc",
+    "health": {
+      "common": 8,
+      "uncommon": 9,
+      "rare": 11,
+      "epic": 14,
+      "legendary": 18
+    },
+    "moves": [
+      {
+        "type": "Attack",
+        "title": "Paper cut",
+        "damage": {
+          "common": 4,
+          "uncommon": 5,
+          "rare": 7,
+          "epic": 9,
+          "legendary": 12
+        },
+        "wait": {
+          "common": 4,
+          "uncommon": 3,
+          "rare": 3,
+          "epic": 3,
+          "legendary": 2
+        },
+        "weight": 80
+      },
+      {
+        "type": "Attack",
+        "title": "Bind",
+        "damage": {
+          "common": 8,
+          "uncommon": 10,
+          "rare": 14,
+          "epic": 18,
+          "legendary": 24
+        },
+        "wait": {
+          "common": 5,
+          "uncommon": 4,
+          "rare": 4,
+          "epic": 3,
+          "legendary": 2
+        },
+        "weight": 20
+      }
+    ]
+  }
+}

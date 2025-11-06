@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-[System.Serializable]
 public class ReturnTileUsecase
 {
     public void Invoke(char removedChar, List<Tile> allowedTiles)

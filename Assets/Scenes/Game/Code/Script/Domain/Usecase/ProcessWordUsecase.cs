@@ -4,10 +4,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 using Zenject;
 
-[System.Serializable]
 public class ProcessWordUsecase
 {
     private readonly LetterDistributionRepository letterDistributionRepository;
@@ -19,7 +17,6 @@ public class ProcessWordUsecase
         LetterDistributionRepository letterDistributionRepository
         )
     {
-        this.letterDistributionRepository = letterDistributionRepository;
         tileScoreMap = letterDistributionRepository.Get().ToDictionary(t => t.Value, t => t.Score);
     }
     public void Invoke(

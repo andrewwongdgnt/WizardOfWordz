@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class DictionaryRepositoryImpl : DictionaryRepository
 {
+    private readonly TextAsset csvFile = Resources.Load<TextAsset>("Dictionary");
+
     public List<Word> Get()
     {
-        TextAsset csvFile = Resources.Load<TextAsset>("Dictionary");
-
         List<string[]> parts = CSVHelper.parse(csvFile);
 
         return parts.Select(p =>

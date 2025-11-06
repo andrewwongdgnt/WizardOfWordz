@@ -163,10 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9911417e95344f54799b36451578ac0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  retrieveWordsFromDictionaryUsecase:
-    dictionaryFileAsCSV: {fileID: 4900000, guid: 6ce61768a46abc14293becb920521758, type: 3}
-  generateCharTilesUsecase:
-    letterDist: {fileID: 4900000, guid: ff977d7fdad4b85489d174b2aef0fd32, type: 3}
+  enemyArgs: []
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
