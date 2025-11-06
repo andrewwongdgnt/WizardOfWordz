@@ -21,7 +21,9 @@ public class ProcessWordUsecase
     }
     public void Invoke(
         string word,
-        Dictionary<string, Word> dictionary
+        Dictionary<string, Word> dictionary,
+        List<Enemy> enemies,
+        int attackIndex
         )
     {
 
@@ -37,7 +39,7 @@ public class ProcessWordUsecase
                     return acc + tileScore;
                 });
             Debug.Log($"{word} is a word worth {score} and it is {foundWord.Tag}");
-
+            enemies[attackIndex].TakeDamage(score);
         }
         else
         {

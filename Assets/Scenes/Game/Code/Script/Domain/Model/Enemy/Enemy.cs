@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Enemy
 {
@@ -10,6 +11,8 @@ public class Enemy
     public string Description { get; }
 
     public int Health { get; }
+
+    public int CurrentHealth { get; private set; }
 
     public List<Move> Moves { get; }
 
@@ -25,9 +28,25 @@ public class Enemy
         RarityEnum = rarityEnum;
         Description = description;
         Health = health;
+        CurrentHealth = health;
         Moves = moves;
     }
 
+    public void TakeDamage(int damage)
+    {
+        if (!IsDead())
+            CurrentHealth -= damage;
+    }
+
+    public bool IsDead()
+    {
+        return CurrentHealth <= 0;
+    }
+
+    public override string ToString()
+    {
+        return $"{RarityEnum} {EnemyEnum} at {CurrentHealth}hp";
+    }
 
     public abstract class Move
     {

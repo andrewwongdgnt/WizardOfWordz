@@ -8,6 +8,7 @@ using Zenject;
 public class MainScript : MonoBehaviour
 {
     public List<EnemyArg> enemyArgs;
+    public int attackIndex;
 
     [Inject]
     private readonly RetrieveWordsFromDictionaryUsecase retrieveWordsFromDictionaryUsecase;
@@ -27,12 +28,17 @@ public class MainScript : MonoBehaviour
     [Inject]
     private readonly GenerateCharTilesUsecase generateCharTilesUsecase;
 
-    private readonly List<Key> monitoredKeys = new()
+    private readonly ISet<Key> monitoredKeys = new HashSet<Key>()
     {
         Key.A, Key.B, Key.C, Key.D, Key.E, Key.F, Key.G, Key.H, Key.I, Key.J,
         Key.K, Key.L, Key.M, Key.N, Key.O, Key.P, Key.Q, Key.R, Key.S, Key.T,
         Key.U, Key.V, Key.W, Key.X, Key.Y, Key.Z,
-        Key.Enter, Key.Backspace
+        Key.Enter, Key.Backspace,
+    };
+
+    private readonly ISet<Key> movementKeys = new HashSet<Key>()
+    {
+        Key.LeftArrow, Key.RightArrow
     };
 
     private List<Tile> allowedTiles;
@@ -45,8 +51,10 @@ public class MainScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        dictionary = retrieveWordsFromDictionaryUsecase.Invoke();
-        Restart();
+        dictionary = retrieveWordsFromDictionaryUsecase.Invoke(); 
+        PopulateEnemies();
+        RestartAllowedTiles();
+        LogState();
     }
 
     // Update is called once per frame
@@ -56,11 +64,19 @@ public class MainScript : MonoBehaviour
         if (keyboard == null)
             return;
 
+
         foreach (var key in monitoredKeys)
         {
             if (keyboard[key]?.wasPressedThisFrame == true)
             {
                 AddToCurrentWord(key);
+            }
+        }
+        foreach (var key in movementKeys)
+        {
+            if (keyboard[key]?.wasPressedThisFrame == true)
+            {
+                TargetNewEnemy(key);
             }
         }
     }
@@ -72,8 +88,13 @@ public class MainScript : MonoBehaviour
             case Key.Enter:
                 string word = GetCurrentWordStackAsString();
                 currentWordStack.Clear();
-                processWordUsecase.Invoke(word, dictionary);
-                Restart();
+                processWordUsecase.Invoke(
+                    word,
+                    dictionary,
+                    enemies,
+                    attackIndex
+                    );
+                RestartAllowedTiles();
                 break;
             case Key.Backspace:
                 if (currentWordStack.Any())
@@ -89,22 +110,39 @@ public class MainScript : MonoBehaviour
                 break;
         }
 
-        if (key != Key.Enter)
+        LogState();
+    }
+
+    private void TargetNewEnemy(Key key)
+    {
+        if (key == Key.LeftArrow)
         {
-            string word = GetCurrentWordStackAsString();
-            Debug.Log($"{string.Join(",", allowedTiles)} == {word}");
+            attackIndex--;
         }
+        else if (key == Key.RightArrow)
+        {
+            attackIndex++;
+        }
+        if (attackIndex < 0)
+        {
+            attackIndex = enemies.Count - 1;
+        }
+        else if (attackIndex >= enemies.Count)
+        {
+            attackIndex = 0;
+        }
+        LogState();
+    }
+
+    private void LogState()
+    {
+        string word = GetCurrentWordStackAsString();
+        Debug.Log($"attackIndex: {attackIndex}\n{string.Join(" - ", enemies)}\n{string.Join("", allowedTiles)}\n{word}");
     }
 
     private string GetCurrentWordStackAsString()
     {
         return new(currentWordStack.Reverse().ToArray());
-    }
-
-    private void Restart()
-    {
-        PopulateEnemies();
-        RestartAllowedTiles();
     }
 
     private void PopulateEnemies()
@@ -115,7 +153,5 @@ public class MainScript : MonoBehaviour
     private void RestartAllowedTiles()
     {
         allowedTiles = generateCharTilesUsecase.Invoke();
-
-        Debug.Log($"Available tiles: {string.Join(",", allowedTiles)}");
     }
 }
