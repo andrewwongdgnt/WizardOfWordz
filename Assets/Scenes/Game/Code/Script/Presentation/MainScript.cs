@@ -28,6 +28,9 @@ public class MainScript : MonoBehaviour
     [Inject]
     private readonly GenerateCharTilesUsecase generateCharTilesUsecase;
 
+    [Inject]
+    private readonly GetNextTargetUsecase getNextTargetUsecase;
+
     private readonly ISet<Key> monitoredKeys = new HashSet<Key>()
     {
         Key.A, Key.B, Key.C, Key.D, Key.E, Key.F, Key.G, Key.H, Key.I, Key.J,
@@ -86,15 +89,7 @@ public class MainScript : MonoBehaviour
         switch (key)
         {
             case Key.Enter:
-                string word = GetCurrentWordStackAsString();
-                currentWordStack.Clear();
-                processWordUsecase.Invoke(
-                    word,
-                    dictionary,
-                    enemies,
-                    attackIndex
-                    );
-                RestartAllowedTiles();
+                ProcessWord();
                 break;
             case Key.Backspace:
                 if (currentWordStack.Any())
@@ -113,24 +108,34 @@ public class MainScript : MonoBehaviour
         LogState();
     }
 
+    private void ProcessWord()
+    {
+        string word = GetCurrentWordStackAsString();
+        currentWordStack.Clear();
+        processWordUsecase.Invoke(
+            word,
+            dictionary,
+            enemies,
+            attackIndex
+            );
+        if (enemies[attackIndex].IsDead())
+        {
+            attackIndex = getNextTargetUsecase.Invoke(
+               true,
+               attackIndex,
+               enemies
+               );
+        }
+        RestartAllowedTiles();
+    }
+
     private void TargetNewEnemy(Key key)
     {
-        if (key == Key.LeftArrow)
-        {
-            attackIndex--;
-        }
-        else if (key == Key.RightArrow)
-        {
-            attackIndex++;
-        }
-        if (attackIndex < 0)
-        {
-            attackIndex = enemies.Count - 1;
-        }
-        else if (attackIndex >= enemies.Count)
-        {
-            attackIndex = 0;
-        }
+        attackIndex = getNextTargetUsecase.Invoke(
+            key == Key.RightArrow,
+            attackIndex,
+            enemies
+            );
         LogState();
     }
 

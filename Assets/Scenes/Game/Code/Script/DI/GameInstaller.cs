@@ -13,6 +13,7 @@ public class GameInstaller : MonoInstaller
 
         // Usecase
         Container.Bind<GenerateCharTilesUsecase>().AsSingle();
+        Container.Bind<GetNextTargetUsecase>().AsSingle();
         Container.Bind<PickTileUsecase>().AsSingle();
         Container.Bind<PopulateEnemiesUsecase>().AsSingle();
         Container.Bind<ProcessWordUsecase>().AsSingle();
