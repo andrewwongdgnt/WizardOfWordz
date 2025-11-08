@@ -28,7 +28,14 @@
         },
         "weight": 100
       }
-    ]
+    ],
+    "delay": {
+      "common": 4,
+      "uncommon": 4,
+      "rare": 3,
+      "epic": 3,
+      "legendary": 2
+    }
   },
   "Notebook": {
     "description": "Notebook desc",
@@ -61,7 +68,7 @@
       },
       {
         "type": "Attack",
-        "title": "Bind",
+        "title": "Binder strike",
         "damage": {
           "common": 8,
           "uncommon": 10,
@@ -78,6 +85,13 @@
         },
         "weight": 20
       }
-    ]
+    ],
+    "delay": {
+      "common": 4,
+      "uncommon": 3,
+      "rare": 3,
+      "epic": 3,
+      "legendary": 2
+    }
   }
 }

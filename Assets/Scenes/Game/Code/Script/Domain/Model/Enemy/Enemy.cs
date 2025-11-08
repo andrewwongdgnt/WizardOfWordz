@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
 public class Enemy
@@ -14,13 +15,16 @@ public class Enemy
 
     public int CurrentHealth { get; private set; }
 
+    public int TurnsRemaining { get; set; }
+
     public List<Move> Moves { get; }
 
-    public Enemy (
+    public Enemy(
             EnemyEnum enemyEnum,
             RarityEnum rarityEnum,
             string description,
             int health,
+            int delay,
             List<Move> moves
         )
     {
@@ -29,6 +33,7 @@ public class Enemy
         Description = description;
         Health = health;
         CurrentHealth = health;
+        TurnsRemaining = delay;
         Moves = moves;
     }
 
@@ -43,9 +48,14 @@ public class Enemy
         return CurrentHealth <= 0;
     }
 
+    public string ShortLabel()
+    {
+        return $"{RarityEnum} {EnemyEnum}";
+    }
+
     public override string ToString()
     {
-        return $"{RarityEnum} {EnemyEnum} at {CurrentHealth}hp";
+        return $"{ShortLabel()}:{CurrentHealth}hp:{TurnsRemaining}tr";
     }
 
     public abstract class Move
@@ -56,6 +66,17 @@ public class Enemy
 
         public int Weight { get; protected set; }
 
+        public Move(
+            string title,
+            int wait,
+            int weight
+            )
+        {
+            Title = title;
+            Wait = wait;
+            Weight = weight;
+        }
+
         public class Attack : Move
         {
             public int Damage { get; }
@@ -65,11 +86,18 @@ public class Enemy
                 int wait,
                 int weight,
                 int damage
-                ) {
-                Title = title;
-                Wait = wait; 
-                Weight = weight;
+                ) : base(
+                    title,
+                    wait,
+                    weight
+                    )
+            {
                 Damage = damage;
+            }
+
+            public override string ToString()
+            {
+                return $"{Title}({Damage}dmg)";
             }
         }
     }

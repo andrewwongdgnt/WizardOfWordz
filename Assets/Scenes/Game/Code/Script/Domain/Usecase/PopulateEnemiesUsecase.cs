@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using Zenject;
+using static EnemyInfo;
 
 public class PopulateEnemiesUsecase
 {
@@ -28,44 +29,20 @@ public class PopulateEnemiesUsecase
             EnemyEnum enemyEnum = e.enemyEnum;
             RarityEnum enemyRarity = e.rarityEnum;
             EnemyInfo.StatsInfo statsInfo = enemyInfoMap[enemyEnum];
-            int health = enemyRarity switch
-            {
-                RarityEnum.Common => statsInfo.health.common,
-                RarityEnum.Uncommon => statsInfo.health.uncommon,
-                RarityEnum.Rare => statsInfo.health.rare,
-                RarityEnum.Epic => statsInfo.health.epic,
-                RarityEnum.Legendary => statsInfo.health.legendary,
-                _ => throw new NotImplementedException(),
-            };
+            int health = GetRarityValue(enemyRarity, statsInfo.health);
+            int delay = GetRarityValue(enemyRarity, statsInfo.delay);
 
             List<Enemy.Move> moves = new();
             statsInfo.moves.ForEach(m =>
             {
-                int wait = enemyRarity switch
-                {
-                    RarityEnum.Common => m.wait.common,
-                    RarityEnum.Uncommon => m.wait.uncommon,
-                    RarityEnum.Rare => m.wait.rare,
-                    RarityEnum.Epic => m.wait.epic,
-                    RarityEnum.Legendary => m.wait.legendary,
-                    _ => throw new NotImplementedException(),
-                };
                 Enemy.Move move = m.type switch
                 {
                     "Attack" =>
                         new Enemy.Move.Attack(
                             m.title,
-                            wait,
+                            GetRarityValue(enemyRarity, m.wait),
                             m.weight,
-                            enemyRarity switch
-                            {
-                                RarityEnum.Common => m.damage.common,
-                                RarityEnum.Uncommon => m.damage.uncommon,
-                                RarityEnum.Rare => m.damage.rare,
-                                RarityEnum.Epic => m.damage.epic,
-                                RarityEnum.Legendary => m.damage.legendary,
-                                _ => throw new NotImplementedException(),
-                            }
+                            GetRarityValue(enemyRarity, m.damage)
                             ),
 
                     _ => throw new NotImplementedException(),
@@ -78,8 +55,25 @@ public class PopulateEnemiesUsecase
                 enemyRarity,
                 statsInfo.description,
                 health,
+                delay,
                 moves
                 );
         }).ToList();
+    }
+
+    private int GetRarityValue(
+        RarityEnum rarity,
+        EnemyInfo.StatsInfo.RarityInfo rarityInfo
+        )
+    {
+        return rarity switch
+        {
+            RarityEnum.Common => rarityInfo.common,
+            RarityEnum.Uncommon => rarityInfo.uncommon,
+            RarityEnum.Rare => rarityInfo.rare,
+            RarityEnum.Epic => rarityInfo.epic,
+            RarityEnum.Legendary => rarityInfo.legendary,
+            _ => throw new NotImplementedException(),
+        };
     }
 }

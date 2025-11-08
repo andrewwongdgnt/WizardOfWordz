@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Zenject;
@@ -5,6 +6,7 @@ using Zenject;
 public class GenerateCharTilesUsecase
 {
     private readonly LetterDistributionRepository letterDistributionRepository;
+    private readonly Random random = new();
 
     [Inject]
     public GenerateCharTilesUsecase(
@@ -31,7 +33,6 @@ public class GenerateCharTilesUsecase
             }
         });
 
-        System.Random random = new();
         return Enumerable.Repeat(tiles, num)
             .Select(ts =>
                 {

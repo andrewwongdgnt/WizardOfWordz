@@ -12,6 +12,7 @@ public class GameInstaller : MonoInstaller
         Container.Bind<LetterDistributionRepository>().To<LetterDistributionRepositoryImpl>().AsSingle();
 
         // Usecase
+        Container.Bind<CalculateTurnFromEnemiesUsecase>().AsSingle();
         Container.Bind<GenerateCharTilesUsecase>().AsSingle();
         Container.Bind<GetNextTargetUsecase>().AsSingle();
         Container.Bind<PickTileUsecase>().AsSingle();

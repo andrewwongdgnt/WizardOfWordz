@@ -1,3 +1,4 @@
+using ModestTree;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ public class MainScript : MonoBehaviour
 {
     public List<EnemyArg> enemyArgs;
     public int attackIndex;
+    public int health;
 
     [Inject]
     private readonly RetrieveWordsFromDictionaryUsecase retrieveWordsFromDictionaryUsecase;
@@ -30,6 +32,9 @@ public class MainScript : MonoBehaviour
 
     [Inject]
     private readonly GetNextTargetUsecase getNextTargetUsecase;
+
+    [Inject]
+    private readonly CalculateTurnFromEnemiesUsecase calculateTurnFromEnemiesUsecase;
 
     private readonly ISet<Key> monitoredKeys = new HashSet<Key>()
     {
@@ -126,6 +131,21 @@ public class MainScript : MonoBehaviour
                enemies
                );
         }
+        List<(int enemyIndex, Enemy.Move move)> movesPair = calculateTurnFromEnemiesUsecase.Invoke(
+            enemies
+            );
+        if (!movesPair.IsEmpty())
+        {
+            string attackLog = string.Join(",", movesPair.Select(mp => $"{enemies[mp.enemyIndex].ShortLabel()} at {mp.enemyIndex} does {mp.move}"));
+            Debug.Log(attackLog);
+            movesPair.ForEach(mp => {
+                if (mp.move is Enemy.Move.Attack attack)
+                {
+                    health -= attack.Damage;
+                }
+                });
+        }
+            
         RestartAllowedTiles();
     }
 
@@ -142,7 +162,7 @@ public class MainScript : MonoBehaviour
     private void LogState()
     {
         string word = GetCurrentWordStackAsString();
-        Debug.Log($"attackIndex: {attackIndex}\n{string.Join(" - ", enemies)}\n{string.Join("", allowedTiles)}\n{word}");
+        Debug.Log($"{health}hp & Targeting: {attackIndex}\n{string.Join(" - ", enemies)}\n{string.Join("", allowedTiles)}\n{word}");
     }
 
     private string GetCurrentWordStackAsString()

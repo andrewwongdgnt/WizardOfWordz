@@ -15,6 +15,8 @@ public class EnemyInfo
 
         public List<MoveInfo> moves;
 
+        public RarityInfo delay;
+
         [System.Serializable]
         public class MoveInfo
         {
