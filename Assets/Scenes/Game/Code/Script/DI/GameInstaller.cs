@@ -10,6 +10,10 @@ public class GameInstaller : MonoInstaller
         Container.Bind<DictionaryRepository>().To<DictionaryRepositoryImpl>().AsSingle();
         Container.Bind<EnemyInfoRepository>().To<EnemyInfoRepositoryImpl>().AsSingle();
         Container.Bind<LetterDistributionRepository>().To<LetterDistributionRepositoryImpl>().AsSingle();
+        Container.Bind<PlayerInfoRepository>().To<PlayerInfoRepositoryImpl>().AsSingle();
+
+        // Manager
+        Container.Bind<PlayerManager>().AsSingle();
 
         // Usecase
         Container.Bind<CalculateTurnFromEnemiesUsecase>().AsSingle();

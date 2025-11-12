@@ -10,7 +10,6 @@ public class MainScript : MonoBehaviour
 {
     public List<EnemyArg> enemyArgs;
     public int attackIndex;
-    public int health;
 
     [Inject]
     private readonly RetrieveWordsFromDictionaryUsecase retrieveWordsFromDictionaryUsecase;
@@ -36,6 +35,9 @@ public class MainScript : MonoBehaviour
     [Inject]
     private readonly CalculateTurnFromEnemiesUsecase calculateTurnFromEnemiesUsecase;
 
+    [Inject]
+    private readonly PlayerManager playerManager;
+
     private readonly ISet<Key> monitoredKeys = new HashSet<Key>()
     {
         Key.A, Key.B, Key.C, Key.D, Key.E, Key.F, Key.G, Key.H, Key.I, Key.J,
@@ -59,6 +61,7 @@ public class MainScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        playerManager.Init();
         dictionary = retrieveWordsFromDictionaryUsecase.Invoke(); 
         PopulateEnemies();
         RestartAllowedTiles();
@@ -141,7 +144,7 @@ public class MainScript : MonoBehaviour
             movesPair.ForEach(mp => {
                 if (mp.move is Enemy.Move.Attack attack)
                 {
-                    health -= attack.Damage;
+                    playerManager.UpdateHealthBy(-attack.Damage);
                 }
                 });
         }
@@ -162,7 +165,7 @@ public class MainScript : MonoBehaviour
     private void LogState()
     {
         string word = GetCurrentWordStackAsString();
-        Debug.Log($"{health}hp & Targeting: {attackIndex}\n{string.Join(" - ", enemies)}\n{string.Join("", allowedTiles)}\n{word}");
+        Debug.Log($"{playerManager.CurrentHealth}hp & Targeting: {attackIndex}\n{string.Join(" - ", enemies)}\n{string.Join("", allowedTiles)}\n{word}");
     }
 
     private string GetCurrentWordStackAsString()

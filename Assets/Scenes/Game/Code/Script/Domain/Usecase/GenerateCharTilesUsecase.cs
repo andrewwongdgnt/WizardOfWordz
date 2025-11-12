@@ -6,20 +6,22 @@ using Zenject;
 public class GenerateCharTilesUsecase
 {
     private readonly LetterDistributionRepository letterDistributionRepository;
+    private readonly PlayerManager playerManager;
     private readonly Random random = new();
 
     [Inject]
     public GenerateCharTilesUsecase(
-        LetterDistributionRepository letterDistributionRepository
+        LetterDistributionRepository letterDistributionRepository,
+        PlayerManager playerManager
         )
     {
         this.letterDistributionRepository = letterDistributionRepository;
+        this.playerManager = playerManager;
     }
 
     public List<Tile> Invoke()
     {
-        int num = 8;
-
+        int tileCount = playerManager.TileCount;
         List<Tile> tiles = new();
 
         letterDistributionRepository.Get().ForEach(t =>
@@ -33,7 +35,7 @@ public class GenerateCharTilesUsecase
             }
         });
 
-        return Enumerable.Repeat(tiles, num)
+        return Enumerable.Repeat(tiles, tileCount)
             .Select(ts =>
                 {
                     int index = random.Next(ts.Count);
