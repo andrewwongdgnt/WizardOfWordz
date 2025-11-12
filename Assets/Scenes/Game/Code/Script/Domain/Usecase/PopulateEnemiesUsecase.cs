@@ -51,8 +51,8 @@ public class PopulateEnemiesUsecase
             });
 
             return new Enemy(
-                enemyEnum,
                 enemyRarity,
+                statsInfo.title,
                 statsInfo.description,
                 health,
                 delay,

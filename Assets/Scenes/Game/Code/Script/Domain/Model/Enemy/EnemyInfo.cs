@@ -9,6 +9,8 @@ public class EnemyInfo
     [System.Serializable]
     public class StatsInfo
     {
+        public string title;
+
         public string description;
 
         public RarityInfo health;

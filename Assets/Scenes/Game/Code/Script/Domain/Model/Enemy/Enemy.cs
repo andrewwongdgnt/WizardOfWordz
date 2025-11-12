@@ -6,8 +6,9 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class Enemy
 {
-    public EnemyEnum EnemyEnum { get; }
     public RarityEnum RarityEnum { get; }
+
+    public string Title { get; }
 
     public string Description { get; }
 
@@ -20,16 +21,16 @@ public class Enemy
     public List<Move> Moves { get; }
 
     public Enemy(
-            EnemyEnum enemyEnum,
             RarityEnum rarityEnum,
+            string title,
             string description,
             int health,
             int delay,
             List<Move> moves
         )
     {
-        EnemyEnum = enemyEnum;
         RarityEnum = rarityEnum;
+        Title = title;
         Description = description;
         Health = health;
         CurrentHealth = health;
@@ -50,7 +51,7 @@ public class Enemy
 
     public string ShortLabel()
     {
-        return $"{RarityEnum} {EnemyEnum}";
+        return $"{RarityEnum} {Title}";
     }
 
     public override string ToString()

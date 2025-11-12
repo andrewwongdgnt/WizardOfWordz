@@ -1,5 +1,6 @@
 {
   "Note": {
+	"title": "Note",
     "description": "Note desc",
     "health": {
       "common": 6,
@@ -38,6 +39,7 @@
     }
   },
   "Notebook": {
+	"title": "Notebook",
     "description": "Notebook desc",
     "health": {
       "common": 8,
