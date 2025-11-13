@@ -65,7 +65,7 @@ public class MainScript : MonoBehaviour
         playerManager.Init();
         dictionary = retrieveWordsFromDictionaryUsecase.Invoke();
         SetUpBoard();
-        LogState();
+        UpdateUIState();
     }
 
     // Update is called once per frame
@@ -94,6 +94,7 @@ public class MainScript : MonoBehaviour
 
     private void AddToCurrentWord(Key key)
     {
+        Tile tileThatChanged = null;
         switch (key)
         {
             case Key.Enter:
@@ -103,17 +104,18 @@ public class MainScript : MonoBehaviour
                 if (currentWordStack.Any())
                 {
                     char removedChar = currentWordStack.Pop();
-                    returnTileUsecase.Invoke(removedChar, allowedTiles);
+                    tileThatChanged = returnTileUsecase.Invoke(removedChar, allowedTiles);
                 }
                 break;
             default:
-                char c = pickTileUsecase.Invoke(key, allowedTiles);
-                if (c != '\0')
-                    currentWordStack.Push(c);
+                var (pickedChar, tile) = pickTileUsecase.Invoke(key, allowedTiles);
+                if (pickedChar != '\0')
+                    currentWordStack.Push(pickedChar);
+                tileThatChanged = tile;
                 break;
         }
 
-        LogState();
+        UpdateUIState(tileThatChanged);
     }
 
     private void ProcessWord()
@@ -159,12 +161,14 @@ public class MainScript : MonoBehaviour
             attackIndex,
             enemies
             );
-        LogState();
+        UpdateUIState();
     }
 
-    private void LogState()
+    private void UpdateUIState(Tile tileThatChanged = null)
     {
         string word = GetCurrentWordStackAsString();
+        boardContainerGO.UpdateState(word, tileThatChanged);
+
         Debug.Log($"{playerManager.CurrentHealth}hp & Targeting: {attackIndex}\n{string.Join(" - ", enemies)}\n{string.Join("", allowedTiles)}\n{word}");
     }
 

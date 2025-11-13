@@ -1,8 +1,10 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TileGameObject : MonoBehaviour
 {
+    public Button button;
     public TextMeshProUGUI letter;
     public TextMeshProUGUI score;
 
@@ -26,5 +28,10 @@ public class TileGameObject : MonoBehaviour
     public void SetScore(int value)
     {
         score.text = value.ToString();
+    }
+
+    public void SetPickable(bool value)
+    {
+        button.interactable = value;
     }
 }
