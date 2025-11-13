@@ -10,6 +10,7 @@ public class MainScript : MonoBehaviour
 {
     public List<EnemyArg> enemyArgs;
     public int attackIndex;
+    public BoardContainerGameObject boardContainerGO;
 
     [Inject]
     private readonly RetrieveWordsFromDictionaryUsecase retrieveWordsFromDictionaryUsecase;
@@ -62,9 +63,8 @@ public class MainScript : MonoBehaviour
     void Start()
     {
         playerManager.Init();
-        dictionary = retrieveWordsFromDictionaryUsecase.Invoke(); 
-        PopulateEnemies();
-        RestartAllowedTiles();
+        dictionary = retrieveWordsFromDictionaryUsecase.Invoke();
+        SetUpBoard();
         LogState();
     }
 
@@ -173,6 +173,12 @@ public class MainScript : MonoBehaviour
         return new(currentWordStack.Reverse().ToArray());
     }
 
+    private void SetUpBoard()
+    {
+        PopulateEnemies();
+        RestartAllowedTiles();
+    }
+
     private void PopulateEnemies()
     {
         enemies = populateEnemiesUsecase.Invoke(enemyArgs);
@@ -181,5 +187,6 @@ public class MainScript : MonoBehaviour
     private void RestartAllowedTiles()
     {
         allowedTiles = generateCharTilesUsecase.Invoke();
+        boardContainerGO.SetUpTiles(allowedTiles);
     }
 }

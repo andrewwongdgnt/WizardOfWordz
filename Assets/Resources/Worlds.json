@@ -1,0 +1,16 @@
+{
+  "World": [
+    {
+      "title": "Library",
+      "description": "Lots of books",
+      "vertical": {
+        "min": 8,
+        "max": 9
+      },
+      "horizontal": {
+        "min": 2,
+        "max": 4
+      }
+    }
+  ]
+}

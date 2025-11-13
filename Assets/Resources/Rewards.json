@@ -1,0 +1,38 @@
+{
+    "Reroll": {
+         "title": "Swap letter",
+         "description": "Pick some letters to put away and get a random new one for each",
+        "rarity": "uncommon",
+         "value": [
+            1,
+            1,
+            1,
+            1,
+            1
+        ]
+    },
+    "MaxHealth": {
+         "title": "Increase max health",
+         "description": "Increase your maximum health points",
+        "rarity": "common",
+         "value": [
+            10,
+            10,
+            20,
+            30,
+            50
+        ]
+    },
+    "MaxTile": {
+        "title": "Increase letters",
+         "description": "Increase the number of letters to pick from to make your word",
+        "rarity": "uncommon",
+         "value": [
+            1,
+            1,
+            1,
+            1,
+            1
+        ]
+    }
+}
