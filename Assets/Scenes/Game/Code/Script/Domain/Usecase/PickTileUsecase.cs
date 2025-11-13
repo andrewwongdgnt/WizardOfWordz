@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.InputSystem;
 
 public class PickTileUsecase
@@ -16,6 +17,19 @@ public class PickTileUsecase
         if (foundTile == null) return ('\0', null);
         foundTile.pickable = false;
         return (c, foundTile);
+    }
+
+    public bool Invoke(
+        Tile tile,
+        List<Tile> allowedTiles
+        )
+    {
+        bool exists = allowedTiles.Any(t => t == tile);
+        if (exists)
+        {
+            tile.pickable = !tile.pickable;
+        }
+        return exists;
     }
 
     private char GetCharFromKey(Key key)

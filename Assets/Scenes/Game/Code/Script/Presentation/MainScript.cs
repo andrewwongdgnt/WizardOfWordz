@@ -110,7 +110,9 @@ public class MainScript : MonoBehaviour
             default:
                 var (pickedChar, tile) = pickTileUsecase.Invoke(key, allowedTiles);
                 if (pickedChar != '\0')
+                {
                     currentWordStack.Push(pickedChar);
+                }
                 tileThatChanged = tile;
                 break;
         }
@@ -179,6 +181,7 @@ public class MainScript : MonoBehaviour
 
     private void SetUpBoard()
     {
+        boardContainerGO.tileAction = TileAction;
         PopulateEnemies();
         RestartAllowedTiles();
     }
@@ -192,5 +195,15 @@ public class MainScript : MonoBehaviour
     {
         allowedTiles = generateCharTilesUsecase.Invoke();
         boardContainerGO.SetUpTiles(allowedTiles);
+    }
+
+    private void TileAction(Tile tile)
+    {
+        bool exists = pickTileUsecase.Invoke(tile, allowedTiles);
+        if (exists)
+        {
+            currentWordStack.Push(tile.Value);
+        }
+        UpdateUIState(tile);
     }
 }

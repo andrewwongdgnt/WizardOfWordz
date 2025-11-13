@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
@@ -14,6 +15,8 @@ public class BoardContainerGameObject : MonoBehaviour
     public GameObject tileContainer;
 
     public TextMeshProUGUI wordGO;
+
+    public Action<Tile> tileAction;
 
     private readonly Dictionary<Tile, TileGameObject> tileMap = new();
 
@@ -41,7 +44,7 @@ public class BoardContainerGameObject : MonoBehaviour
             tileMap.TryGetValue(tileThatChanged, out TileGameObject foundTileGO);
             if (foundTileGO != null)
             {
-                foundTileGO.SetPickable(tileThatChanged.pickable);
+                foundTileGO.UpdateState();
             }
         }
     }
@@ -54,13 +57,13 @@ public class BoardContainerGameObject : MonoBehaviour
         }
         tileMap.Clear();
 
-        tiles.ForEach(t =>
+        tiles.ForEach(tile =>
             {
                 TileGameObject newTileGO = Instantiate(tileGO, tileContainer.transform.position, Quaternion.identity);
                 newTileGO.transform.SetParent(tileContainer.transform);
-                newTileGO.SetLetterValue(t.Value);
-                newTileGO.SetScore(t.Score);
-                tileMap[t] = newTileGO;
+                newTileGO.SetTile(tile);
+                tileMap[tile] = newTileGO;
+                newTileGO.tileAction = tileAction;
 
                 AdjustPosition(newTileGO.GetComponent<RectTransform>());
             }
