@@ -22,9 +22,6 @@ public class MainScript : MonoBehaviour
     private readonly PopulateEnemiesUsecase populateEnemiesUsecase;
 
     [Inject]
-    private readonly ReturnTileUsecase returnTileUsecase;
-
-    [Inject]
     private readonly ProcessWordUsecase processWordUsecase;
 
     [Inject]
@@ -55,7 +52,7 @@ public class MainScript : MonoBehaviour
     private List<Tile> allowedTiles;
     private List<Enemy> enemies;
 
-    private readonly Stack<char> currentWordStack = new();
+    private readonly Stack<Tile> currentWordStack = new();
 
     private Dictionary<string, Word> dictionary;
 
@@ -103,17 +100,16 @@ public class MainScript : MonoBehaviour
             case Key.Backspace:
                 if (currentWordStack.Any())
                 {
-                    char removedChar = currentWordStack.Pop();
-                    tileThatChanged = returnTileUsecase.Invoke(removedChar, allowedTiles);
+                    tileThatChanged = currentWordStack.Pop();
+                    tileThatChanged.pickable = true;
                 }
                 break;
             default:
-                var (pickedChar, tile) = pickTileUsecase.Invoke(key, allowedTiles);
-                if (pickedChar != '\0')
+                tileThatChanged = pickTileUsecase.Invoke(key, allowedTiles);
+                if (tileThatChanged != null)
                 {
-                    currentWordStack.Push(pickedChar);
+                    currentWordStack.Push(tileThatChanged);
                 }
-                tileThatChanged = tile;
                 break;
         }
 
@@ -176,7 +172,7 @@ public class MainScript : MonoBehaviour
 
     private string GetCurrentWordStackAsString()
     {
-        return new(currentWordStack.Reverse().ToArray());
+        return new(currentWordStack.Select(t => t.Value).Reverse().ToArray());
     }
 
     private void SetUpBoard()
@@ -202,7 +198,7 @@ public class MainScript : MonoBehaviour
         bool exists = pickTileUsecase.Invoke(tile, allowedTiles);
         if (exists)
         {
-            currentWordStack.Push(tile.Value);
+            currentWordStack.Push(tile);
         }
         UpdateUIState(tile);
     }

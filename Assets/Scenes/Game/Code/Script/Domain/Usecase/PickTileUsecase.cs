@@ -5,18 +5,18 @@ using UnityEngine.InputSystem;
 public class PickTileUsecase
 {
 
-    public (char, Tile) Invoke(
+    public Tile Invoke(
         Key key,
         List<Tile> allowedTiles
         )
     {
         char c = GetCharFromKey(key);
-        if (c == '\0') return ('\0', null);
+        if (c == '\0') return null;
 
         Tile foundTile = allowedTiles.Find(t => t.Value == c && t.pickable);
-        if (foundTile == null) return ('\0', null);
+        if (foundTile == null) return null;
         foundTile.pickable = false;
-        return (c, foundTile);
+        return foundTile;
     }
 
     public bool Invoke(
