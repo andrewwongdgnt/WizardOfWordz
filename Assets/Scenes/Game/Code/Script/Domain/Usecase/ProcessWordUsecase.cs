@@ -8,8 +8,6 @@ using Zenject;
 
 public class ProcessWordUsecase
 {
-    private readonly LetterDistributionRepository letterDistributionRepository;
-
     private readonly Dictionary<char, int> tileScoreMap;
 
     [Inject]

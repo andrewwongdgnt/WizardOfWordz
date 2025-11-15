@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
@@ -14,17 +15,23 @@ public class BoardContainerGameObject : MonoBehaviour
 
     public GameObject tileContainer;
 
-    public TextMeshProUGUI wordGO;
+    public GameObject wordContainer;
 
     public Action<Tile> tileAction;
 
+    public Action<Tile> tileInWordAction;
+
     private readonly Dictionary<Tile, TileGameObject> tileMap = new();
+
+    private readonly Dictionary<Tile, TileGameObject> tileInWordMap = new();
+
+    private readonly Dictionary<Tile, Tile> wordTileToTile = new();
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        wordGO.text = "";
+
     }
 
     // Update is called once per frame
@@ -34,11 +41,21 @@ public class BoardContainerGameObject : MonoBehaviour
     }
 
     public void UpdateState(
-        string word,
+        List<Tile> currentWordList,
         Tile tileThatChanged = null
         )
     {
-        wordGO.text = word;
+        wordTileToTile.Clear();
+        List<Tile> newCurrentWordList = new();
+        currentWordList.ForEach(t =>
+        {
+            Tile clonedTile = t.Clone();
+            wordTileToTile[clonedTile] = t;
+            newCurrentWordList.Add(clonedTile);
+        });
+
+        SetUp(newCurrentWordList, tileInWordMap, wordContainer, TileInWordAction, 0.6f);
+
         if (tileThatChanged != null)
         {
             tileMap.TryGetValue(tileThatChanged, out TileGameObject foundTileGO);
@@ -51,6 +68,17 @@ public class BoardContainerGameObject : MonoBehaviour
 
     public void SetUpTiles(List<Tile> tiles)
     {
+        SetUp(tiles, tileMap, tileContainer, tileAction);
+    }
+
+    private void SetUp(
+        List<Tile> tiles,
+        Dictionary<Tile, TileGameObject> tileMap,
+        GameObject container,
+        Action<Tile> action,
+        float scale = 1f
+        )
+    {
         foreach (var tileItem in tileMap)
         {
             Destroy(tileItem.Value.gameObject);
@@ -58,23 +86,32 @@ public class BoardContainerGameObject : MonoBehaviour
         tileMap.Clear();
 
         tiles.ForEach(tile =>
-            {
-                TileGameObject newTileGO = Instantiate(tileGO, tileContainer.transform.position, Quaternion.identity);
-                newTileGO.transform.SetParent(tileContainer.transform);
-                newTileGO.SetTile(tile);
-                tileMap[tile] = newTileGO;
-                newTileGO.tileAction = tileAction;
+        {
+            TileGameObject newTileGO = Instantiate(tileGO, container.transform.position, Quaternion.identity);
+            newTileGO.transform.SetParent(container.transform);
+            newTileGO.SetTile(tile);
+            tileMap[tile] = newTileGO;
+            newTileGO.tileAction = action;
 
-                AdjustPosition(newTileGO.GetComponent<RectTransform>());
-            }
+            AdjustPosition(newTileGO.GetComponent<RectTransform>(), scale);
+        }
         );
     }
 
-    private void AdjustPosition(RectTransform rect)
+    private void AdjustPosition(RectTransform rect, float scaling = 1f)
     {
         rect.localPosition = Vector3.zero;
         rect.localRotation = Quaternion.identity;
-        rect.localScale = Vector3.one;
+        rect.localScale = new Vector3(scaling,scaling,scaling);
         rect.anchoredPosition = Vector2.zero;
+    }
+
+    private void TileInWordAction(Tile wordTile)
+    {
+        wordTileToTile.TryGetValue(wordTile, out Tile originalTile);
+        if (originalTile != null)
+        {
+            tileInWordAction(originalTile);
+        }
     }
 }

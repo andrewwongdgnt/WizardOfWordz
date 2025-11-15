@@ -14,6 +14,14 @@ public class Tile
         pickable = true;
     }
 
+    public Tile Clone()
+    {
+        return new Tile(
+            Value,
+            Score
+            );
+    }
+
     public override string ToString()
     {
         string valueAsString = Value.ToString();

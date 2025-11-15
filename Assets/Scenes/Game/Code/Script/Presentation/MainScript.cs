@@ -52,7 +52,7 @@ public class MainScript : MonoBehaviour
     private List<Tile> allowedTiles;
     private List<Enemy> enemies;
 
-    private readonly Stack<Tile> currentWordStack = new();
+    private readonly List<Tile> currentWordList = new();
 
     private Dictionary<string, Word> dictionary;
 
@@ -98,9 +98,10 @@ public class MainScript : MonoBehaviour
                 ProcessWord();
                 break;
             case Key.Backspace:
-                if (currentWordStack.Any())
+                if (currentWordList.Any())
                 {
-                    tileThatChanged = currentWordStack.Pop();
+                    tileThatChanged = currentWordList[^1];
+                    currentWordList.RemoveAt(currentWordList.Count - 1);
                     tileThatChanged.pickable = true;
                 }
                 break;
@@ -108,7 +109,7 @@ public class MainScript : MonoBehaviour
                 tileThatChanged = pickTileUsecase.Invoke(key, allowedTiles);
                 if (tileThatChanged != null)
                 {
-                    currentWordStack.Push(tileThatChanged);
+                    currentWordList.Add(tileThatChanged);
                 }
                 break;
         }
@@ -118,8 +119,8 @@ public class MainScript : MonoBehaviour
 
     private void ProcessWord()
     {
-        string word = GetCurrentWordStackAsString();
-        currentWordStack.Clear();
+        string word = GetCurrentWordListAsString();
+        currentWordList.Clear();
         processWordUsecase.Invoke(
             word,
             dictionary,
@@ -164,20 +165,21 @@ public class MainScript : MonoBehaviour
 
     private void UpdateUIState(Tile tileThatChanged = null)
     {
-        string word = GetCurrentWordStackAsString();
-        boardContainerGO.UpdateState(word, tileThatChanged);
+        string word = GetCurrentWordListAsString();
+        boardContainerGO.UpdateState(currentWordList, tileThatChanged);
 
         Debug.Log($"{playerManager.CurrentHealth}hp & Targeting: {attackIndex}\n{string.Join(" - ", enemies)}\n{string.Join("", allowedTiles)}\n{word}");
     }
 
-    private string GetCurrentWordStackAsString()
+    private string GetCurrentWordListAsString()
     {
-        return new(currentWordStack.Select(t => t.Value).Reverse().ToArray());
+        return new(currentWordList.Select(t => t.Value).ToArray());
     }
 
     private void SetUpBoard()
     {
         boardContainerGO.tileAction = TileAction;
+        boardContainerGO.tileInWordAction = TileInWordAction;
         PopulateEnemies();
         RestartAllowedTiles();
     }
@@ -198,8 +200,15 @@ public class MainScript : MonoBehaviour
         bool exists = pickTileUsecase.Invoke(tile, allowedTiles);
         if (exists)
         {
-            currentWordStack.Push(tile);
+            currentWordList.Add(tile);
         }
+        UpdateUIState(tile);
+    }
+
+    private void TileInWordAction(Tile tile)
+    {
+        currentWordList.Remove(tile);
+        tile.pickable = true;
         UpdateUIState(tile);
     }
 }
