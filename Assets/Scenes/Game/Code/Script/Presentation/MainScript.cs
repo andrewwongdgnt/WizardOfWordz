@@ -11,6 +11,7 @@ public class MainScript : MonoBehaviour
     public List<EnemyArg> enemyArgs;
     public int attackIndex;
     public BoardContainerGameObject boardContainerGO;
+    public StageContainerGameObject stageContainerGO;
 
     [Inject]
     private readonly RetrieveWordsFromDictionaryUsecase retrieveWordsFromDictionaryUsecase;
@@ -167,6 +168,8 @@ public class MainScript : MonoBehaviour
     {
         string word = GetCurrentWordListAsString();
         boardContainerGO.UpdateState(currentWordList, tileThatChanged);
+
+        stageContainerGO.UpdateState(enemies);
 
         Debug.Log($"{playerManager.CurrentHealth}hp & Targeting: {attackIndex}\n{string.Join(" - ", enemies)}\n{string.Join("", allowedTiles)}\n{word}");
     }
