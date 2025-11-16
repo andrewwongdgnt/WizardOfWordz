@@ -10,6 +10,7 @@ public class EnemyGameObject : MonoBehaviour
     public Image rarityElement;
     public TextMeshProUGUI healthText;
     public TextMeshProUGUI turnsRemainingText;
+    public TextMeshProUGUI selectIndicatorText;
 
     public Action<Enemy> enemySelectedAction;
     public Action<Enemy> enemyHoverAction;
@@ -38,7 +39,7 @@ public class EnemyGameObject : MonoBehaviour
         ApplyAction(enemyHoverAction);
     }
 
-    public void UpdateState()
+    public void UpdateState(Enemy enemyThatIsTargeted)
     {
         if (enemy == null)
         {
@@ -46,6 +47,7 @@ public class EnemyGameObject : MonoBehaviour
         }
         UpdateHealth(enemy);
         UpdateTurnsRemaining(enemy);
+        UpdateSelectIndicator(enemyThatIsTargeted == enemy);
     }
 
     public void Init(
@@ -111,5 +113,10 @@ public class EnemyGameObject : MonoBehaviour
     private void UpdateTurnsRemaining(Enemy enemyModel)
     {
         turnsRemainingText.text = $"-{enemyModel.TurnsRemaining}-";
+    }
+
+    private void UpdateSelectIndicator(bool isSelected)
+    {
+        selectIndicatorText.text = isSelected ? "V" : "";
     }
 }

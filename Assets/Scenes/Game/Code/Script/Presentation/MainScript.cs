@@ -120,7 +120,7 @@ public class MainScript : MonoBehaviour
                 break;
         }
 
-        UpdateUIState(tileThatChanged);
+        UpdateUIState(tileThatChanged: tileThatChanged);
     }
 
     private bool ProcessWord()
@@ -178,7 +178,7 @@ public class MainScript : MonoBehaviour
     private void UpdateUIState(Tile tileThatChanged = null)
     {
         boardContainerGO.UpdateState(currentWordList, tileThatChanged);
-        stageContainerGO.UpdateState();
+        stageContainerGO.UpdateState(enemies[attackIndex]);
         playerStatsContainerGameObject.UpdateState();
 
 

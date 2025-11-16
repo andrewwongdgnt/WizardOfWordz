@@ -32,11 +32,11 @@ public class StageContainerGameObject : MonoBehaviour
 
     }
 
-    public void UpdateState()
+    public void UpdateState(Enemy enemyThatIsTargeted)
     {
         foreach (var enemyGo in enemyMap.Values)
         {
-            enemyGo.UpdateState();
+            enemyGo.UpdateState(enemyThatIsTargeted);
         }
     }
     public void SetUp(List<Enemy> enemies)
