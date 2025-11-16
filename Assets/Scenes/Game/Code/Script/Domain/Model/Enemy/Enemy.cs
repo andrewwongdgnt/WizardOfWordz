@@ -1,8 +1,4 @@
-using NUnit.Framework;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class Enemy
 {

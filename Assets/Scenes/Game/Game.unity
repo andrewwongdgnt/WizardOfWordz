@@ -271,8 +271,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyContainer: {fileID: 74444374}
-  noteGO: {fileID: 4579940500255833596, guid: a4971e82211e8a84e91faa46287884c1, type: 3}
-  noteBookGO: {fileID: 4762711790654033681, guid: 324941bf0a60a48419d6b7c9ce72b400, type: 3}
+  enemyGO: {fileID: 1586796114585454912, guid: edb37aa42f0b03144a631301b8cb3c3d, type: 3}
+  noteBaseSprite: {fileID: 2238215009456219081, guid: cdd9e5d5963bb0c439edfb578849388e, type: 3}
+  noteRarityElementSprite: {fileID: 21300000, guid: 2fe81ddb50900c342878bbf7f59fb3f5, type: 3}
+  noteBookBaseSprite: {fileID: 3417251219480916166, guid: 7b22d2e8c957ba24f81312ef38fa56ce, type: 3}
+  noteBookRarityElementSprite: {fileID: 21300000, guid: 27318d12a9225bc4f84ec4988692d46c, type: 3}
 --- !u!1 &350910891
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,18 +321,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyArgs:
-  - enemyEnum: 1
+  - enemyEnum: 0
     rarityEnum: 0
   - enemyEnum: 1
     rarityEnum: 1
-  - enemyEnum: 1
-    rarityEnum: 2
-  - enemyEnum: 1
-    rarityEnum: 3
-  - enemyEnum: 1
-    rarityEnum: 4
   - enemyEnum: 0
-    rarityEnum: 1
+    rarityEnum: 2
   attackIndex: 0
   boardContainerGO: {fileID: 1509369281}
   stageContainerGO: {fileID: 305820458}

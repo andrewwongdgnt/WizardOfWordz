@@ -7,8 +7,13 @@ public class StageContainerGameObject : MonoBehaviour
 {
 
     public GameObject enemyContainer;
-    public EnemyGameObject noteGO;
-    public EnemyGameObject noteBookGO;
+    public EnemyGameObject enemyGO;
+
+    public Sprite noteBaseSprite;
+    public Sprite noteRarityElementSprite;
+
+    public Sprite noteBookBaseSprite;
+    public Sprite noteBookRarityElementSprite;
 
     private readonly Dictionary<Enemy, EnemyGameObject> enemyMap = new();
 
@@ -33,16 +38,16 @@ public class StageContainerGameObject : MonoBehaviour
 
         enemies.ForEach(enemy =>
             {
-                EnemyGameObject enemyGO = enemy.EnemyEnum switch
+                (Sprite, Sprite) spritePair = enemy.EnemyEnum switch
                 {
-                    EnemyEnum.Note => noteGO,
-                    EnemyEnum.Notebook => noteBookGO,
+                    EnemyEnum.Note => (noteBaseSprite, noteRarityElementSprite),
+                    EnemyEnum.Notebook => (noteBookBaseSprite, noteBookRarityElementSprite),
                     _ => throw new NotImplementedException(),
                 };
 
                 EnemyGameObject newEnemyGO = Instantiate(enemyGO, enemyContainer.transform.position, Quaternion.identity);
                 newEnemyGO.transform.SetParent(enemyContainer.transform);
-                newEnemyGO.Init(enemy);
+                newEnemyGO.Init(enemy, spritePair.Item1, spritePair.Item2);
                 enemyMap[enemy] = newEnemyGO;
 
                 AdjustPosition(newEnemyGO.GetComponent<RectTransform>());
