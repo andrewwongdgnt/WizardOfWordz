@@ -62,7 +62,7 @@ public class MainScript : MonoBehaviour
     {
         playerManager.Init();
         dictionary = retrieveWordsFromDictionaryUsecase.Invoke();
-        SetUpBoard();
+        SetUp();
         UpdateUIState();
     }
 
@@ -96,7 +96,11 @@ public class MainScript : MonoBehaviour
         switch (key)
         {
             case Key.Enter:
-                ProcessWord();
+                bool valid = ProcessWord();
+                if (!valid)
+                {
+                    return;
+                }
                 break;
             case Key.Backspace:
                 if (currentWordList.Any())
@@ -118,9 +122,13 @@ public class MainScript : MonoBehaviour
         UpdateUIState(tileThatChanged);
     }
 
-    private void ProcessWord()
+    private bool ProcessWord()
     {
         string word = GetCurrentWordListAsString();
+        if (word.IsEmpty())
+        {
+            return false;
+        }
         currentWordList.Clear();
         processWordUsecase.Invoke(
             word,
@@ -143,15 +151,17 @@ public class MainScript : MonoBehaviour
         {
             string attackLog = string.Join(",", movesPair.Select(mp => $"{enemies[mp.enemyIndex].ShortLabel()} at {mp.enemyIndex} does {mp.move}"));
             Debug.Log(attackLog);
-            movesPair.ForEach(mp => {
+            movesPair.ForEach(mp =>
+            {
                 if (mp.move is Enemy.Move.Attack attack)
                 {
                     playerManager.UpdateHealthBy(-attack.Damage);
                 }
-                });
+            });
         }
-            
+
         RestartAllowedTiles();
+        return true;
     }
 
     private void TargetNewEnemy(Key key)
@@ -179,10 +189,12 @@ public class MainScript : MonoBehaviour
         return new(currentWordList.Select(t => t.Value).ToArray());
     }
 
-    private void SetUpBoard()
+    private void SetUp()
     {
         boardContainerGO.tileAction = TileAction;
         boardContainerGO.tileInWordAction = TileInWordAction;
+        stageContainerGO.enemySelectedAction = EnemySelectedAction;
+        stageContainerGO.enemyHoverAction = EnemyHoverAction;
         PopulateEnemies();
         RestartAllowedTiles();
     }
@@ -213,5 +225,39 @@ public class MainScript : MonoBehaviour
         currentWordList.Remove(tile);
         tile.pickable = true;
         UpdateUIState(tile);
+    }
+
+    private void EnemySelectedAction(Enemy enemy)
+    {
+        int originalIndex = attackIndex;
+        TargetNewEnemy(enemy);
+        bool valid = ProcessWord();
+        if (!valid)
+        {
+            attackIndex = originalIndex;
+            return;
+        }
+        UpdateUIState();
+
+    }
+
+    private void EnemyHoverAction(Enemy enemy)
+    {
+        int originalIndex = attackIndex;
+        TargetNewEnemy(enemy);
+        if (originalIndex != attackIndex)
+        {
+            UpdateUIState();
+        }
+    }
+
+    private void TargetNewEnemy(Enemy enemy)
+    {
+        int index = enemies.IndexOf(enemy);
+        if (index < 0)
+        {
+            return;
+        }
+        attackIndex = index;
     }
 }

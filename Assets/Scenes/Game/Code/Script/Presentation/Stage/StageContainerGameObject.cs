@@ -15,6 +15,9 @@ public class StageContainerGameObject : MonoBehaviour
     public Sprite noteBookBaseSprite;
     public Sprite noteBookRarityElementSprite;
 
+    public Action<Enemy> enemySelectedAction;
+    public Action<Enemy> enemyHoverAction;
+
     private readonly Dictionary<Enemy, EnemyGameObject> enemyMap = new();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -49,6 +52,8 @@ public class StageContainerGameObject : MonoBehaviour
                 newEnemyGO.transform.SetParent(enemyContainer.transform);
                 newEnemyGO.Init(enemy, spritePair.Item1, spritePair.Item2);
                 enemyMap[enemy] = newEnemyGO;
+                newEnemyGO.enemySelectedAction = enemySelectedAction;
+                newEnemyGO.enemyHoverAction = enemyHoverAction;
 
                 AdjustPosition(newEnemyGO.GetComponent<RectTransform>());
             }

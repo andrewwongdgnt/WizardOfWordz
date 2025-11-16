@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +7,11 @@ public class EnemyGameObject : MonoBehaviour
 
     public Image baseImage;
     public Image rarityElement;
+
+    public Action<Enemy> enemySelectedAction;
+    public Action<Enemy> enemyHoverAction;
+
+    private Enemy enemy;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,12 +25,29 @@ public class EnemyGameObject : MonoBehaviour
 
     }
 
+    public void OnSelect()
+    {
+        if (enemy != null)
+        {
+            enemySelectedAction(enemy);
+        }
+    }
+
+    public void OnHover()
+    {
+        if (enemy != null)
+        {
+            enemyHoverAction(enemy);
+        }
+    }
+
     public void Init(
         Enemy enemyModel,
         Sprite baseSprite,
         Sprite rarityElementSprite
         )
     {
+        enemy = enemyModel;
         ApplyRarity(enemyModel);
         ApplySprite(baseSprite, rarityElementSprite);
         ApplySize(baseSprite, rarityElementSprite);
