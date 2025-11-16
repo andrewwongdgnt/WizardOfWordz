@@ -8,6 +8,7 @@ public class StageContainerGameObject : MonoBehaviour
 
     public GameObject enemyContainer;
     public EnemyGameObject noteGO;
+    public EnemyGameObject noteBookGO;
 
     private readonly Dictionary<Enemy, EnemyGameObject> enemyMap = new();
 
@@ -32,10 +33,14 @@ public class StageContainerGameObject : MonoBehaviour
 
         enemies.ForEach(enemy =>
             {
+                EnemyGameObject enemyGO = enemy.EnemyEnum switch
+                {
+                    EnemyEnum.Note => noteGO,
+                    EnemyEnum.Notebook => noteBookGO,
+                    _ => throw new NotImplementedException(),
+                };
 
-
-
-                EnemyGameObject newEnemyGO = Instantiate(noteGO, enemyContainer.transform.position, Quaternion.identity);
+                EnemyGameObject newEnemyGO = Instantiate(enemyGO, enemyContainer.transform.position, Quaternion.identity);
                 newEnemyGO.transform.SetParent(enemyContainer.transform);
                 newEnemyGO.Init(enemy);
                 enemyMap[enemy] = newEnemyGO;

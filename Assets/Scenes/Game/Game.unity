@@ -272,6 +272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyContainer: {fileID: 74444374}
   noteGO: {fileID: 4579940500255833596, guid: a4971e82211e8a84e91faa46287884c1, type: 3}
+  noteBookGO: {fileID: 4762711790654033681, guid: 324941bf0a60a48419d6b7c9ce72b400, type: 3}
 --- !u!1 &350910891
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,16 +318,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyArgs:
-  - enemyEnum: 0
+  - enemyEnum: 1
     rarityEnum: 0
+  - enemyEnum: 1
+    rarityEnum: 1
+  - enemyEnum: 1
+    rarityEnum: 2
+  - enemyEnum: 1
+    rarityEnum: 3
+  - enemyEnum: 1
+    rarityEnum: 4
   - enemyEnum: 0
     rarityEnum: 1
-  - enemyEnum: 0
-    rarityEnum: 2
-  - enemyEnum: 0
-    rarityEnum: 3
-  - enemyEnum: 0
-    rarityEnum: 4
   attackIndex: 0
   boardContainerGO: {fileID: 1509369281}
   stageContainerGO: {fileID: 305820458}

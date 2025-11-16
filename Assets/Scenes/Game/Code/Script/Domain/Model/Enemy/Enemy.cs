@@ -6,6 +6,7 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class Enemy
 {
+    public EnemyEnum EnemyEnum { get; }
     public RarityEnum RarityEnum { get; }
 
     public string Title { get; }
@@ -21,6 +22,7 @@ public class Enemy
     public List<Move> Moves { get; }
 
     public Enemy(
+            EnemyEnum enemyEnum,
             RarityEnum rarityEnum,
             string title,
             string description,
@@ -29,6 +31,7 @@ public class Enemy
             List<Move> moves
         )
     {
+        EnemyEnum = enemyEnum;
         RarityEnum = rarityEnum;
         Title = title;
         Description = description;
