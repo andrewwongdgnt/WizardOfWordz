@@ -42,7 +42,7 @@ public class BoardContainerGameObject : MonoBehaviour
 
     public void UpdateState(
         List<Tile> currentWordList,
-        Tile tileThatChanged = null
+        Tile tileThatChanged
         )
     {
         wordTileToTile.Clear();
@@ -56,14 +56,16 @@ public class BoardContainerGameObject : MonoBehaviour
 
         SetUp(newCurrentWordList, tileInWordMap, wordContainer, TileInWordAction, 0.6f);
 
-        if (tileThatChanged != null)
+        if (tileThatChanged == null)
         {
-            tileMap.TryGetValue(tileThatChanged, out TileGameObject foundTileGO);
-            if (foundTileGO != null)
-            {
-                foundTileGO.UpdateState();
-            }
+            return;
         }
+        tileMap.TryGetValue(tileThatChanged, out TileGameObject foundTileGO);
+        if (foundTileGO != null)
+        {
+            foundTileGO.UpdateState();
+        }
+
     }
 
     public void SetUpTiles(List<Tile> tiles)
@@ -102,7 +104,7 @@ public class BoardContainerGameObject : MonoBehaviour
     {
         rect.localPosition = Vector3.zero;
         rect.localRotation = Quaternion.identity;
-        rect.localScale = new Vector3(scaling,scaling,scaling);
+        rect.localScale = new Vector3(scaling, scaling, scaling);
         rect.anchoredPosition = Vector2.zero;
     }
 

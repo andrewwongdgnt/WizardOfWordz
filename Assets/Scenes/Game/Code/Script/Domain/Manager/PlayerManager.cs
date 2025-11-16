@@ -4,6 +4,7 @@ public class PlayerManager
 {
     private readonly PlayerInfo playerInfo;
 
+    public int MaxHealth { get; private set; }
     public int CurrentHealth { get; private set; }
     public int TileCount { get; private set; }
 
@@ -17,6 +18,7 @@ public class PlayerManager
 
     public void Init()
     {
+        MaxHealth = playerInfo.health;
         CurrentHealth = playerInfo.health;
         TileCount = playerInfo.tileCount;
     }

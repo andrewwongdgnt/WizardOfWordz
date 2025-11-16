@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,8 @@ public class EnemyGameObject : MonoBehaviour
 
     public Image baseImage;
     public Image rarityElement;
+    public TextMeshProUGUI healthText;
+    public TextMeshProUGUI turnsRemainingText;
 
     public Action<Enemy> enemySelectedAction;
     public Action<Enemy> enemyHoverAction;
@@ -27,18 +30,22 @@ public class EnemyGameObject : MonoBehaviour
 
     public void OnSelect()
     {
-        if (enemy != null)
-        {
-            enemySelectedAction(enemy);
-        }
+        ApplyAction(enemySelectedAction);
     }
 
     public void OnHover()
     {
-        if (enemy != null)
+        ApplyAction(enemyHoverAction);
+    }
+
+    public void UpdateState()
+    {
+        if (enemy == null)
         {
-            enemyHoverAction(enemy);
+            return;
         }
+        UpdateHealth(enemy);
+        UpdateTurnsRemaining(enemy);
     }
 
     public void Init(
@@ -51,6 +58,8 @@ public class EnemyGameObject : MonoBehaviour
         ApplyRarity(enemyModel);
         ApplySprite(baseSprite, rarityElementSprite);
         ApplySize(baseSprite, rarityElementSprite);
+        UpdateHealth(enemyModel);
+        UpdateTurnsRemaining(enemyModel);
     }
 
     private void ApplyRarity(Enemy enemyModel)
@@ -84,5 +93,23 @@ public class EnemyGameObject : MonoBehaviour
         GetComponent<RectTransform>().sizeDelta = vector;
         baseImage.rectTransform.sizeDelta = vector;
         rarityElement.rectTransform.sizeDelta = new Vector2(rarityElementSprite.rect.width, rarityElementSprite.rect.height);
+    }
+
+    private void ApplyAction(Action<Enemy> action)
+    {
+        if (enemy != null && !enemy.IsDead())
+        {
+            action(enemy);
+        }
+    }
+
+    private void UpdateHealth(Enemy enemyModel)
+    {
+        healthText.text = $"{enemyModel.CurrentHealth}/{enemyModel.Health}";
+    }
+
+    private void UpdateTurnsRemaining(Enemy enemyModel)
+    {
+        turnsRemainingText.text = $"-{enemyModel.TurnsRemaining}-";
     }
 }

@@ -31,7 +31,15 @@ public class StageContainerGameObject : MonoBehaviour
     {
 
     }
-    public void UpdateState(List<Enemy> enemies)
+
+    public void UpdateState()
+    {
+        foreach (var enemyGo in enemyMap.Values)
+        {
+            enemyGo.UpdateState();
+        }
+    }
+    public void SetUp(List<Enemy> enemies)
     {
         foreach (var enemyItem in enemyMap)
         {

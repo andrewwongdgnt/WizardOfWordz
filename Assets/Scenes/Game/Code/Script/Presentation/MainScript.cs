@@ -12,6 +12,7 @@ public class MainScript : MonoBehaviour
     public int attackIndex;
     public BoardContainerGameObject boardContainerGO;
     public StageContainerGameObject stageContainerGO;
+    public PlayerStatsContainerGameObject playerStatsContainerGameObject;
 
     [Inject]
     private readonly RetrieveWordsFromDictionaryUsecase retrieveWordsFromDictionaryUsecase;
@@ -176,11 +177,12 @@ public class MainScript : MonoBehaviour
 
     private void UpdateUIState(Tile tileThatChanged = null)
     {
-        string word = GetCurrentWordListAsString();
         boardContainerGO.UpdateState(currentWordList, tileThatChanged);
+        stageContainerGO.UpdateState();
+        playerStatsContainerGameObject.UpdateState();
 
-        stageContainerGO.UpdateState(enemies);
 
+        string word = GetCurrentWordListAsString();
         Debug.Log($"{playerManager.CurrentHealth}hp & Targeting: {attackIndex}\n{string.Join(" - ", enemies)}\n{string.Join("", allowedTiles)}\n{word}");
     }
 
@@ -195,6 +197,8 @@ public class MainScript : MonoBehaviour
         boardContainerGO.tileInWordAction = TileInWordAction;
         stageContainerGO.enemySelectedAction = EnemySelectedAction;
         stageContainerGO.enemyHoverAction = EnemyHoverAction;
+
+        playerStatsContainerGameObject.SetUp(playerManager);
         PopulateEnemies();
         RestartAllowedTiles();
     }
@@ -202,6 +206,7 @@ public class MainScript : MonoBehaviour
     private void PopulateEnemies()
     {
         enemies = populateEnemiesUsecase.Invoke(enemyArgs);
+        stageContainerGO.SetUp(enemies);
     }
 
     private void RestartAllowedTiles()
@@ -217,14 +222,14 @@ public class MainScript : MonoBehaviour
         {
             currentWordList.Add(tile);
         }
-        UpdateUIState(tile);
+        UpdateUIState(tileThatChanged: tile);
     }
 
     private void TileInWordAction(Tile tile)
     {
         currentWordList.Remove(tile);
         tile.pickable = true;
-        UpdateUIState(tile);
+        UpdateUIState(tileThatChanged: tile);
     }
 
     private void EnemySelectedAction(Enemy enemy)

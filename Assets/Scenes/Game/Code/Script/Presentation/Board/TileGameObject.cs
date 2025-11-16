@@ -33,6 +33,10 @@ public class TileGameObject : MonoBehaviour
 
     public void UpdateState()
     {
+        if (tile == null)
+        {
+            return;
+        }
         letter.text = tile.Value.ToString();
         score.text = tile.Score.ToString();
         button.interactable = tile.pickable;
