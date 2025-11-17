@@ -1,0 +1,194 @@
+{
+  "F_1_1_a": {
+    "type": "Fight",
+    "title": "Level 1a",
+    "description": "Level 1a Desc",
+    "enemies": [
+      {
+        "enemy": "Note",
+        "rarity": "Common"
+      }
+    ]
+  },
+  "F_1_1_b": {
+    "type": "Fight",
+    "title": "Level 1b",
+    "description": "Level 1b Desc",
+    "enemies": [
+      {
+        "enemy": "Note",
+        "rarity": "Common"
+      },
+      {
+        "enemy": "Note",
+        "rarity": "Common"
+      }
+    ]
+  },
+  "F_1_1_c": {
+    "type": "Fight",
+    "title": "Level 1c",
+    "description": "Level 1c Desc",
+    "enemies": [
+      {
+        "enemy": "Note",
+        "rarity": "Common"
+      },
+      {
+        "enemy": "Note",
+        "rarity": "Common"
+      },
+      {
+        "enemy": "Note",
+        "rarity": "Common"
+      }
+    ]
+  },
+  "F_1_1_d": {
+    "type": "Fight",
+    "title": "Level 1d",
+    "description": "Level 1d Desc",
+    "enemies": [
+      {
+        "enemy": "Note",
+        "rarity": "Uncommon"
+      }
+    ]
+  },
+  "F_1_1_e": {
+    "type": "Fight",
+    "title": "Level 1e",
+    "description": "Level 1e Desc",
+    "enemies": [
+      {
+        "enemy": "Note",
+        "rarity": "Uncommon"
+      },
+      {
+        "enemy": "Note",
+        "rarity": "Common"
+      }
+    ]
+  },
+  "F_1_2_a": {
+    "type": "Fight",
+    "title": "Level 2a",
+    "description": "Level 2a Desc",
+    "enemies": [
+      {
+        "enemy": "Note",
+        "rarity": "Common"
+      },
+      {
+        "enemy": "Note",
+        "rarity": "Common"
+      },
+      {
+        "enemy": "Note",
+        "rarity": "Common"
+      },
+      {
+        "enemy": "Note",
+        "rarity": "Common"
+      }
+    ]
+  },
+  "F_1_2_b": {
+    "type": "Fight",
+    "title": "Level 2b",
+    "description": "Level 2b Desc",
+    "enemies": [
+      {
+        "enemy": "Note",
+        "rarity": "Common"
+      },
+      {
+        "enemy": "Note",
+        "rarity": "Uncommon"
+      },
+      {
+        "enemy": "Note",
+        "rarity": "Common"
+      }
+    ]
+  },
+  "F_1_2_c": {
+    "type": "Fight",
+    "title": "Level 2c",
+    "description": "Level 2c Desc",
+    "enemies": [
+      {
+        "enemy": "Note",
+        "rarity": "Uncommon"
+      },
+      {
+        "enemy": "Note",
+        "rarity": "Uncommon"
+      }
+    ]
+  },
+  "F_1_2_d": {
+    "type": "Fight",
+    "title": "Level 2d",
+    "description": "Level 2d Desc",
+    "enemies": [
+      {
+        "enemy": "Note",
+        "rarity": "Uncommon"
+      },
+      {
+        "enemy": "Note",
+        "rarity": "Uncommon"
+      },
+      {
+        "enemy": "Note",
+        "rarity": "Common"
+      }
+    ]
+  },
+  "F_1_3_a": {
+    "type": "Fight",
+    "title": "Level 3a",
+    "description": "Level 3a Desc",
+    "enemies": [
+      {
+        "enemy": "Note",
+        "rarity": "Uncommon"
+      },
+      {
+        "enemy": "Note",
+        "rarity": "Uncommon"
+      },
+      {
+        "enemy": "Note",
+        "rarity": "Uncommon"
+      }
+    ]
+  },
+  "F_1_3_b": {
+    "type": "Fight",
+    "title": "Level 3b",
+    "description": "Level 3b Desc",
+    "enemies": [
+      {
+        "enemy": "Note",
+        "rarity": "Rare"
+      },
+      {
+        "enemy": "Note",
+        "rarity": "Common"
+      }
+    ]
+  },
+  "F_1_3_c": {
+    "type": "Fight",
+    "title": "Level 3c",
+    "description": "Level 3c Desc",
+    "enemies": [
+      {
+        "enemy": "Note",
+        "rarity": "Rare"
+      }
+    ]
+  }
+}

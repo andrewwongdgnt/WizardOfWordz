@@ -1,16 +1,37 @@
 {
-  "World": [
-    {
-      "title": "Library",
-      "description": "Lots of books",
-      "vertical": {
-        "min": 8,
-        "max": 9
+  "Library": {
+    "title": "Library",
+    "description": "Lots of books",
+    "levels": [
+      {
+        "pick": 3,
+        "choices": [
+          "F_1_1_a",
+          "F_1_1_b",
+          "F_1_1_c",
+          "F_1_1_d",
+          "F_1_1_e"
+        ]
       },
-      "horizontal": {
-        "min": 2,
-        "max": 4
+      {
+        "pick": 3,
+        "choices": [
+          "F_1_2_a",
+          "F_1_2_b",
+          "F_1_2_c",
+          "F_1_2_d",
+          "F_1_1_c"
+        ]
+      },
+      {
+        "pick": 3,
+        "choices": [
+          "F_1_3_a",
+          "F_1_3_b",
+          "F_1_2_b",
+          "F_1_3_c"
+        ]
       }
-    }
-  ]
+    ]
+  }
 }
