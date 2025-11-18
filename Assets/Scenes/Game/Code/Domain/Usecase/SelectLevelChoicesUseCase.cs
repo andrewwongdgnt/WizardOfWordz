@@ -9,6 +9,12 @@ public class SelectLevelChoicesUseCase
 
     internal List<Level> Invoke(int levelChoiceIndex, List<World.LevelChoice> levelChoices)
     {
+
+        if (levelChoiceIndex <0 || levelChoiceIndex >= levelChoices.Count)
+        {
+            return new();
+        }
+
         World.LevelChoice levelChoice = levelChoices[levelChoiceIndex];
 
         List<Level> copy = new(levelChoice.Choices);

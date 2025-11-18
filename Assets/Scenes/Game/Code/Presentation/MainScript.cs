@@ -46,6 +46,9 @@ public class MainScript : MonoBehaviour
     private readonly SelectLevelChoicesUseCase selectLevelChoicesUseCase;
 
     [Inject]
+    private readonly CalculateLevelStateUsecase calculateLevelStateUsecase;
+
+    [Inject]
     private readonly PlayerManager playerManager;
 
     private readonly ISet<Key> monitoredKeys = new HashSet<Key>()
@@ -112,6 +115,9 @@ public class MainScript : MonoBehaviour
                 {
                     return;
                 }
+
+                ProcessLevelState();
+
                 break;
             case Key.Backspace:
                 if (currentWordList.Any())
@@ -166,8 +172,25 @@ public class MainScript : MonoBehaviour
             playerManager
             );
 
-        RestartAllowedTiles();
         return true;
+    }
+
+    private void ProcessLevelState()
+    {
+        LevelStateEnum levelState = calculateLevelStateUsecase.Invoke(enemies, playerManager);
+        switch (levelState)
+        {
+            case LevelStateEnum.Win:
+                levelChoiceIndex++;
+                PopulateEnemies();
+                break;
+            case LevelStateEnum.Lose:
+                levelChoiceIndex=0;
+                PopulateEnemies();
+                playerManager.FullHeath();
+                break;
+        }
+        RestartAllowedTiles();
     }
 
     private void TargetNewEnemy(Key key)
@@ -188,7 +211,7 @@ public class MainScript : MonoBehaviour
 
 
         string word = GetCurrentWordListAsString();
-        Debug.Log($"{playerManager.CurrentHealth}hp & Targeting: {attackIndex}\n{string.Join(" - ", enemies)}\n{string.Join("", allowedTiles)}\n{word}");
+        Debug.Log($"{playerManager.CurrentHealth}hp & Targeting: {attackIndex} & Level: {levelChoiceIndex + 1}\n{string.Join(" - ", enemies)}\n{string.Join("", allowedTiles)}\n{word}");
     }
 
     private string GetCurrentWordListAsString()
@@ -212,6 +235,10 @@ public class MainScript : MonoBehaviour
     {
         var world = getWorldUseCase.Invoke(worldEnum);
         List<Level> levelsToChooseFrom = selectLevelChoicesUseCase.Invoke(levelChoiceIndex, world.LevelChoices);
+        if (levelsToChooseFrom.IsEmpty())
+        {
+            return;
+        }
         Level.Fight fightLevel = (Level.Fight)levelsToChooseFrom[0];
         enemies = populateEnemiesUsecase.Invoke(fightLevel.Enemies);
         stageContainerGO.SetUp(enemies);
@@ -250,6 +277,7 @@ public class MainScript : MonoBehaviour
             attackIndex = originalIndex;
             return;
         }
+        ProcessLevelState();
         UpdateUIState();
 
     }

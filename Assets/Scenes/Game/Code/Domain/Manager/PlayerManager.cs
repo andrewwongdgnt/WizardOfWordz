@@ -1,3 +1,4 @@
+using System;
 using Zenject;
 
 public class PlayerManager
@@ -26,5 +27,16 @@ public class PlayerManager
     public void UpdateHealthBy(int value)
     {
         CurrentHealth += value;
+    }
+
+    public bool IsDead()
+    {
+        return CurrentHealth <= 0;
+    }
+
+    // TODO temp code
+    public void FullHeath()
+    {
+        CurrentHealth = MaxHealth;
     }
 }
