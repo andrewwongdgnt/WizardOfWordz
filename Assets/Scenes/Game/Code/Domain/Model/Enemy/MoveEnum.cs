@@ -1,5 +1,12 @@
 public enum MoveEnum
 {
+
     Attack,
-    Heal    
+    Heal
+}
+
+public class MoveConstants
+{
+    public const string ATTACK = "Attack";
+    public const string HEAL = "Heal";
 }

@@ -66,7 +66,7 @@ public class GetWorldUseCase
         };
         return levelDetail.type switch
         {
-            "Fight" =>
+            LevelTypeEnumConstants.FIGHT =>
             new Level.Fight(
             levelEnum,
             levelDetail.title,

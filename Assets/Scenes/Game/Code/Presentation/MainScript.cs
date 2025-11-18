@@ -9,6 +9,7 @@ using Zenject;
 public class MainScript : MonoBehaviour
 {
     public WorldEnum worldEnum;
+    public int levelChoiceIndex;
     public int attackIndex;
     public BoardContainerGameObject boardContainerGO;
     public StageContainerGameObject stageContainerGO;
@@ -34,6 +35,9 @@ public class MainScript : MonoBehaviour
 
     [Inject]
     private readonly CalculateTurnFromEnemiesUsecase calculateTurnFromEnemiesUsecase;
+
+    [Inject]
+    private readonly CalculatePlayerDamageUsecase calculatePlayerDamageUsecase;
 
     [Inject]
     private readonly GetWorldUseCase getWorldUseCase;
@@ -143,29 +147,24 @@ public class MainScript : MonoBehaviour
             enemies,
             attackIndex
             );
+
         if (enemies[attackIndex].IsDead())
         {
             attackIndex = getNextTargetUsecase.Invoke(
-               true,
-               attackIndex,
-               enemies
-               );
+                true,
+                attackIndex,
+                enemies
+            );
         }
+
         List<(int enemyIndex, Enemy.Move move)> movesPair = calculateTurnFromEnemiesUsecase.Invoke(
             enemies
             );
-        if (!movesPair.IsEmpty())
-        {
-            string attackLog = string.Join(",", movesPair.Select(mp => $"{enemies[mp.enemyIndex].ShortLabel()} at {mp.enemyIndex} does {mp.move}"));
-            Debug.Log(attackLog);
-            movesPair.ForEach(mp =>
-            {
-                if (mp.move is Enemy.Move.Attack attack)
-                {
-                    playerManager.UpdateHealthBy(-attack.Damage);
-                }
-            });
-        }
+        calculatePlayerDamageUsecase.Invoke(
+            movesPair,
+            enemies,
+            playerManager
+            );
 
         RestartAllowedTiles();
         return true;
@@ -205,11 +204,11 @@ public class MainScript : MonoBehaviour
         stageContainerGO.enemyHoverAction = EnemyHoverAction;
 
         playerStatsContainerGameObject.SetUp(playerManager);
-        PopulateEnemies(0);
+        PopulateEnemies();
         RestartAllowedTiles();
     }
 
-    private void PopulateEnemies(int levelChoiceIndex)
+    private void PopulateEnemies()
     {
         var world = getWorldUseCase.Invoke(worldEnum);
         List<Level> levelsToChooseFrom = selectLevelChoicesUseCase.Invoke(levelChoiceIndex, world.LevelChoices);

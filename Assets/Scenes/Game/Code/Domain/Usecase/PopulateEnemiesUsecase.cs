@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Zenject;
+using static Enemy.Move;
 using static Level.Fight;
 
 public class PopulateEnemiesUsecase
@@ -36,7 +37,7 @@ public class PopulateEnemiesUsecase
             {
                 Enemy.Move move = m.type switch
                 {
-                    "Attack" =>
+                    MoveConstants.ATTACK =>
                         new Enemy.Move.Attack(
                             m.title,
                             GetRarityValue(enemyRarity, m.wait),
