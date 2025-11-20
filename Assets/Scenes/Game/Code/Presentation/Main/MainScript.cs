@@ -66,7 +66,7 @@ public class MainScript : MonoBehaviour
     };
 
     // Fight section
-    private int attackIndex = 0;
+    private int attackIndex;
     private List<Tile> allowedTiles;
     private List<Enemy> enemies;
     private readonly List<Tile> currentWordList = new();
@@ -74,16 +74,15 @@ public class MainScript : MonoBehaviour
 
     // World section
     private World world;
-    private int worldIndex = 0;
+    private int worldIndex;
     private List<World> worlds;
 
     // Level selection section
-    private int levelChoiceIndex = 0;
-    private int levelIndex = 0;
+    private int levelChoiceIndex;
+    private int levelIndex;
     private List<Level> levelsToChooseFrom;
 
-
-    private GameState gameState = new GameState.ChooseWorldState();
+    private GameState gameState;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -91,6 +90,7 @@ public class MainScript : MonoBehaviour
         playerManager.Init();
         dictionary = retrieveWordsFromDictionaryUsecase.Invoke();
         SetUp();
+        ResetAllStates();
         UpdateUIState();
     }
 
@@ -216,15 +216,16 @@ public class MainScript : MonoBehaviour
             case FightEndStateEnum.Win:
                 levelChoiceIndex++;
                 UpdateUIState();
+                boardContainerGO.ClearEverything();
                 SetGameStateToChooseLevel();
                 break;
             case FightEndStateEnum.Lose:
-                levelChoiceIndex = 0;
-                PopulateEnemies();
-                playerManager.FullHeath();
+                ResetAllStates();
+                break;
+            case FightEndStateEnum.Ongoing:
+                RestartAllowedTiles();
                 break;
         }
-        RestartAllowedTiles();
     }
 
     private void SelectWorld()
@@ -310,11 +311,17 @@ public class MainScript : MonoBehaviour
                     break;
             }
         }
-        else if (gameState is GameState.ChooseWorldState)
+        else
+        {
+            boardContainerGO.ClearEverything();
+            stageContainerGO.ClearEverything();
+            playerManager.FullHeath();
+        }
+        if (gameState is GameState.ChooseWorldState)
         {
             Debug.Log($"Picking: {worldIndex}\n{string.Join(",", worlds)}");
         }
-        else if (gameState is GameState.ChooseLevelState)
+        if (gameState is GameState.ChooseLevelState)
         {
             Debug.Log($"Picking: {levelIndex}\n{string.Join(",", levelsToChooseFrom)}");
         }
@@ -332,8 +339,16 @@ public class MainScript : MonoBehaviour
         boardContainerGO.tileInWordAction = TileInWordAction;
         stageContainerGO.enemySelectedAction = EnemySelectedAction;
         stageContainerGO.enemyHoverAction = EnemyHoverAction;
-
         playerStatsContainerGameObject.SetUp(playerManager);
+    }
+
+    private void ResetAllStates()
+    {
+        attackIndex = 0;
+        worldIndex = 0;
+        levelChoiceIndex = 0;
+        levelIndex = 0;
+        gameState = new GameState.ChooseWorldState();
         SetUpWorldSelection();
     }
 

@@ -41,11 +41,7 @@ public class StageContainerGameObject : MonoBehaviour
     }
     public void SetUp(List<Enemy> enemies)
     {
-        foreach (var enemyItem in enemyMap)
-        {
-            Destroy(enemyItem.Value.gameObject);
-        }
-        enemyMap.Clear();
+        ClearEnemies();
 
         enemies.ForEach(enemy =>
             {
@@ -66,6 +62,20 @@ public class StageContainerGameObject : MonoBehaviour
                 AdjustPosition(newEnemyGO.GetComponent<RectTransform>());
             }
         );
+    }
+
+    public void ClearEverything()
+    {
+        ClearEnemies();
+    }
+
+    private void ClearEnemies()
+    {
+        foreach (var enemyItem in enemyMap)
+        {
+            Destroy(enemyItem.Value.gameObject);
+        }
+        enemyMap.Clear();
     }
 
     private void AdjustPosition(RectTransform rect)

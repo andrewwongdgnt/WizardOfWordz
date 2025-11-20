@@ -73,6 +73,12 @@ public class BoardContainerGameObject : MonoBehaviour
         SetUp(tiles, tileMap, tileContainer, tileAction);
     }
 
+    public void ClearEverything()
+    {
+        Clear(tileMap);
+        Clear(tileInWordMap);
+    }
+
     private void SetUp(
         List<Tile> tiles,
         Dictionary<Tile, TileGameObject> tileMap,
@@ -81,11 +87,7 @@ public class BoardContainerGameObject : MonoBehaviour
         float scale = 1f
         )
     {
-        foreach (var tileItem in tileMap)
-        {
-            Destroy(tileItem.Value.gameObject);
-        }
-        tileMap.Clear();
+        Clear(tileMap);
 
         tiles.ForEach(tile =>
         {
@@ -98,6 +100,15 @@ public class BoardContainerGameObject : MonoBehaviour
             AdjustPosition(newTileGO.GetComponent<RectTransform>(), scale);
         }
         );
+    }
+
+    private void Clear(Dictionary<Tile, TileGameObject> tileMap)
+    {
+        foreach (var tileItem in tileMap)
+        {
+            Destroy(tileItem.Value.gameObject);
+        }
+        tileMap.Clear();
     }
 
     private void AdjustPosition(RectTransform rect, float scaling = 1f)
