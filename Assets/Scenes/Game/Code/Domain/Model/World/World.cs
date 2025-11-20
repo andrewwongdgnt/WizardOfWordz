@@ -37,4 +37,9 @@ public class World
             Choices = choices;
         }
     }
+
+    public override string ToString()
+    {
+        return Title;
+    }
 }

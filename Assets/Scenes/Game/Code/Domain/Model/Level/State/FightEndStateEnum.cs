@@ -1,4 +1,4 @@
-public enum LevelStateEnum
+public enum FightEndStateEnum
 {
     Ongoing,
     Win,

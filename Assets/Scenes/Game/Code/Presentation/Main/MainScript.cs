@@ -8,9 +8,7 @@ using Zenject;
 
 public class MainScript : MonoBehaviour
 {
-    public WorldEnum worldEnum;
-    public int levelChoiceIndex;
-    public int attackIndex;
+
     public BoardContainerGameObject boardContainerGO;
     public StageContainerGameObject stageContainerGO;
     public PlayerStatsContainerGameObject playerStatsContainerGameObject;
@@ -32,6 +30,9 @@ public class MainScript : MonoBehaviour
 
     [Inject]
     private readonly GetNextTargetUsecase getNextTargetUsecase;
+
+    [Inject]
+    private readonly CalculateNextIndexUsecase calculateNextIndexUsecase;
 
     [Inject]
     private readonly CalculateTurnFromEnemiesUsecase calculateTurnFromEnemiesUsecase;
@@ -64,12 +65,25 @@ public class MainScript : MonoBehaviour
         Key.LeftArrow, Key.RightArrow
     };
 
+    // Fight section
+    private int attackIndex = 0;
     private List<Tile> allowedTiles;
     private List<Enemy> enemies;
-
     private readonly List<Tile> currentWordList = new();
-
     private Dictionary<string, Word> dictionary;
+
+    // World section
+    private World world;
+    private int worldIndex = 0;
+    private List<World> worlds;
+
+    // Level selection section
+    private int levelChoiceIndex = 0;
+    private int levelIndex = 0;
+    private List<Level> levelsToChooseFrom;
+
+
+    private GameState gameState = new GameState.ChooseWorldState();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -92,19 +106,38 @@ public class MainScript : MonoBehaviour
         {
             if (keyboard[key]?.wasPressedThisFrame == true)
             {
-                AddToCurrentWord(key);
+                HandleAlphabetKeyPress(key);
             }
         }
         foreach (var key in movementKeys)
         {
             if (keyboard[key]?.wasPressedThisFrame == true)
             {
-                TargetNewEnemy(key);
+                HandleArrowKeyPress(key);
             }
         }
     }
 
-    private void AddToCurrentWord(Key key)
+    private void HandleAlphabetKeyPress(Key key)
+    {
+        Tile tileThatChanged = null;
+        if (gameState is GameState.PlayingLevelState)
+        {
+            tileThatChanged = AddToCurrentWord(key);
+        }
+        else if (gameState is GameState.ChooseWorldState)
+        {
+            SelectWorld();
+        }
+        else if (gameState is GameState.ChooseLevelState)
+        {
+            SelectLevel();
+        }
+
+        UpdateUIState(tileThatChanged: tileThatChanged);
+    }
+
+    private Tile AddToCurrentWord(Key key)
     {
         Tile tileThatChanged = null;
         switch (key)
@@ -113,7 +146,7 @@ public class MainScript : MonoBehaviour
                 bool valid = ProcessWord();
                 if (!valid)
                 {
-                    return;
+                    return null;
                 }
 
                 ProcessLevelState();
@@ -136,7 +169,7 @@ public class MainScript : MonoBehaviour
                 break;
         }
 
-        UpdateUIState(tileThatChanged: tileThatChanged);
+        return tileThatChanged;
     }
 
     private bool ProcessWord()
@@ -177,20 +210,61 @@ public class MainScript : MonoBehaviour
 
     private void ProcessLevelState()
     {
-        LevelStateEnum levelState = calculateLevelStateUsecase.Invoke(enemies, playerManager);
+        FightEndStateEnum levelState = calculateLevelStateUsecase.Invoke(enemies, playerManager);
         switch (levelState)
         {
-            case LevelStateEnum.Win:
+            case FightEndStateEnum.Win:
                 levelChoiceIndex++;
-                PopulateEnemies();
+                UpdateUIState();
+                SetGameStateToChooseLevel();
                 break;
-            case LevelStateEnum.Lose:
-                levelChoiceIndex=0;
+            case FightEndStateEnum.Lose:
+                levelChoiceIndex = 0;
                 PopulateEnemies();
                 playerManager.FullHeath();
                 break;
         }
         RestartAllowedTiles();
+    }
+
+    private void SelectWorld()
+    {
+        world = worlds[worldIndex];
+        SetGameStateToChooseLevel();
+    }
+
+    private void SetGameStateToChooseLevel()
+    {
+        gameState = new GameState.ChooseLevelState();
+        levelsToChooseFrom = selectLevelChoicesUseCase.Invoke(levelChoiceIndex, world.LevelChoices);
+    }
+
+    private void SelectLevel()
+    {
+        Level level = levelsToChooseFrom[levelIndex];
+        if (level is Level.Fight)
+        {
+            gameState = new GameState.PlayingLevelState(LevelTypeEnum.Fight);
+            PopulateEnemies();
+            RestartAllowedTiles();
+        }
+    }
+
+    private void HandleArrowKeyPress(Key key)
+    {
+        if (gameState is GameState.PlayingLevelState)
+        {
+            TargetNewEnemy(key);
+        }
+        else if (gameState is GameState.ChooseWorldState)
+        {
+            TargetNewWorld(key);
+        }
+        else if (gameState is GameState.ChooseLevelState)
+        {
+            TargetNewLevel(key);
+        }
+        UpdateUIState();
     }
 
     private void TargetNewEnemy(Key key)
@@ -199,19 +273,52 @@ public class MainScript : MonoBehaviour
             key == Key.RightArrow,
             attackIndex,
             enemies
-            );
-        UpdateUIState();
+        );
+    }
+
+    private void TargetNewWorld(Key key)
+    {
+        worldIndex = calculateNextIndexUsecase.Invoke(
+            key == Key.RightArrow,
+            worldIndex,
+            worlds.Count
+        );
+    }
+
+    private void TargetNewLevel(Key key)
+    {
+        levelIndex = calculateNextIndexUsecase.Invoke(
+            key == Key.RightArrow,
+            levelIndex,
+            levelsToChooseFrom.Count
+        );
     }
 
     private void UpdateUIState(Tile tileThatChanged = null)
     {
-        boardContainerGO.UpdateState(currentWordList, tileThatChanged);
-        stageContainerGO.UpdateState(enemies[attackIndex]);
-        playerStatsContainerGameObject.UpdateState();
+        if (gameState is GameState.PlayingLevelState levelGameState)
+        {
+            switch (levelGameState.LevelTypeEnum)
+            {
+                case LevelTypeEnum.Fight:
+                    boardContainerGO.UpdateState(currentWordList, tileThatChanged);
+                    stageContainerGO.UpdateState(enemies[attackIndex]);
+                    playerStatsContainerGameObject.UpdateState();
 
+                    string word = GetCurrentWordListAsString();
+                    Debug.Log($"{playerManager.CurrentHealth}hp & Targeting: {attackIndex} & Level: {levelChoiceIndex + 1}\n{string.Join(" - ", enemies)}\n{string.Join("", allowedTiles)}\n{word}");
+                    break;
+            }
+        }
+        else if (gameState is GameState.ChooseWorldState)
+        {
+            Debug.Log($"Picking: {worldIndex}\n{string.Join(",", worlds)}");
+        }
+        else if (gameState is GameState.ChooseLevelState)
+        {
+            Debug.Log($"Picking: {levelIndex}\n{string.Join(",", levelsToChooseFrom)}");
+        }
 
-        string word = GetCurrentWordListAsString();
-        Debug.Log($"{playerManager.CurrentHealth}hp & Targeting: {attackIndex} & Level: {levelChoiceIndex + 1}\n{string.Join(" - ", enemies)}\n{string.Join("", allowedTiles)}\n{word}");
     }
 
     private string GetCurrentWordListAsString()
@@ -227,19 +334,18 @@ public class MainScript : MonoBehaviour
         stageContainerGO.enemyHoverAction = EnemyHoverAction;
 
         playerStatsContainerGameObject.SetUp(playerManager);
-        PopulateEnemies();
-        RestartAllowedTiles();
+        SetUpWorldSelection();
+    }
+
+    private void SetUpWorldSelection()
+    {
+        worlds = Enum.GetValues(typeof(WorldEnum)).Cast<WorldEnum>().ToList()
+           .Select(w => getWorldUseCase.Invoke(w)).ToList();
     }
 
     private void PopulateEnemies()
     {
-        var world = getWorldUseCase.Invoke(worldEnum);
-        List<Level> levelsToChooseFrom = selectLevelChoicesUseCase.Invoke(levelChoiceIndex, world.LevelChoices);
-        if (levelsToChooseFrom.IsEmpty())
-        {
-            return;
-        }
-        Level.Fight fightLevel = (Level.Fight)levelsToChooseFrom[0];
+        Level.Fight fightLevel = (Level.Fight)levelsToChooseFrom[levelIndex];
         enemies = populateEnemiesUsecase.Invoke(fightLevel.Enemies);
         stageContainerGO.SetUp(enemies);
     }

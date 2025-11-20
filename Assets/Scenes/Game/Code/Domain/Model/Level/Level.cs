@@ -42,5 +42,10 @@ public abstract class Level
                 RarityEnum = rarityEnum;
             }
         }
+
+        public override string ToString()
+        {
+            return Title;
+        }
     }
 }

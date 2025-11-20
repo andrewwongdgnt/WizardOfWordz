@@ -19,6 +19,7 @@ public class GameInstaller : MonoInstaller
 
         // Usecase
         Container.Bind<CalculateLevelStateUsecase>().AsSingle();
+        Container.Bind<CalculateNextIndexUsecase>().AsSingle();
         Container.Bind<CalculatePlayerDamageUsecase>().AsSingle();
         Container.Bind<CalculateTurnFromEnemiesUsecase>().AsSingle();
         Container.Bind<GenerateCharTilesUsecase>().AsSingle();

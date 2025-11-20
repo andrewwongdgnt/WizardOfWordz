@@ -3,7 +3,7 @@ using System.Linq;
 
 public class CalculateLevelStateUsecase
 {
-    public LevelStateEnum Invoke(
+    public FightEndStateEnum Invoke(
         List<Enemy> enemies,
         PlayerManager playerManager
         )
@@ -11,14 +11,14 @@ public class CalculateLevelStateUsecase
         if (enemies.All(e => e.IsDead()))
         {
 
-            return LevelStateEnum.Win;
+            return FightEndStateEnum.Win;
         }
 
         if (playerManager.IsDead())
         {
-            return LevelStateEnum.Lose;
+            return FightEndStateEnum.Lose;
         }
 
-        return LevelStateEnum.Ongoing;
+        return FightEndStateEnum.Ongoing;
     }
 }
