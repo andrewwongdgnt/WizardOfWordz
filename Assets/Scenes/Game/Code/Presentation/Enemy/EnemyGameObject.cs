@@ -107,7 +107,7 @@ public class EnemyGameObject : MonoBehaviour
 
     private void UpdateHealth(Enemy enemyModel)
     {
-        healthText.text = $"{enemyModel.CurrentHealth}/{enemyModel.Health}";
+        healthText.text = $"{enemyModel.CurrentHealth}/{enemyModel.MaxHealth}";
     }
 
     private void UpdateTurnsRemaining(Enemy enemyModel)

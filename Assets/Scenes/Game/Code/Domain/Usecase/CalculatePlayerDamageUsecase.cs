@@ -19,10 +19,20 @@ public class CalculatePlayerDamageUsecase
         Debug.Log(attackLog);
         movesPair.ForEach(mp =>
         {
-            if (mp.move is Enemy.Move.Attack attack)
+            Enemy enemy = enemies[mp.enemyIndex];
+            Enemy.Move move = mp.move;
+            int value = move.Value;
+            switch (move.MoveEnum)
             {
-                playerManager.UpdateHealthBy(-attack.Damage);
+                case MoveEnum.Attack:
+                    playerManager.UpdateHealthBy(-value);
+                    break;
+                case MoveEnum.Heal:
+                    enemy.Heal(value);
+                    break;
+
             }
+            
         });
 
     }

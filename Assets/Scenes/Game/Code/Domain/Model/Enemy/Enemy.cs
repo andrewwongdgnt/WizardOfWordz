@@ -9,7 +9,7 @@ public class Enemy
 
     public string Description { get; }
 
-    public int Health { get; }
+    public int MaxHealth { get; }
 
     public int CurrentHealth { get; private set; }
 
@@ -17,13 +17,14 @@ public class Enemy
 
     public List<Move> Moves { get; }
 
+    public Move CurrentMove { get; private set; }
+
     public Enemy(
             EnemyEnum enemyEnum,
             RarityEnum rarityEnum,
             string title,
             string description,
             int health,
-            int delay,
             List<Move> moves
         )
     {
@@ -31,9 +32,9 @@ public class Enemy
         RarityEnum = rarityEnum;
         Title = title;
         Description = description;
-        Health = health;
+        MaxHealth = health;
         CurrentHealth = health;
-        TurnsRemaining = delay;
+        TurnsRemaining = 0;
         Moves = moves;
     }
 
@@ -43,9 +44,21 @@ public class Enemy
             CurrentHealth -= damage;
     }
 
+    public void Heal(int value)
+    {
+        if (!IsDead())
+            CurrentHealth += value;
+    }
+
     public bool IsDead()
     {
         return CurrentHealth <= 0;
+    }
+
+    public void SetCurrentMove(Enemy.Move move)
+    {
+        CurrentMove = move;
+        TurnsRemaining = move.Wait;
     }
 
     public string ShortLabel()
@@ -55,50 +68,43 @@ public class Enemy
 
     public override string ToString()
     {
-        return $"{ShortLabel()}:{CurrentHealth}hp:{TurnsRemaining}tr";
+        return $"{ShortLabel()}:{CurrentHealth}hp:intending {CurrentMove} with {TurnsRemaining}tr";
     }
 
-    public abstract class Move
+    public class Move
     {
-        public string Title { get; protected set; }
+        public string Title { get; }
 
-        public int Wait { get; protected set; }
+        public string Description { get; }
 
-        public int Weight { get; protected set; }
+        public int Value { get; }
+
+        public int Wait { get; }
+
+        public int Weight { get; }
+
+        public MoveEnum MoveEnum { get; }
 
         public Move(
             string title,
+            string description,
+            int value,
             int wait,
-            int weight
+            int weight,
+            MoveEnum moveEnum
             )
         {
             Title = title;
+            Description = description;
+            Value = value;
             Wait = wait;
             Weight = weight;
+            MoveEnum = moveEnum;
         }
 
-        public class Attack : Move
+        public override string ToString()
         {
-            public int Damage { get; }
-
-            public Attack(
-                string title,
-                int wait,
-                int weight,
-                int damage
-                ) : base(
-                    title,
-                    wait,
-                    weight
-                    )
-            {
-                Damage = damage;
-            }
-
-            public override string ToString()
-            {
-                return $"{Title}({Damage}dmg)";
-            }
+            return $"{Title}({Value})";
         }
     }
 }

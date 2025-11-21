@@ -2,16 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Zenject;
-using static Enemy.Move;
 using static Level.Fight;
 
 public class PopulateEnemiesUsecase
 {
-    private readonly Dictionary<EnemyEnum, EnemyInfo.DetailInfo> enemyInfoMap;
+    private readonly Dictionary<EnemyEnum, EnemyInfo.DetailInfo> enemyInfoMap; 
+    private readonly GetNextEnemyMoveUsecase getNextEnemyMoveUsecase;
+
 
     [Inject]
     public PopulateEnemiesUsecase(
-        EnemyInfoRepository enemyInfoRepository
+        EnemyInfoRepository enemyInfoRepository,
+        GetNextEnemyMoveUsecase getNextEnemyMoveUsecase
         )
     {
         EnemyInfo enemyInfo = enemyInfoRepository.Get();
@@ -20,6 +22,7 @@ public class PopulateEnemiesUsecase
             {EnemyEnum.Note, enemyInfo.Note },
             {EnemyEnum.Notebook, enemyInfo.Notebook }
         };
+        this.getNextEnemyMoveUsecase = getNextEnemyMoveUsecase;
     }
 
     public List<Enemy> Invoke(List<EnemySummary> enemyArgs)
@@ -30,35 +33,37 @@ public class PopulateEnemiesUsecase
             RarityEnum enemyRarity = e.RarityEnum;
             EnemyInfo.DetailInfo statsInfo = enemyInfoMap[enemyEnum];
             int health = GetRarityValue(enemyRarity, statsInfo.health);
-            int delay = GetRarityValue(enemyRarity, statsInfo.delay);
 
             List<Enemy.Move> moves = new();
             statsInfo.moves.ForEach(m =>
             {
-                Enemy.Move move = m.type switch
-                {
-                    MoveConstants.ATTACK =>
-                        new Enemy.Move.Attack(
-                            m.title,
-                            GetRarityValue(enemyRarity, m.wait),
-                            m.weight,
-                            GetRarityValue(enemyRarity, m.damage)
-                            ),
 
-                    _ => throw new NotImplementedException(),
-                };
+                Enum.TryParse(m.type, out MoveEnum moveEnum);
+
+                Enemy.Move move = new(
+                            m.title,
+                            m.description,
+                            GetRarityValue(enemyRarity, m.value),
+                            GetRarityValue(enemyRarity, m.wait),
+                           GetRarityValue(enemyRarity, m.weight),
+                           moveEnum
+                    );
+
+
                 moves.Add(move);
             });
-
-            return new Enemy(
+            Enemy enemy = new Enemy(
                 enemyEnum,
                 enemyRarity,
                 statsInfo.title,
                 statsInfo.description,
                 health,
-                delay,
                 moves
                 );
+
+            Enemy.Move currentMove = getNextEnemyMoveUsecase.Invoke(enemy);
+            enemy.SetCurrentMove(currentMove);
+            return enemy;
         }).ToList();
     }
 
