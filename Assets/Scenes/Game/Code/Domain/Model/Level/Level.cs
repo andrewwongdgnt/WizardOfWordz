@@ -14,18 +14,21 @@ public abstract class Level
     {
         public List<EnemySummary> Enemies { get; }
 
+        public RarityEnum RarityEnum { get; }
+
         public Fight(
         LevelEnum levelEnum,
         string title,
         string description,
-        List<EnemySummary> enemies
+        List<EnemySummary> enemies,
+        RarityEnum topRarity
     )
         {
             LevelEnum = levelEnum;
             Title = title;
             Description = description;
             Enemies = enemies;
-
+            RarityEnum = topRarity;
         }
 
         public class EnemySummary

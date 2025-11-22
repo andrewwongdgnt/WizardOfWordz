@@ -52,7 +52,7 @@ public class PopulateEnemiesUsecase
 
                 moves.Add(move);
             });
-            Enemy enemy = new Enemy(
+            Enemy enemy = new(
                 enemyEnum,
                 enemyRarity,
                 statsInfo.title,

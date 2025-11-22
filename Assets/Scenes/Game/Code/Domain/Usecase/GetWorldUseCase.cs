@@ -66,15 +66,25 @@ public class GetWorldUseCase
         };
         return levelDetail.type switch
         {
-            LevelTypeEnumConstants.FIGHT =>
-            new Level.Fight(
-            levelEnum,
-            levelDetail.title,
-            levelDetail.description,
-            levelDetail.enemies.Select(GetEnemySummary).ToList()
-            ),
+            LevelTypeEnumConstants.FIGHT => CreateFightLevel(levelEnum, levelDetail),
             _ => throw new NotImplementedException()
         };
+    }
+
+    private Level.Fight CreateFightLevel(
+        LevelEnum levelEnum,
+        LevelInfo.DetailInfo levelDetail
+        )
+    {
+        List<Level.Fight.EnemySummary> enemySummaries = levelDetail.enemies.Select(GetEnemySummary).ToList();
+
+        return new(
+         levelEnum,
+         levelDetail.title,
+         levelDetail.description,
+         enemySummaries,
+         enemySummaries.Max(e => e.RarityEnum)
+         );
     }
 
     private Level.Fight.EnemySummary GetEnemySummary(LevelInfo.DetailInfo.EnemyArg enemyArg)
