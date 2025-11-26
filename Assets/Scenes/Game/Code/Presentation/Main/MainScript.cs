@@ -12,6 +12,7 @@ public class MainScript : MonoBehaviour
     public BoardContainerGameObject boardContainerGO;
     public StageContainerGameObject stageContainerGO;
     public PlayerStatsContainerGameObject playerStatsContainerGameObject;
+    public WorldSelectorGameObject worldSelectorGameObject;
 
     [Inject]
     private readonly RetrieveWordsFromDictionaryUsecase retrieveWordsFromDictionaryUsecase;
@@ -116,6 +117,8 @@ public class MainScript : MonoBehaviour
                 HandleArrowKeyPress(key);
             }
         }
+
+        worldSelectorGameObject.Appear(gameState is GameState.ChooseWorldState);
     }
 
     private void HandleAlphabetKeyPress(Key key)
