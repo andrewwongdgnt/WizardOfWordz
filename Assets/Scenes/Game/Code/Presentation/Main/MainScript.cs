@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.LightTransport;
 using Zenject;
 
 public class MainScript : MonoBehaviour
@@ -343,6 +344,7 @@ public class MainScript : MonoBehaviour
         stageContainerGO.enemySelectedAction = EnemySelectedAction;
         stageContainerGO.enemyHoverAction = EnemyHoverAction;
         playerStatsContainerGameObject.SetUp(playerManager);
+        worldSelectorGameObject.SetUp(WorldAction);
     }
 
     private void ResetAllStates()
@@ -424,5 +426,12 @@ public class MainScript : MonoBehaviour
             return;
         }
         attackIndex = index;
+    }
+
+    private void WorldAction(WorldEnum worldEnum)
+    {
+        worldIndex = worlds.FindIndex(w => w.WorldEnum == worldEnum);
+        SelectWorld();
+        UpdateUIState();
     }
 }

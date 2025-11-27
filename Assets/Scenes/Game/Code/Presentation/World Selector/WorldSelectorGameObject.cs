@@ -1,10 +1,13 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WorldSelectorGameObject : MonoBehaviour
 {
 
-    //[SerializeField] 
     public Animator animator;
+
+    public List<WorldGameObject> worldGOList;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -15,6 +18,14 @@ public class WorldSelectorGameObject : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void SetUp(Action<WorldEnum> worldAction)
+    {
+        worldGOList.ForEach(w =>
+        {
+            w.action = worldAction;
+        });
     }
 
     public void Appear(bool appear)
