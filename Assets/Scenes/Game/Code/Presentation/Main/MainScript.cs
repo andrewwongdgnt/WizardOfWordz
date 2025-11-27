@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.LightTransport;
 using Zenject;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class MainScript : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class MainScript : MonoBehaviour
     public StageContainerGameObject stageContainerGO;
     public PlayerStatsContainerGameObject playerStatsContainerGameObject;
     public WorldSelectorGameObject worldSelectorGameObject;
+    public LevelSelectorGameObject levelSelectorGameObject;
 
     [Inject]
     private readonly RetrieveWordsFromDictionaryUsecase retrieveWordsFromDictionaryUsecase;
@@ -120,6 +122,7 @@ public class MainScript : MonoBehaviour
         }
 
         worldSelectorGameObject.Appear(gameState is GameState.ChooseWorldState);
+        levelSelectorGameObject.Appear(gameState is GameState.ChooseLevelState);
     }
 
     private void HandleAlphabetKeyPress(Key key)
@@ -221,7 +224,7 @@ public class MainScript : MonoBehaviour
                 levelChoiceIndex++;
                 UpdateUIState();
                 boardContainerGO.ClearEverything();
-                SetGameStateToChooseLevel();
+                SetUpLevelSelection();
                 break;
             case FightEndStateEnum.Lose:
                 ResetAllStates();
@@ -235,13 +238,15 @@ public class MainScript : MonoBehaviour
     private void SelectWorld()
     {
         world = worlds[worldIndex];
-        SetGameStateToChooseLevel();
+        SetUpLevelSelection();
     }
 
-    private void SetGameStateToChooseLevel()
+    private void SetUpLevelSelection()
     {
         gameState = new GameState.ChooseLevelState();
+        levelIndex = 0;
         levelsToChooseFrom = selectLevelChoicesUseCase.Invoke(levelChoiceIndex, world.LevelChoices);
+        levelSelectorGameObject.SetUp(levelsToChooseFrom);
     }
 
     private void SelectLevel()
@@ -327,6 +332,7 @@ public class MainScript : MonoBehaviour
         }
         if (gameState is GameState.ChooseLevelState)
         {
+            levelSelectorGameObject.UpdateState(levelsToChooseFrom[levelIndex]);
             Debug.Log($"Picking: {levelIndex}\n{string.Join(",", levelsToChooseFrom)}");
         }
 
@@ -345,6 +351,8 @@ public class MainScript : MonoBehaviour
         stageContainerGO.enemyHoverAction = EnemyHoverAction;
         playerStatsContainerGameObject.SetUp(playerManager);
         worldSelectorGameObject.SetUp(WorldAction);
+        levelSelectorGameObject.levelSelectedAction = LevelSelectedAction;
+        levelSelectorGameObject.levelHoverAction = LevelHoverAction;
     }
 
     private void ResetAllStates()
@@ -353,18 +361,20 @@ public class MainScript : MonoBehaviour
         worldIndex = 0;
         levelChoiceIndex = 0;
         levelIndex = 0;
-        gameState = new GameState.ChooseWorldState();
         SetUpWorldSelection();
     }
 
     private void SetUpWorldSelection()
     {
+        worldIndex = 0;
+        gameState = new GameState.ChooseWorldState();
         worlds = Enum.GetValues(typeof(WorldEnum)).Cast<WorldEnum>().ToList()
            .Select(w => getWorldUseCase.Invoke(w)).ToList();
     }
 
     private void PopulateEnemies()
     {
+        attackIndex = 0;
         Level.Fight fightLevel = (Level.Fight)levelsToChooseFrom[levelIndex];
         enemies = populateEnemiesUsecase.Invoke(fightLevel.Enemies);
         stageContainerGO.SetUp(enemies);
@@ -433,5 +443,32 @@ public class MainScript : MonoBehaviour
         worldIndex = worlds.FindIndex(w => w.WorldEnum == worldEnum);
         SelectWorld();
         UpdateUIState();
+    }
+
+    private void LevelSelectedAction(Level level)
+    {
+        TargetNewLevel(level);
+        SelectLevel();
+        UpdateUIState();
+    }
+
+    private void LevelHoverAction(Level level)
+    {
+        int originalIndex = levelIndex;
+        TargetNewLevel(level);
+        if (originalIndex != levelIndex)
+        {
+            UpdateUIState();
+        }
+    }
+
+    private void TargetNewLevel(Level level)
+    {
+        int index = levelsToChooseFrom.IndexOf(level); ;
+        if (index < 0)
+        {
+            return;
+        }
+        levelIndex = index;
     }
 }
