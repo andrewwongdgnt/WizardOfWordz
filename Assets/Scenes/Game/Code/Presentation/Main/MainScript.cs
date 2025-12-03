@@ -56,6 +56,9 @@ public class MainScript : MonoBehaviour
     [Inject]
     private readonly PlayerManager playerManager;
 
+    [Inject]
+    private readonly RewardManager rewardManager;
+
     private readonly ISet<Key> monitoredKeys = new HashSet<Key>()
     {
         Key.A, Key.B, Key.C, Key.D, Key.E, Key.F, Key.G, Key.H, Key.I, Key.J,
@@ -85,6 +88,10 @@ public class MainScript : MonoBehaviour
     private int levelChoiceIndex;
     private int levelIndex;
     private List<Level> levelsToChooseFrom;
+
+    // Reward selection section
+    private int rewardIndex;
+    private List<Reward> rewardsToChooseFrom;
 
     private GameState gameState;
 
@@ -139,6 +146,10 @@ public class MainScript : MonoBehaviour
         else if (gameState is GameState.ChooseLevelState)
         {
             SelectLevel();
+        }
+        else if (gameState is GameState.ChooseRewardState)
+        {
+            SelectReward();
         }
 
         UpdateUIState(tileThatChanged: tileThatChanged);
@@ -224,7 +235,7 @@ public class MainScript : MonoBehaviour
                 levelChoiceIndex++;
                 UpdateUIState();
                 boardContainerGO.ClearEverything();
-                SetUpLevelSelection();
+                SetUpRewardSelection();
                 break;
             case FightEndStateEnum.Lose:
                 ResetAllStates();
@@ -260,6 +271,20 @@ public class MainScript : MonoBehaviour
         }
     }
 
+    private void SetUpRewardSelection()
+    {
+        gameState = new GameState.ChooseRewardState();
+        rewardIndex = 0;
+        rewardsToChooseFrom = rewardManager.Present();
+    }
+
+    private void SelectReward()
+    {
+        Reward reward = rewardsToChooseFrom[rewardIndex];
+        rewardManager.Pick(reward);
+        SetUpLevelSelection();
+    }
+
     private void HandleArrowKeyPress(Key key)
     {
         if (gameState is GameState.PlayingLevelState)
@@ -273,6 +298,10 @@ public class MainScript : MonoBehaviour
         else if (gameState is GameState.ChooseLevelState)
         {
             TargetNewLevel(key);
+        }
+        else if (gameState is GameState.ChooseRewardState)
+        {
+            TargetNewReward(key);
         }
         UpdateUIState();
     }
@@ -304,6 +333,15 @@ public class MainScript : MonoBehaviour
         );
     }
 
+    private void TargetNewReward(Key key)
+    {
+        rewardIndex = calculateNextIndexUsecase.Invoke(
+            key == Key.RightArrow,
+            rewardIndex,
+            rewardsToChooseFrom.Count
+        );
+    }
+
     private void UpdateUIState(Tile tileThatChanged = null)
     {
         if (gameState is GameState.PlayingLevelState levelGameState)
@@ -320,20 +358,26 @@ public class MainScript : MonoBehaviour
                     break;
             }
         }
-        else
+        else if (gameState is GameState.ChooseWorldState)
+        {
+            Debug.Log($"Picking world: {worldIndex}\n{string.Join(",", worlds)}");
+        }
+        else if (gameState is GameState.ChooseLevelState)
+        {
+            levelSelectorGameObject.UpdateState(levelsToChooseFrom[levelIndex]);
+            Debug.Log($"Picking level: {levelIndex}\n{string.Join(",", levelsToChooseFrom)}");
+        }
+        else if (gameState is GameState.ChooseRewardState)
+        {
+            //levelSelectorGameObject.UpdateState(levelsToChooseFrom[levelIndex]);
+            Debug.Log($"Picking reward: {rewardIndex}\n{string.Join(",", rewardsToChooseFrom)}");
+        }
+
+        if (gameState !is GameState.PlayingLevelState)
         {
             boardContainerGO.ClearEverything();
             stageContainerGO.ClearEverything();
             playerManager.FullHeath();
-        }
-        if (gameState is GameState.ChooseWorldState)
-        {
-            Debug.Log($"Picking: {worldIndex}\n{string.Join(",", worlds)}");
-        }
-        if (gameState is GameState.ChooseLevelState)
-        {
-            levelSelectorGameObject.UpdateState(levelsToChooseFrom[levelIndex]);
-            Debug.Log($"Picking: {levelIndex}\n{string.Join(",", levelsToChooseFrom)}");
         }
 
     }

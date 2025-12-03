@@ -12,10 +12,12 @@ public class GameInstaller : MonoInstaller
         Container.Bind<LetterDistributionRepository>().To<LetterDistributionRepositoryImpl>().AsSingle();
         Container.Bind<LevelInfoRepository>().To<LevelInfoRepositoryImpl>().AsSingle();
         Container.Bind<PlayerInfoRepository>().To<PlayerInfoRepositoryImpl>().AsSingle();
+        Container.Bind<RewardInfoRepository>().To<RewardInfoRepositoryImpl>().AsSingle();
         Container.Bind<WorldInfoRepository>().To<WorldInfoRepositoryImpl>().AsSingle();
 
         // Manager
         Container.Bind<PlayerManager>().AsSingle();
+        Container.Bind<RewardManager>().AsSingle();
 
         // Usecase
         Container.Bind<CalculateLevelStateUsecase>().AsSingle();
