@@ -3,7 +3,7 @@ using System.Linq;
 using ModestTree;
 using UnityEngine;
 
-public class CalculatePlayerDamageUsecase
+public class CalculateEnemyMoveUsecase
 {
     public void Invoke(
         List<(int enemyIndex, Enemy.Move move)> movesPair,
@@ -28,7 +28,7 @@ public class CalculatePlayerDamageUsecase
                     playerManager.UpdateHealthBy(-value);
                     break;
                 case MoveEnum.Heal:
-                    enemy.Heal(value);
+                    enemy.UpdateHealthBy(value);
                     break;
 
             }

@@ -37,7 +37,7 @@ public class ProcessWordUsecase
                     return acc + tileScore;
                 });
             Debug.Log($"{word} is a word worth {score} and it is {foundWord.Tag}");
-            enemies[attackIndex].TakeDamage(score);
+            enemies[attackIndex].UpdateHealthBy(-score);
         }
         else
         {

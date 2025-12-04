@@ -27,6 +27,10 @@ public class PlayerManager
     public void UpdateHealthBy(int value)
     {
         CurrentHealth += value;
+        if (CurrentHealth > MaxHealth)
+            CurrentHealth = MaxHealth;
+        else if (CurrentHealth < 0)
+            CurrentHealth = 0;
     }
 
     public bool IsDead()

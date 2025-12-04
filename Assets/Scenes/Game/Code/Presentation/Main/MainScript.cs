@@ -42,7 +42,7 @@ public class MainScript : MonoBehaviour
     private readonly CalculateTurnFromEnemiesUsecase calculateTurnFromEnemiesUsecase;
 
     [Inject]
-    private readonly CalculatePlayerDamageUsecase calculatePlayerDamageUsecase;
+    private readonly CalculateEnemyMoveUsecase calculatePlayerDamageUsecase;
 
     [Inject]
     private readonly GetWorldUseCase getWorldUseCase;

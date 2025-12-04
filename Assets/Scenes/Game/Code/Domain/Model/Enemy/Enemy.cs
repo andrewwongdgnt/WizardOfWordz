@@ -38,16 +38,13 @@ public class Enemy
         Moves = moves;
     }
 
-    public void TakeDamage(int damage)
+    public void UpdateHealthBy(int damage)
     {
         if (!IsDead())
-            CurrentHealth -= damage;
-    }
+            CurrentHealth += damage;
 
-    public void Heal(int value)
-    {
-        if (!IsDead())
-            CurrentHealth += value;
+        if (CurrentHealth > MaxHealth)
+            CurrentHealth = MaxHealth;
     }
 
     public bool IsDead()

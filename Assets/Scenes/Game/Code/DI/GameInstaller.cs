@@ -20,9 +20,9 @@ public class GameInstaller : MonoInstaller
         Container.Bind<RewardManager>().AsSingle();
 
         // Usecase
+        Container.Bind<CalculateEnemyMoveUsecase>().AsSingle();
         Container.Bind<CalculateLevelStateUsecase>().AsSingle();
         Container.Bind<CalculateNextIndexUsecase>().AsSingle();
-        Container.Bind<CalculatePlayerDamageUsecase>().AsSingle();
         Container.Bind<CalculateTurnFromEnemiesUsecase>().AsSingle();
         Container.Bind<GenerateCharTilesUsecase>().AsSingle();
         Container.Bind<GetNextTargetUsecase>().AsSingle();
