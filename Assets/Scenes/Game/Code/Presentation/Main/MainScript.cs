@@ -370,7 +370,12 @@ public class MainScript : MonoBehaviour
         else if (gameState is GameState.ChooseRewardState)
         {
             //levelSelectorGameObject.UpdateState(levelsToChooseFrom[levelIndex]);
-            Debug.Log($"Picking reward: {rewardIndex}\n{string.Join(",", rewardsToChooseFrom)}");
+            List<String> rewardsDisplay = rewardsToChooseFrom.Select(r =>
+            {
+                (String, String) pair = rewardManager.GetCurrentAndFutureStatePair(r);
+                return $"{r.Title}: {pair.Item1}=>{pair.Item2}";
+            }).ToList();
+            Debug.Log($"Picking reward: {rewardIndex}\n{string.Join(",", rewardsDisplay)}");
         }
 
         if (gameState is not GameState.PlayingLevelState)
