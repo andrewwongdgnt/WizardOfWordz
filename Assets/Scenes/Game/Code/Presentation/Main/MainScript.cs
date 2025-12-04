@@ -373,7 +373,7 @@ public class MainScript : MonoBehaviour
             Debug.Log($"Picking reward: {rewardIndex}\n{string.Join(",", rewardsToChooseFrom)}");
         }
 
-        if (gameState !is GameState.PlayingLevelState)
+        if (gameState is not GameState.PlayingLevelState)
         {
             boardContainerGO.ClearEverything();
             stageContainerGO.ClearEverything();
