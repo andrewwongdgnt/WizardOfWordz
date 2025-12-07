@@ -282,6 +282,7 @@ public class MainScript : MonoBehaviour
     {
         Reward reward = rewardsToChooseFrom[rewardIndex];
         rewardManager.Pick(reward);
+        playerManager.HandleReward(reward);
         SetUpLevelSelection();
     }
 
@@ -360,7 +361,8 @@ public class MainScript : MonoBehaviour
         }
         else if (gameState is GameState.ChooseWorldState)
         {
-            Debug.Log($"Picking world: {worldIndex}\n{string.Join(",", worlds)}");
+            Debug.Log($"Picking world: {worldIndex}\n{string.Join(",", worlds)}"); 
+            playerManager.FullHeath();
         }
         else if (gameState is GameState.ChooseLevelState)
         {
@@ -372,7 +374,7 @@ public class MainScript : MonoBehaviour
             //levelSelectorGameObject.UpdateState(levelsToChooseFrom[levelIndex]);
             List<String> rewardsDisplay = rewardsToChooseFrom.Select(r =>
             {
-                (String, String) pair = rewardManager.GetCurrentAndFutureStatePair(r);
+                (int, int) pair = rewardManager.GetCurrentAndFutureState(r);
                 return $"{r.Title}: {pair.Item1}=>{pair.Item2}";
             }).ToList();
             Debug.Log($"Picking reward: {rewardIndex}\n{string.Join(",", rewardsDisplay)}");
@@ -382,7 +384,7 @@ public class MainScript : MonoBehaviour
         {
             boardContainerGO.ClearEverything();
             stageContainerGO.ClearEverything();
-            playerManager.FullHeath();
+
         }
 
     }

@@ -35,6 +35,11 @@ public class Reward
        return currentValueIndex < values.Count;
     }
 
+    public int GetCurrentValue()
+    {
+        return Value(currentValueIndex);
+    }
+
     public int GetFutureValue()
     {
         return Value(currentValueIndex + 1);

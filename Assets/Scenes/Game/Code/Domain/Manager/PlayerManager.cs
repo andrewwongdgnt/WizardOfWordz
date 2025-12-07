@@ -1,9 +1,11 @@
 using System;
 using Zenject;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerManager
 {
     private readonly PlayerInfo playerInfo;
+
 
     public int MaxHealth { get; private set; }
     public int CurrentHealth { get; private set; }
@@ -42,5 +44,29 @@ public class PlayerManager
     public void FullHeath()
     {
         CurrentHealth = MaxHealth;
+    }
+
+    public void HandleReward(Reward reward)
+    {
+        switch(reward.RewardEnum)
+        {
+            case RewardEnum.MaxHealth:
+                IncreaseMaxHealth(reward.GetCurrentValue());
+                break;
+            case RewardEnum.MaxTile:
+                IncreaseTileCount(reward.GetCurrentValue());
+                break;
+        }
+    }
+
+    private void IncreaseMaxHealth(int value)
+    {
+        MaxHealth += value;
+        CurrentHealth += value;
+    }
+
+    private void IncreaseTileCount(int value)
+    {
+        TileCount += value;
     }
 }

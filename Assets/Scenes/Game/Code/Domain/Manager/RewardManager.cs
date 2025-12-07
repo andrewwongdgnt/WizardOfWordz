@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Zenject;
+using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 public class RewardManager
 {
     private readonly PlayerManager playerManager;
 
-    private List<Reward> availableRewards;
+    private Dictionary<RewardEnum, Reward> availableRewards;
     private Random random = new();
     [Inject]
     public RewardManager(
@@ -22,33 +23,36 @@ public class RewardManager
     public List<Reward> Present()
     {
         int count = Math.Min(3, availableRewards.Count);
-        return availableRewards.OrderBy(r => random.Next()).Take(count).ToList();
+        return availableRewards.Values.OrderBy(r => random.Next()).Take(count).ToList();
     }
 
     public void Pick(Reward reward)
     {
-        int value = reward.GetFutureValue();
         reward.Pick();
 
     }
+    public int GetCurrentValue(Reward reward)
+    {
+        return reward.GetCurrentValue();
+    }
 
-    public (String, String) GetCurrentAndFutureStatePair(Reward reward)
+    public (int, int) GetCurrentAndFutureState(Reward reward)
     {
         return reward.RewardEnum switch
         {
-            RewardEnum.Reroll => ("", ""),
+            RewardEnum.Reroll => (0, 0),
             RewardEnum.MaxHealth => GetMaxHealthState(reward),
             RewardEnum.MaxTile => GetMaxTileState(reward),
             _ => throw new NotImplementedException(),
         };
-    } 
+    }
 
     private void Init(RewardInfo rewardInfo)
     {
         availableRewards = new() {
-             InitReward(rewardInfo.Reroll, RewardEnum.Reroll),
-             InitReward(rewardInfo.MaxHealth, RewardEnum.MaxHealth),
-             InitReward(rewardInfo.MaxTile, RewardEnum.MaxTile)
+            { RewardEnum.Reroll, InitReward(rewardInfo.Reroll, RewardEnum.Reroll) },
+            { RewardEnum.MaxHealth, InitReward(rewardInfo.MaxHealth, RewardEnum.MaxHealth) },
+            { RewardEnum.MaxTile, InitReward(rewardInfo.MaxTile, RewardEnum.MaxTile) }
             };
     }
 
@@ -63,17 +67,17 @@ public class RewardManager
           );
     }
 
-    private (String, String) GetMaxHealthState(Reward reward)
+    private (int, int) GetMaxHealthState(Reward reward)
     {
-        String current = playerManager.MaxHealth.ToString();
-        String future = (playerManager.MaxHealth + reward.GetFutureValue()).ToString();
+        int current = playerManager.MaxHealth;
+        int future = (playerManager.MaxHealth + reward.GetFutureValue());
         return (current, future);
     }
 
-    private (String, String) GetMaxTileState(Reward reward)
+    private (int, int) GetMaxTileState(Reward reward)
     {
-        String current = playerManager.TileCount.ToString();
-        String future = (playerManager.TileCount + reward.GetFutureValue()).ToString();
+        int current = playerManager.TileCount;
+        int future = (playerManager.TileCount + reward.GetFutureValue());
         return (current, future);
     }
 }
