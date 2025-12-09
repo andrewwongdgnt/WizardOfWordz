@@ -7,7 +7,7 @@ using static UnityEngine.EventSystems.EventTrigger;
 public class LevelGameObject : MonoBehaviour
 {
     public Image baseImage;
-    public RarityComponent rarityComponent;
+    public ApplyRarityColorComponent rarityComponent;
     public TextMeshProUGUI selectIndicatorText;
 
     public Action<Level> levelSelectedAction;

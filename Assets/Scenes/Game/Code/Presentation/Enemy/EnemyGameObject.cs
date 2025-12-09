@@ -6,8 +6,11 @@ using UnityEngine.UI;
 public class EnemyGameObject : MonoBehaviour
 {
 
-    public Image baseImage;
-    public RarityComponent rarityComponent;
+    public ApplySpriteComponent applySpriteForBaseComponent;
+    public ApplySpriteComponent applySpriteForRarityComponent;
+    public AdjustSizeComponent adjustSizeForBaseComponent;
+    public AdjustSizeComponent adjustmentSizeForRarityComponent;
+    public ApplyRarityColorComponent applyRarityComponent;
     public TextMeshProUGUI healthText;
     public TextMeshProUGUI turnsRemainingText;
     public TextMeshProUGUI selectIndicatorText;
@@ -57,31 +60,13 @@ public class EnemyGameObject : MonoBehaviour
         )
     {
         enemy = enemyModel;
-        rarityComponent.Apply(enemyModel.RarityEnum);
-        ApplySprite(baseSprite, rarityElementSprite);
-        ApplySize(baseSprite, rarityElementSprite);
+        applyRarityComponent.Apply(enemyModel.RarityEnum);
+        applySpriteForBaseComponent.Apply(baseSprite);
+        applySpriteForRarityComponent.Apply(rarityElementSprite);
+        adjustSizeForBaseComponent.Apply(baseSprite, GetComponent<RectTransform>());
+        adjustmentSizeForRarityComponent.Apply(rarityElementSprite, GetComponent<RectTransform>());
         UpdateHealth(enemyModel);
         UpdateTurnsRemaining(enemyModel);
-    }
-
-    private void ApplySprite(
-        Sprite baseSprite,
-        Sprite rarityElementSprite
-        )
-    {
-        baseImage.sprite = baseSprite;
-        rarityComponent.image.sprite = rarityElementSprite;
-    }
-
-    private void ApplySize(
-        Sprite baseSprite,
-        Sprite rarityElementSprite
-        )
-    {
-        var vector = new Vector2(baseSprite.rect.width, baseSprite.rect.height);
-        GetComponent<RectTransform>().sizeDelta = vector;
-        baseImage.rectTransform.sizeDelta = vector;
-        rarityComponent.image.rectTransform.sizeDelta = new Vector2(rarityElementSprite.rect.width, rarityElementSprite.rect.height);
     }
 
     private void ApplyAction(Action<Enemy> action)

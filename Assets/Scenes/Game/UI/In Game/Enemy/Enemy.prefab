@@ -284,6 +284,8 @@ GameObject:
   - component: {fileID: 3987564010590152504}
   - component: {fileID: 8111082875214716826}
   - component: {fileID: 3110065593718026887}
+  - component: {fileID: 7880859594280307064}
+  - component: {fileID: 4222354057979213909}
   m_Layer: 5
   m_Name: Rarity Element
   m_TagString: Untagged
@@ -308,7 +310,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 201, y: 231}
+  m_SizeDelta: {x: 266.4, y: 231}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3987564010590152504
 CanvasRenderer:
@@ -361,6 +363,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RarityComponent
   image: {fileID: 8111082875214716826}
+--- !u!114 &7880859594280307064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2285380339845043472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f199c610caebaf34bbca6a21ddf1e484, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AdjustSizeComponent
+  image: {fileID: 8111082875214716826}
+--- !u!114 &4222354057979213909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2285380339845043472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a61eb8e04d377443a03b6c8367171c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ApplySpriteComponent
+  image: {fileID: 8111082875214716826}
 --- !u!1 &2456332831334396988
 GameObject:
   m_ObjectHideFlags: 0
@@ -401,7 +429,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 201, y: 231}
+  m_SizeDelta: {x: 495.7, y: 231}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1586796114585454912
 MonoBehaviour:
@@ -415,8 +443,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8baa15e12f28f6f4ca0ce7b63ba8e3b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseImage: {fileID: 8434288789237611640}
-  rarityComponent: {fileID: 3110065593718026887}
+  applySpriteForBaseComponent: {fileID: 4525176635188914084}
+  applySpriteForRarityComponent: {fileID: 4222354057979213909}
+  adjustSizeForBaseComponent: {fileID: 2655703596722124960}
+  adjustmentSizeForRarityComponent: {fileID: 7880859594280307064}
+  applyRarityComponent: {fileID: 3110065593718026887}
   healthText: {fileID: 6771216066880085339}
   turnsRemainingText: {fileID: 5143415693015106909}
   selectIndicatorText: {fileID: 7394579724616737530}
@@ -612,6 +643,8 @@ GameObject:
   - component: {fileID: 1834221859351880055}
   - component: {fileID: 2505776087523045119}
   - component: {fileID: 8434288789237611640}
+  - component: {fileID: 2655703596722124960}
+  - component: {fileID: 4525176635188914084}
   m_Layer: 5
   m_Name: Base
   m_TagString: Untagged
@@ -676,3 +709,29 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2655703596722124960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7951731726919216401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f199c610caebaf34bbca6a21ddf1e484, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AdjustSizeComponent
+  image: {fileID: 8434288789237611640}
+--- !u!114 &4525176635188914084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7951731726919216401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a61eb8e04d377443a03b6c8367171c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ApplySpriteComponent
+  image: {fileID: 8434288789237611640}
