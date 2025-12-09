@@ -384,7 +384,6 @@ public class MainScript : MonoBehaviour
         {
             boardContainerGO.ClearEverything();
             stageContainerGO.ClearEverything();
-
         }
 
     }

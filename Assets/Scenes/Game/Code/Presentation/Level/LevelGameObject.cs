@@ -7,7 +7,7 @@ using static UnityEngine.EventSystems.EventTrigger;
 public class LevelGameObject : MonoBehaviour
 {
     public Image baseImage;
-    public Image rarityElement;
+    public RarityComponent rarityComponent;
     public TextMeshProUGUI selectIndicatorText;
 
     public Action<Level> levelSelectedAction;
@@ -59,18 +59,8 @@ public class LevelGameObject : MonoBehaviour
     {
         if (level is Level.Fight fightLevel)
         {
-            rarityElement.color = fightLevel.RarityEnum switch
-            {
-                RarityEnum.Common => Color.white,
-                RarityEnum.Uncommon => Color.green,
-                RarityEnum.Rare => Color.deepSkyBlue,
-                RarityEnum.Epic => Color.purple,
-                RarityEnum.Legendary => Color.orange,
-                _ => Color.white
-            };
+            rarityComponent.Apply(fightLevel.RarityEnum);
         }
-
-        
     }
 
     private void ApplySprite(
@@ -79,7 +69,7 @@ public class LevelGameObject : MonoBehaviour
         )
     {
         baseImage.sprite = baseSprite;
-        rarityElement.sprite = rarityElementSprite;
+        rarityComponent.image.sprite = rarityElementSprite;
     }
 
     private void ApplySize(
@@ -90,7 +80,7 @@ public class LevelGameObject : MonoBehaviour
         var vector = new Vector2(baseSprite.rect.width, baseSprite.rect.height);
         GetComponent<RectTransform>().sizeDelta = vector;
         baseImage.rectTransform.sizeDelta = vector;
-        rarityElement.rectTransform.sizeDelta = new Vector2(rarityElementSprite.rect.width, rarityElementSprite.rect.height);
+        rarityComponent.image.rectTransform.sizeDelta = new Vector2(rarityElementSprite.rect.width, rarityElementSprite.rect.height);
     }
 
     private void ApplyAction(Action<Level> action)

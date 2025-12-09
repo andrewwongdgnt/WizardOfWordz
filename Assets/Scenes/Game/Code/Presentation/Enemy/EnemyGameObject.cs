@@ -7,7 +7,7 @@ public class EnemyGameObject : MonoBehaviour
 {
 
     public Image baseImage;
-    public Image rarityElement;
+    public RarityComponent rarityComponent;
     public TextMeshProUGUI healthText;
     public TextMeshProUGUI turnsRemainingText;
     public TextMeshProUGUI selectIndicatorText;
@@ -57,24 +57,11 @@ public class EnemyGameObject : MonoBehaviour
         )
     {
         enemy = enemyModel;
-        ApplyRarity(enemyModel);
+        rarityComponent.Apply(enemyModel.RarityEnum);
         ApplySprite(baseSprite, rarityElementSprite);
         ApplySize(baseSprite, rarityElementSprite);
         UpdateHealth(enemyModel);
         UpdateTurnsRemaining(enemyModel);
-    }
-
-    private void ApplyRarity(Enemy enemyModel)
-    {
-        rarityElement.color = enemyModel.RarityEnum switch
-        {
-            RarityEnum.Common => Color.white,
-            RarityEnum.Uncommon => Color.green,
-            RarityEnum.Rare => Color.deepSkyBlue,
-            RarityEnum.Epic => Color.purple,
-            RarityEnum.Legendary => Color.orange,
-            _ => Color.white
-        };
     }
 
     private void ApplySprite(
@@ -83,7 +70,7 @@ public class EnemyGameObject : MonoBehaviour
         )
     {
         baseImage.sprite = baseSprite;
-        rarityElement.sprite = rarityElementSprite;
+        rarityComponent.image.sprite = rarityElementSprite;
     }
 
     private void ApplySize(
@@ -94,7 +81,7 @@ public class EnemyGameObject : MonoBehaviour
         var vector = new Vector2(baseSprite.rect.width, baseSprite.rect.height);
         GetComponent<RectTransform>().sizeDelta = vector;
         baseImage.rectTransform.sizeDelta = vector;
-        rarityElement.rectTransform.sizeDelta = new Vector2(rarityElementSprite.rect.width, rarityElementSprite.rect.height);
+        rarityComponent.image.rectTransform.sizeDelta = new Vector2(rarityElementSprite.rect.width, rarityElementSprite.rect.height);
     }
 
     private void ApplyAction(Action<Enemy> action)
