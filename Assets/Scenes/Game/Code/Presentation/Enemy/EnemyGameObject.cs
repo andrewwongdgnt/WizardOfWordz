@@ -10,10 +10,10 @@ public class EnemyGameObject : MonoBehaviour
     public ApplySpriteComponent applySpriteForRarityComponent;
     public AdjustSizeComponent adjustSizeForBaseComponent;
     public AdjustSizeComponent adjustmentSizeForRarityComponent;
+    public SelectIndicatorComponent selectIndicatorComponent;
     public ApplyRarityColorComponent applyRarityComponent;
     public TextMeshProUGUI healthText;
     public TextMeshProUGUI turnsRemainingText;
-    public TextMeshProUGUI selectIndicatorText;
 
     public Action<Enemy> enemySelectedAction;
     public Action<Enemy> enemyHoverAction;
@@ -50,7 +50,7 @@ public class EnemyGameObject : MonoBehaviour
         }
         UpdateHealth(enemy);
         UpdateTurnsRemaining(enemy);
-        UpdateSelectIndicator(enemyThatIsTargeted == enemy);
+        selectIndicatorComponent.Apply(enemyThatIsTargeted == enemy);
     }
 
     public void Init(
@@ -85,10 +85,5 @@ public class EnemyGameObject : MonoBehaviour
     private void UpdateTurnsRemaining(Enemy enemyModel)
     {
         turnsRemainingText.text = $"-{enemyModel.TurnsRemaining}-";
-    }
-
-    private void UpdateSelectIndicator(bool isSelected)
-    {
-        selectIndicatorText.text = isSelected ? "V" : "";
     }
 }

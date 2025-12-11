@@ -6,9 +6,12 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 public class LevelGameObject : MonoBehaviour
 {
-    public Image baseImage;
-    public ApplyRarityColorComponent rarityComponent;
-    public TextMeshProUGUI selectIndicatorText;
+    public ApplySpriteComponent applySpriteForBaseComponent;
+    public ApplySpriteComponent applySpriteForRarityComponent;
+    public AdjustSizeComponent adjustSizeForBaseComponent;
+    public AdjustSizeComponent adjustmentSizeForRarityComponent;
+    public SelectIndicatorComponent selectIndicatorComponent;
+    public ApplyRarityColorComponent applyRarityComponent;
 
     public Action<Level> levelSelectedAction;
     public Action<Level> levelHoverAction;
@@ -42,8 +45,9 @@ public class LevelGameObject : MonoBehaviour
             return;
         }
 
-        UpdateSelectIndicator(levelThatIsTargeted == level);
+        selectIndicatorComponent.Apply(levelThatIsTargeted == level);
     }
+
     public void Init(
         Level level,
         Sprite baseSprite,
@@ -51,36 +55,18 @@ public class LevelGameObject : MonoBehaviour
         )
     {
         this.level = level;
-        ApplyRarity(level);
-        ApplySprite(baseSprite, rarityElementSprite);
-        ApplySize(baseSprite, rarityElementSprite);
+        ApplyRarity(level); 
+        applySpriteForBaseComponent.Apply(baseSprite);
+        applySpriteForRarityComponent.Apply(rarityElementSprite);
+        adjustSizeForBaseComponent.Apply(baseSprite, GetComponent<RectTransform>());
+        adjustmentSizeForRarityComponent.Apply(rarityElementSprite, GetComponent<RectTransform>());
     }
     private void ApplyRarity(Level level)
     {
         if (level is Level.Fight fightLevel)
         {
-            rarityComponent.Apply(fightLevel.RarityEnum);
+            applyRarityComponent.Apply(fightLevel.RarityEnum);
         }
-    }
-
-    private void ApplySprite(
-        Sprite baseSprite,
-        Sprite rarityElementSprite
-        )
-    {
-        baseImage.sprite = baseSprite;
-        rarityComponent.image.sprite = rarityElementSprite;
-    }
-
-    private void ApplySize(
-        Sprite baseSprite,
-        Sprite rarityElementSprite
-        )
-    {
-        var vector = new Vector2(baseSprite.rect.width, baseSprite.rect.height);
-        GetComponent<RectTransform>().sizeDelta = vector;
-        baseImage.rectTransform.sizeDelta = vector;
-        rarityComponent.image.rectTransform.sizeDelta = new Vector2(rarityElementSprite.rect.width, rarityElementSprite.rect.height);
     }
 
     private void ApplyAction(Action<Level> action)
@@ -90,8 +76,5 @@ public class LevelGameObject : MonoBehaviour
             action(level);
         }
     }
-    private void UpdateSelectIndicator(bool isSelected)
-    {
-        selectIndicatorText.text = isSelected ? "V" : "";
-    }
+
 }

@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 2322448381621406239}
   - component: {fileID: 3296246308201152721}
   - component: {fileID: 7150340962497436210}
+  - component: {fileID: 5824593731622969450}
+  - component: {fileID: 7018698654662744201}
   m_Layer: 5
   m_Name: Base
   m_TagString: Untagged
@@ -75,6 +77,32 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5824593731622969450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4306475067690928434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f199c610caebaf34bbca6a21ddf1e484, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AdjustSizeComponent
+  image: {fileID: 7150340962497436210}
+--- !u!114 &7018698654662744201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4306475067690928434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a61eb8e04d377443a03b6c8367171c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ApplySpriteComponent
+  image: {fileID: 7150340962497436210}
 --- !u!1 &4808361624182660654
 GameObject:
   m_ObjectHideFlags: 0
@@ -127,9 +155,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d2b6c7f0c8227547869eb448e4853f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelGameObject
-  baseImage: {fileID: 7150340962497436210}
-  rarityComponent: {fileID: 803549010877445802}
-  selectIndicatorText: {fileID: 319217508710216956}
+  applySpriteForBaseComponent: {fileID: 7018698654662744201}
+  applySpriteForRarityComponent: {fileID: 3716666593903691161}
+  adjustSizeForBaseComponent: {fileID: 5824593731622969450}
+  adjustmentSizeForRarityComponent: {fileID: 7535428153551910983}
+  selectIndicatorComponent: {fileID: 111140824861043442}
+  applyRarityComponent: {fileID: 803549010877445802}
 --- !u!114 &1746113719801065647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,6 +217,7 @@ GameObject:
   - component: {fileID: 4483905693665438990}
   - component: {fileID: 5323805309573642845}
   - component: {fileID: 319217508710216956}
+  - component: {fileID: 111140824861043442}
   m_Layer: 5
   m_Name: Select Indicator
   m_TagString: Untagged
@@ -311,6 +343,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &111140824861043442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7219846356727125157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75fc8cbeb98ce4542957b32cd5810a17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SelectIndicatorComponent
+  text: {fileID: 319217508710216956}
 --- !u!1 &9008944024123340514
 GameObject:
   m_ObjectHideFlags: 0
@@ -323,6 +368,8 @@ GameObject:
   - component: {fileID: 4055162575195123180}
   - component: {fileID: 5432614333171180669}
   - component: {fileID: 803549010877445802}
+  - component: {fileID: 7535428153551910983}
+  - component: {fileID: 3716666593903691161}
   m_Layer: 5
   m_Name: Rarity Element
   m_TagString: Untagged
@@ -399,4 +446,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4486995ece1da3468de646ae7a3a6f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RarityComponent
+  image: {fileID: 5432614333171180669}
+--- !u!114 &7535428153551910983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9008944024123340514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f199c610caebaf34bbca6a21ddf1e484, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AdjustSizeComponent
+  image: {fileID: 5432614333171180669}
+--- !u!114 &3716666593903691161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9008944024123340514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a61eb8e04d377443a03b6c8367171c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ApplySpriteComponent
   image: {fileID: 5432614333171180669}
