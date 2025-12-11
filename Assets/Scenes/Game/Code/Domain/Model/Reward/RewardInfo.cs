@@ -3,7 +3,11 @@ using System.Collections.Generic;
 [System.Serializable]
 public class RewardInfo
 {
-    public DetailInfo Reroll;
+    public DetailInfo Consonant1Upgrade;
+    public DetailInfo Consonant2Upgrade;
+    public DetailInfo Consonant3Upgrade;
+    public DetailInfo Consonant4Upgrade;
+    public DetailInfo VowelUpgrade;
     public DetailInfo MaxHealth;
     public DetailInfo MaxTile;
 
@@ -14,8 +18,14 @@ public class RewardInfo
 
         public string description;
 
-        public string rarity;
+        public List<ValueInfo> values;
 
-        public List<int> values;
+        [System.Serializable]
+        public class ValueInfo
+        {
+            public int value;
+
+            public string rarity;
+        }
     }
 }

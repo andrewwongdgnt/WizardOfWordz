@@ -51,10 +51,10 @@ public class PlayerManager
         switch(reward.RewardEnum)
         {
             case RewardEnum.MaxHealth:
-                IncreaseMaxHealth(reward.GetCurrentValue());
+                IncreaseMaxHealth(reward.GetCurrentValue().Value);
                 break;
             case RewardEnum.MaxTile:
-                IncreaseTileCount(reward.GetCurrentValue());
+                IncreaseTileCount(reward.GetCurrentValue().Value);
                 break;
         }
     }

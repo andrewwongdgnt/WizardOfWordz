@@ -1,6 +1,10 @@
 public enum RewardEnum
 {
-    Reroll,
+    Consonant1Upgrade,
+    Consonant2Upgrade,
+    Consonant3Upgrade,
+    Consonant4Upgrade,
+    VowelUpgrade,
     MaxHealth,
     MaxTile
 }

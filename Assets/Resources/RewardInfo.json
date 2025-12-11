@@ -1,38 +1,160 @@
-{
-    "Reroll": {
-         "title": "Swap letter",
-         "description": "Pick some letters to put away and get a random new one for each",
-        "rarity": "Uncommon",
-         "values": [
-            1,
-            1,
-            1,
-            1,
-            1
-        ]
-    },
-    "MaxHealth": {
-         "title": "Increase max health",
-         "description": "Increase your maximum health points",
-        "rarity": "Common",
-         "values": [
-            10,
-            10,
-            20,
-            30,
-            50
-        ]
-    },
-    "MaxTile": {
-        "title": "Increase letters",
-         "description": "Increase the number of letters to pick from to make your word",
-        "rarity": "Uncommon",
-         "values": [
-            1,
-            1,
-            1,
-            1,
-            1
-        ]
-    }
+{ 
+  "Consonant1Upgrade": {
+    "title": "Upgrade consonants LNRST",
+    "description": "Increase score of the letters L, N, R, S, T",
+    "values": [
+      {
+        "value": 1,
+        "rarity": "Common"
+      },
+      {
+        "value": 1,
+        "rarity": "Uncommon"
+      },
+      {
+        "value": 2,
+        "rarity": "Rare"
+      }
+    ]
+  },
+  "Consonant2Upgrade": {
+    "title": "Upgrade consonants BCDGMP",
+    "description": "Increase score of the letters B, C, D, G, M, P",
+    "values": [
+      {
+        "value": 1,
+        "rarity": "Common"
+      },
+      {
+        "value": 1,
+        "rarity": "Common"
+      },
+      {
+        "value": 2,
+        "rarity": "Uncommon"
+      },
+      {
+        "value": 2,
+        "rarity": "Uncommon"
+      }
+    ]
+  },
+  "Consonant3Upgrade": {
+    "title": "Upgrade consonants FKHVWY",
+    "description": "Increase score of the letters F, K, H, V, W, Y",
+    "values": [
+      {
+        "value": 2,
+        "rarity": "Common"
+      },
+      {
+        "value": 2,
+        "rarity": "Uncommon"
+      },
+      {
+        "value": 3,
+        "rarity": "Uncommon"
+      },
+      {
+        "value": 3,
+        "rarity": "Rare"
+      },
+      {
+        "value": 5,
+        "rarity": "Epic"
+      }
+    ]
+  },
+  "Consonant4Upgrade": {
+    "title": "Upgrade consonants JXQZ",
+    "description": "Increase score of the letters J, X, Q, Z",
+    "values": [
+      {
+        "value": 5,
+        "rarity": "Common"
+      },
+      {
+        "value": 5,
+        "rarity": "Uncommon"
+      },
+      {
+        "value": 8,
+        "rarity": "Rare"
+      },
+      {
+        "value": 8,
+        "rarity": "Rare"
+      }
+    ]
+  },
+  "VowelUpgrade": {
+    "title": "Upgrade vowels",
+    "description": "Increase score of the letters A, E, I, O, U",
+    "values": [
+      {
+        "value": 1,
+        "rarity": "Rare"
+      },
+      {
+        "value": 1,
+        "rarity": "Epic"
+      },
+      {
+        "value": 2,
+        "rarity": "Legendary"
+      }
+    ]
+  },
+  "MaxHealth": {
+    "title": "Increase max health",
+    "description": "Increase your maximum health points",
+    "values": [
+      {
+        "value": 10,
+        "rarity": "Common"
+      },
+      {
+        "value": 10,
+        "rarity": "Common"
+      },
+      {
+        "value": 20,
+        "rarity": "Common"
+      },
+      {
+        "value": 30,
+        "rarity": "Common"
+      },
+      {
+        "value": 50,
+        "rarity": "Common"
+      }
+    ]
+  },
+  "MaxTile": {
+    "title": "Increase letters",
+    "description": "Increase the number of letters to pick from to make your word",
+    "values": [
+      {
+        "value": 1,
+        "rarity": "Uncommon"
+      },
+      {
+        "value": 1,
+        "rarity": "Uncommon"
+      },
+      {
+        "value": 1,
+        "rarity": "Rare"
+      },
+      {
+        "value": 1,
+        "rarity": "Rare"
+      },
+      {
+        "value": 1,
+        "rarity": "Epic"
+      }
+    ]
+  }
 }

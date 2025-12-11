@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Zenject;
+using static Reward;
 using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 public class RewardManager
@@ -31,7 +32,7 @@ public class RewardManager
         reward.Pick();
 
     }
-    public int GetCurrentValue(Reward reward)
+    public RewardValue GetCurrentValue(Reward reward)
     {
         return reward.GetCurrentValue();
     }
@@ -40,9 +41,13 @@ public class RewardManager
     {
         return reward.RewardEnum switch
         {
-            RewardEnum.Reroll => (0, 0),
-            RewardEnum.MaxHealth => GetMaxHealthState(reward),
-            RewardEnum.MaxTile => GetMaxTileState(reward),
+            RewardEnum.Consonant1Upgrade or
+            RewardEnum.Consonant2Upgrade or
+            RewardEnum.Consonant3Upgrade or
+            RewardEnum.Consonant4Upgrade or
+            RewardEnum.VowelUpgrade => GetState(reward, reward.GetCurrentValue().Value),
+            RewardEnum.MaxHealth => GetState(reward, playerManager.MaxHealth),
+            RewardEnum.MaxTile => GetState(reward, playerManager.TileCount),
             _ => throw new NotImplementedException(),
         };
     }
@@ -50,7 +55,7 @@ public class RewardManager
     private void Init(RewardInfo rewardInfo)
     {
         availableRewards = new() {
-            { RewardEnum.Reroll, InitReward(rewardInfo.Reroll, RewardEnum.Reroll) },
+            { RewardEnum.Consonant1Upgrade, InitReward(rewardInfo.Consonant1Upgrade, RewardEnum.Consonant1Upgrade) },
             { RewardEnum.MaxHealth, InitReward(rewardInfo.MaxHealth, RewardEnum.MaxHealth) },
             { RewardEnum.MaxTile, InitReward(rewardInfo.MaxTile, RewardEnum.MaxTile) }
             };
@@ -60,24 +65,18 @@ public class RewardManager
     {
         return new(
             rewardEnum,
-            (RarityEnum)Enum.Parse(typeof(RarityEnum), rewardInfoDetail.rarity),
             rewardInfoDetail.title,
             rewardInfoDetail.description,
-            rewardInfoDetail.values
+            rewardInfoDetail.values.Select(v =>
+                new RewardValue(v.value, (RarityEnum)Enum.Parse(typeof(RarityEnum), v.rarity)
+            )
+            ).ToList()
           );
     }
 
-    private (int, int) GetMaxHealthState(Reward reward)
+    private (int, int) GetState(Reward reward, int current)
     {
-        int current = playerManager.MaxHealth;
-        int future = (playerManager.MaxHealth + reward.GetFutureValue());
-        return (current, future);
-    }
-
-    private (int, int) GetMaxTileState(Reward reward)
-    {
-        int current = playerManager.TileCount;
-        int future = (playerManager.TileCount + reward.GetFutureValue());
+        int future = (current + reward.GetFutureValue().Value);
         return (current, future);
     }
 }

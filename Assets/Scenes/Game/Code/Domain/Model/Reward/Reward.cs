@@ -4,21 +4,18 @@ public class Reward
 {
     public string Title { get; }
     public string Description { get; }
-    public RarityEnum RarityEnum { get; }
     public RewardEnum RewardEnum { get; }
-    private readonly List<int> values;
+    private readonly List<RewardValue> values;
     private int currentValueIndex;
 
     public Reward(
             RewardEnum rewardEnum,
-            RarityEnum rarityEnum,
             string title,
             string description,
-            List<int> values
+            List<RewardValue> values
         )
     {
         RewardEnum = rewardEnum;
-        RarityEnum = rarityEnum;
         Title = title;
         Description = description;
         this.values = values;
@@ -32,25 +29,40 @@ public class Reward
 
     public bool Pickable()
     {
-       return currentValueIndex < values.Count;
+        return currentValueIndex < values.Count;
     }
 
-    public int GetCurrentValue()
+    public RewardValue GetCurrentValue()
     {
         return Value(currentValueIndex);
     }
 
-    public int GetFutureValue()
+    public RewardValue GetFutureValue()
     {
         return Value(currentValueIndex + 1);
     }
 
-    private int Value(int index)
+    private RewardValue Value(int index)
     {
         if (index >= 0 && index < values.Count)
         {
             return values[index];
         }
-        return 0;
+        return new(0, RarityEnum.Common);
+    }
+
+    public class RewardValue
+    {
+        public int Value;
+        public RarityEnum RarityEnum;
+
+        public RewardValue(
+            int value,
+            RarityEnum rarityEnum
+            )
+        {
+            Value = value;
+            RarityEnum = rarityEnum;
+        }
     }
 }
