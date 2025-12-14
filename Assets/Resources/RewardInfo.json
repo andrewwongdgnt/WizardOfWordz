@@ -8,11 +8,11 @@
         "rarity": "Common"
       },
       {
-        "value": 1,
+        "value": 2,
         "rarity": "Uncommon"
       },
       {
-        "value": 2,
+        "value": 4,
         "rarity": "Rare"
       }
     ]
@@ -26,15 +26,15 @@
         "rarity": "Common"
       },
       {
-        "value": 1,
+        "value": 2,
         "rarity": "Common"
       },
       {
-        "value": 2,
+        "value": 4,
         "rarity": "Uncommon"
       },
       {
-        "value": 2,
+        "value": 6,
         "rarity": "Uncommon"
       }
     ]
@@ -48,19 +48,19 @@
         "rarity": "Common"
       },
       {
-        "value": 2,
+        "value": 4,
         "rarity": "Uncommon"
       },
       {
-        "value": 3,
+        "value": 6,
         "rarity": "Uncommon"
       },
       {
-        "value": 3,
+        "value": 9,
         "rarity": "Rare"
       },
       {
-        "value": 5,
+        "value": 14,
         "rarity": "Epic"
       }
     ]
@@ -74,15 +74,15 @@
         "rarity": "Common"
       },
       {
-        "value": 5,
+        "value": 10,
         "rarity": "Uncommon"
       },
       {
-        "value": 8,
+        "value": 18,
         "rarity": "Rare"
       },
       {
-        "value": 8,
+        "value": 26,
         "rarity": "Rare"
       }
     ]
@@ -96,11 +96,11 @@
         "rarity": "Rare"
       },
       {
-        "value": 1,
+        "value": 2,
         "rarity": "Epic"
       },
       {
-        "value": 2,
+        "value": 4,
         "rarity": "Legendary"
       }
     ]

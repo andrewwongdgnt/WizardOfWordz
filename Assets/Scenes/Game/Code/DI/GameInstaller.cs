@@ -25,8 +25,9 @@ public class GameInstaller : MonoInstaller
         Container.Bind<CalculateNextIndexUsecase>().AsSingle();
         Container.Bind<CalculateTurnFromEnemiesUsecase>().AsSingle();
         Container.Bind<GenerateCharTilesUsecase>().AsSingle();
-        Container.Bind<GetNextTargetUsecase>().AsSingle();
         Container.Bind<GetNextEnemyMoveUsecase>().AsSingle();
+        Container.Bind<GetNextTargetUsecase>().AsSingle();
+        Container.Bind<GetTileAdjustedScoreUsecase>().AsSingle();
         Container.Bind<GetWorldUseCase>().AsSingle();
         Container.Bind<PickTileUsecase>().AsSingle();
         Container.Bind<PopulateEnemiesUsecase>().AsSingle();

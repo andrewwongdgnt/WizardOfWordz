@@ -8,14 +8,18 @@ using Zenject;
 
 public class ProcessWordUsecase
 {
+    private readonly GetTileAdjustedScoreUsecase getTileAdjustedScoreUsecase;
+
     private readonly Dictionary<char, int> tileScoreMap;
 
     [Inject]
     public ProcessWordUsecase(
-        LetterDistributionRepository letterDistributionRepository
+        LetterDistributionRepository letterDistributionRepository,
+        GetTileAdjustedScoreUsecase getTileAdjustedScoreUsecase
         )
     {
         tileScoreMap = letterDistributionRepository.Get().ToDictionary(t => t.Value, t => t.Score);
+        this.getTileAdjustedScoreUsecase = getTileAdjustedScoreUsecase;
     }
     public void Invoke(
         string word,
@@ -33,8 +37,9 @@ public class ProcessWordUsecase
                 {
 
                     tileScoreMap.TryGetValue(c, out int tileScore);
+                    int adjustedScore = getTileAdjustedScoreUsecase.Invoke(c, tileScore);
 
-                    return acc + tileScore;
+                    return acc + adjustedScore;
                 });
             Debug.Log($"{word} is a word worth {score} and it is {foundWord.Tag}");
             enemies[attackIndex].UpdateHealthBy(-score);

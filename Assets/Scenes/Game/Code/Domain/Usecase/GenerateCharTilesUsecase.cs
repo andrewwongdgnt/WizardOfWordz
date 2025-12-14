@@ -5,16 +5,19 @@ using Zenject;
 
 public class GenerateCharTilesUsecase
 {
+    private readonly GetTileAdjustedScoreUsecase getTileAdjustedScoreUsecase;
     private readonly LetterDistributionRepository letterDistributionRepository;
     private readonly PlayerManager playerManager;
     private readonly Random random = new();
 
     [Inject]
     public GenerateCharTilesUsecase(
+        GetTileAdjustedScoreUsecase getTileAdjustedScoreUsecase,
         LetterDistributionRepository letterDistributionRepository,
         PlayerManager playerManager
         )
     {
+        this.getTileAdjustedScoreUsecase = getTileAdjustedScoreUsecase;
         this.letterDistributionRepository = letterDistributionRepository;
         this.playerManager = playerManager;
     }
@@ -30,7 +33,7 @@ public class GenerateCharTilesUsecase
             {
                 tiles.Add(new Tile(
                     t.Value,
-                    t.Score
+                    getTileAdjustedScoreUsecase.Invoke(t.Value, t.Score)
                     ));
             }
         });

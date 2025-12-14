@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Zenject;
 using static Reward;
-using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 public class RewardManager
 {
@@ -32,9 +31,9 @@ public class RewardManager
         reward.Pick();
 
     }
-    public RewardValue GetCurrentValue(Reward reward)
+    public RewardValue GetCurrentValue(RewardEnum rewardEnum)
     {
-        return reward.GetCurrentValue();
+        return availableRewards[rewardEnum].GetCurrentValue();
     }
 
     public (int, int) GetCurrentAndFutureState(Reward reward)
@@ -56,6 +55,10 @@ public class RewardManager
     {
         availableRewards = new() {
             { RewardEnum.Consonant1Upgrade, InitReward(rewardInfo.Consonant1Upgrade, RewardEnum.Consonant1Upgrade) },
+            { RewardEnum.Consonant2Upgrade, InitReward(rewardInfo.Consonant2Upgrade, RewardEnum.Consonant2Upgrade) },
+            { RewardEnum.Consonant3Upgrade, InitReward(rewardInfo.Consonant3Upgrade, RewardEnum.Consonant3Upgrade) },
+            { RewardEnum.Consonant4Upgrade, InitReward(rewardInfo.Consonant4Upgrade, RewardEnum.Consonant4Upgrade) },
+            { RewardEnum.VowelUpgrade, InitReward(rewardInfo.VowelUpgrade, RewardEnum.VowelUpgrade) },
             { RewardEnum.MaxHealth, InitReward(rewardInfo.MaxHealth, RewardEnum.MaxHealth) },
             { RewardEnum.MaxTile, InitReward(rewardInfo.MaxTile, RewardEnum.MaxTile) }
             };
