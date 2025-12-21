@@ -1,10 +1,10 @@
 public enum RewardEnum
 {
-    Consonant1Upgrade,
-    Consonant2Upgrade,
-    Consonant3Upgrade,
-    Consonant4Upgrade,
-    VowelUpgrade,
+    UpgradeLNRST,
+    UpgradeBCDGMP,
+    UpgradeFKHVWY,
+    UpgradeJXQZ,
+    UpgradeAEIOU,
     MaxHealth,
     MaxTile
 }

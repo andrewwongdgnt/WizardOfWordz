@@ -3,11 +3,11 @@ using System.Collections.Generic;
 [System.Serializable]
 public class RewardInfo
 {
-    public DetailInfo Consonant1Upgrade;
-    public DetailInfo Consonant2Upgrade;
-    public DetailInfo Consonant3Upgrade;
-    public DetailInfo Consonant4Upgrade;
-    public DetailInfo VowelUpgrade;
+    public DetailInfo UpgradeLNRST;
+    public DetailInfo UpgradeBCDGMP;
+    public DetailInfo UpgradeFKHVWY;
+    public DetailInfo UpgradeJXQZ;
+    public DetailInfo UpgradeAEIOU;
     public DetailInfo MaxHealth;
     public DetailInfo MaxTile;
 

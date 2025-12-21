@@ -19,28 +19,28 @@ public class GetTileAdjustedScoreUsecase
             'E' or
             'I' or
             'O' or
-            'U' => rewardManager.GetCurrentValue(RewardEnum.VowelUpgrade).Value,
+            'U' => rewardManager.GetCurrentValue(RewardEnum.UpgradeAEIOU).Value,
             'L' or
             'N' or
             'R' or
             'S' or
-            'T' => rewardManager.GetCurrentValue(RewardEnum.Consonant1Upgrade).Value,
+            'T' => rewardManager.GetCurrentValue(RewardEnum.UpgradeLNRST).Value,
             'B' or
             'C' or
             'D' or
             'G' or
             'M' or
-            'P' => rewardManager.GetCurrentValue(RewardEnum.Consonant2Upgrade).Value,
+            'P' => rewardManager.GetCurrentValue(RewardEnum.UpgradeBCDGMP).Value,
             'F' or
             'K' or
             'H' or
             'V' or
             'W' or
-            'Y' => rewardManager.GetCurrentValue(RewardEnum.Consonant3Upgrade).Value,
+            'Y' => rewardManager.GetCurrentValue(RewardEnum.UpgradeFKHVWY).Value,
             'J' or
             'X' or
             'Q' or
-            'Z' => rewardManager.GetCurrentValue(RewardEnum.Consonant4Upgrade).Value,
+            'Z' => rewardManager.GetCurrentValue(RewardEnum.UpgradeJXQZ).Value,
             _ => 0
         };
         return baseScore + value;

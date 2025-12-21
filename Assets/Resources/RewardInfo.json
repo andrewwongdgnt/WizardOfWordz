@@ -1,5 +1,5 @@
 { 
-  "Consonant1Upgrade": {
+  "UpgradeLNRST": {
     "title": "Upgrade consonants LNRST",
     "description": "Increase score of the letters L, N, R, S, T",
     "values": [
@@ -17,7 +17,7 @@
       }
     ]
   },
-  "Consonant2Upgrade": {
+  "UpgradeBCDGMP": {
     "title": "Upgrade consonants BCDGMP",
     "description": "Increase score of the letters B, C, D, G, M, P",
     "values": [
@@ -39,7 +39,7 @@
       }
     ]
   },
-  "Consonant3Upgrade": {
+  "UpgradeFKHVWY": {
     "title": "Upgrade consonants FKHVWY",
     "description": "Increase score of the letters F, K, H, V, W, Y",
     "values": [
@@ -65,7 +65,7 @@
       }
     ]
   },
-  "Consonant4Upgrade": {
+  "UpgradeJXQZ": {
     "title": "Upgrade consonants JXQZ",
     "description": "Increase score of the letters J, X, Q, Z",
     "values": [
@@ -87,8 +87,8 @@
       }
     ]
   },
-  "VowelUpgrade": {
-    "title": "Upgrade vowels",
+  "UpgradeAEIOU": {
+    "title": "Upgrade vowels AEIOU",
     "description": "Increase score of the letters A, E, I, O, U",
     "values": [
       {

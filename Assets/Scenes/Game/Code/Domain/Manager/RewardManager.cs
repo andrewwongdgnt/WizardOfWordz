@@ -9,7 +9,7 @@ public class RewardManager
     private readonly PlayerManager playerManager;
 
     private Dictionary<RewardEnum, Reward> availableRewards;
-    private Random random = new();
+    private readonly Random random = new();
     [Inject]
     public RewardManager(
     PlayerManager playerManager,
@@ -40,11 +40,11 @@ public class RewardManager
     {
         return reward.RewardEnum switch
         {
-            RewardEnum.Consonant1Upgrade or
-            RewardEnum.Consonant2Upgrade or
-            RewardEnum.Consonant3Upgrade or
-            RewardEnum.Consonant4Upgrade or
-            RewardEnum.VowelUpgrade => GetState(reward, reward.GetCurrentValue().Value),
+            RewardEnum.UpgradeLNRST or
+            RewardEnum.UpgradeBCDGMP or
+            RewardEnum.UpgradeFKHVWY or
+            RewardEnum.UpgradeJXQZ or
+            RewardEnum.UpgradeAEIOU => GetState(reward, reward.GetCurrentValue().Value),
             RewardEnum.MaxHealth => GetState(reward, playerManager.MaxHealth),
             RewardEnum.MaxTile => GetState(reward, playerManager.TileCount),
             _ => throw new NotImplementedException(),
@@ -54,11 +54,11 @@ public class RewardManager
     private void Init(RewardInfo rewardInfo)
     {
         availableRewards = new() {
-            { RewardEnum.Consonant1Upgrade, InitReward(rewardInfo.Consonant1Upgrade, RewardEnum.Consonant1Upgrade) },
-            { RewardEnum.Consonant2Upgrade, InitReward(rewardInfo.Consonant2Upgrade, RewardEnum.Consonant2Upgrade) },
-            { RewardEnum.Consonant3Upgrade, InitReward(rewardInfo.Consonant3Upgrade, RewardEnum.Consonant3Upgrade) },
-            { RewardEnum.Consonant4Upgrade, InitReward(rewardInfo.Consonant4Upgrade, RewardEnum.Consonant4Upgrade) },
-            { RewardEnum.VowelUpgrade, InitReward(rewardInfo.VowelUpgrade, RewardEnum.VowelUpgrade) },
+            { RewardEnum.UpgradeLNRST, InitReward(rewardInfo.UpgradeLNRST, RewardEnum.UpgradeLNRST) },
+            { RewardEnum.UpgradeBCDGMP, InitReward(rewardInfo.UpgradeBCDGMP, RewardEnum.UpgradeBCDGMP) },
+            { RewardEnum.UpgradeFKHVWY, InitReward(rewardInfo.UpgradeFKHVWY, RewardEnum.UpgradeFKHVWY) },
+            { RewardEnum.UpgradeJXQZ, InitReward(rewardInfo.UpgradeJXQZ, RewardEnum.UpgradeJXQZ) },
+            { RewardEnum.UpgradeAEIOU, InitReward(rewardInfo.UpgradeAEIOU, RewardEnum.UpgradeAEIOU) },
             { RewardEnum.MaxHealth, InitReward(rewardInfo.MaxHealth, RewardEnum.MaxHealth) },
             { RewardEnum.MaxTile, InitReward(rewardInfo.MaxTile, RewardEnum.MaxTile) }
             };

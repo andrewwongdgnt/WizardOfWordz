@@ -16,6 +16,7 @@ public class MainScript : MonoBehaviour
     public PlayerStatsContainerGameObject playerStatsContainerGameObject;
     public WorldSelectorGameObject worldSelectorGameObject;
     public LevelSelectorGameObject levelSelectorGameObject;
+    public RewardSelectorGameObject rewardSelectorGameObject;
 
     [Inject]
     private readonly RetrieveWordsFromDictionaryUsecase retrieveWordsFromDictionaryUsecase;
@@ -130,6 +131,7 @@ public class MainScript : MonoBehaviour
 
         worldSelectorGameObject.Appear(gameState is GameState.ChooseWorldState);
         levelSelectorGameObject.Appear(gameState is GameState.ChooseLevelState);
+        rewardSelectorGameObject.Appear(gameState is GameState.ChooseRewardState);
     }
 
     private void HandleAlphabetKeyPress(Key key)
@@ -276,6 +278,7 @@ public class MainScript : MonoBehaviour
         gameState = new GameState.ChooseRewardState();
         rewardIndex = 0;
         rewardsToChooseFrom = rewardManager.Present();
+        rewardSelectorGameObject.SetUp(rewardsToChooseFrom);
     }
 
     private void SelectReward()
@@ -371,8 +374,8 @@ public class MainScript : MonoBehaviour
         }
         else if (gameState is GameState.ChooseRewardState)
         {
-            //levelSelectorGameObject.UpdateState(levelsToChooseFrom[levelIndex]);
-            List<String> rewardsDisplay = rewardsToChooseFrom.Select(r =>
+            rewardSelectorGameObject.UpdateState(rewardsToChooseFrom[rewardIndex]);
+            List<string> rewardsDisplay = rewardsToChooseFrom.Select(r =>
             {
                 (int, int) pair = rewardManager.GetCurrentAndFutureState(r);
                 return $"{r.Title}: {pair.Item1}=>{pair.Item2}";
@@ -403,6 +406,8 @@ public class MainScript : MonoBehaviour
         worldSelectorGameObject.SetUp(WorldAction);
         levelSelectorGameObject.levelSelectedAction = LevelSelectedAction;
         levelSelectorGameObject.levelHoverAction = LevelHoverAction;
+        rewardSelectorGameObject.rewardSelectedAction = RewardSelectedAction;
+        rewardSelectorGameObject.rewardHoverAction = RewardHoverAction;
     }
 
     private void ResetAllStates()
@@ -514,11 +519,38 @@ public class MainScript : MonoBehaviour
 
     private void TargetNewLevel(Level level)
     {
-        int index = levelsToChooseFrom.IndexOf(level); ;
+        int index = levelsToChooseFrom.IndexOf(level);
         if (index < 0)
         {
             return;
         }
         levelIndex = index;
+    }
+
+    private void RewardSelectedAction(Reward reward)
+    {
+        TargetNewReward(reward);
+        SelectReward();
+        UpdateUIState();
+    }
+
+    private void RewardHoverAction(Reward reward)
+    {
+        int originalIndex = rewardIndex;
+        TargetNewReward(reward);
+        if (originalIndex != rewardIndex)
+        {
+            UpdateUIState();
+        }
+    }
+
+    private void TargetNewReward(Reward reward)
+    {
+        int index = rewardsToChooseFrom.IndexOf(reward);
+        if (index < 0)
+        {
+            return;
+        }
+        rewardIndex = index;
     }
 }
