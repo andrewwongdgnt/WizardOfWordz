@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class RewardSelectorGameObject : MonoBehaviour
 {
@@ -20,6 +21,9 @@ public class RewardSelectorGameObject : MonoBehaviour
 
     public Action<Reward> rewardSelectedAction;
     public Action<Reward> rewardHoverAction;
+
+    [Inject]
+    private readonly RewardManager rewardManager;
 
     private readonly Dictionary<Reward, RewardGameObject> rewardMap = new();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -62,7 +66,7 @@ public class RewardSelectorGameObject : MonoBehaviour
 
             RewardGameObject newRewardGO = Instantiate(rewardGO, rewardContainer.transform.position, Quaternion.identity);
             newRewardGO.transform.SetParent(rewardContainer.transform);
-            newRewardGO.Init(reward, sprite);
+            newRewardGO.Init(rewardManager, reward, sprite);
             rewardMap[reward] = newRewardGO;
             newRewardGO.rewardSelectedAction = rewardSelectedAction;
             newRewardGO.rewardHoverAction = rewardHoverAction;

@@ -37,5 +37,6 @@ public class GameInstaller : MonoInstaller
 
         // Component
         Container.Bind<MainScript>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<RewardSelectorGameObject>().FromComponentInHierarchy().AsSingle();
     }
 }

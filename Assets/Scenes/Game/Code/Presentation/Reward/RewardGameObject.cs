@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 using static UnityEngine.EventSystems.EventTrigger;
 
 public class RewardGameObject : MonoBehaviour
@@ -11,23 +12,25 @@ public class RewardGameObject : MonoBehaviour
     public SelectIndicatorComponent selectIndicatorComponent;
     public ApplyRarityColorComponent applyRarityComponent;
 
+    public TextMeshProUGUI titleText;
+    public TextMeshProUGUI currentStateText;
+    public TextMeshProUGUI stateText;
+    public TextMeshProUGUI futureStateText;
+
     public Action<Reward> rewardSelectedAction;
     public Action<Reward> rewardHoverAction;
-
-    public Sprite rewardContainerBaseSprite;
-    public Sprite rewardContainerRarityElementSprite;
 
     private Reward reward;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void OnSelect()
@@ -50,6 +53,7 @@ public class RewardGameObject : MonoBehaviour
     }
 
     public void Init(
+        RewardManager rewardManager,
         Reward reward,
         Sprite mainSprite
         )
@@ -58,6 +62,36 @@ public class RewardGameObject : MonoBehaviour
         applyRarityComponent.Apply(reward.GetFutureValue().RarityEnum);
         applySpriteForMainComponent.Apply(mainSprite);
         adjustSizeForMainComponent.Apply(mainSprite, GetComponent<RectTransform>());
+        InitText(rewardManager, reward);
+    }
+
+    private void InitText(
+        RewardManager rewardManager,
+        Reward reward
+        )
+    {
+        titleText.text = reward.Title;
+        (int, int) pair = rewardManager.GetCurrentAndFutureState(reward);
+
+        switch (reward.RewardEnum)
+        {
+            case RewardEnum.UpgradeLNRST:
+            case RewardEnum.UpgradeBCDGMP:
+            case RewardEnum.UpgradeFKHVWY:
+            case RewardEnum.UpgradeJXQZ:
+            case RewardEnum.UpgradeAEIOU:
+                currentStateText.text = "";
+                stateText.text = $"+{(reward.GetFutureValue().Value - reward.GetCurrentValue().Value)}";
+                futureStateText.text = "";
+                break;
+            case RewardEnum.MaxHealth:
+            case RewardEnum.MaxTile:
+                currentStateText.text = pair.Item1.ToString();
+                stateText.text = $"+{reward.GetFutureValue().Value}";
+                futureStateText.text = pair.Item2.ToString();
+                break;
+        }
+
     }
 
     private void ApplyAction(Action<Reward> action)
@@ -67,5 +101,4 @@ public class RewardGameObject : MonoBehaviour
             action(reward);
         }
     }
-
 }

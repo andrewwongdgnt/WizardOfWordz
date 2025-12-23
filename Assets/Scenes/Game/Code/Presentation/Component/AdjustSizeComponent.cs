@@ -21,7 +21,7 @@ public class AdjustSizeComponent : MonoBehaviour
         )
     {
         var vector = new Vector2(sprite.rect.width, sprite.rect.height);
-        rectTransform.sizeDelta = vector;
+        //rectTransform.sizeDelta = vector;
         image.rectTransform.sizeDelta = vector;
     }
 }
