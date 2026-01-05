@@ -15,7 +15,6 @@ public class MainScript : MonoBehaviour
     public StageContainerGameObject stageContainerGO;
     public PlayerStatsContainerGameObject playerStatsContainerGameObject;
     public WorldSelectorGameObject worldSelectorGameObject;
-    public LevelSelectorGameObject levelSelectorGameObject;
     public RewardSelectorGameObject rewardSelectorGameObject;
 
     [Inject]
@@ -47,9 +46,6 @@ public class MainScript : MonoBehaviour
 
     [Inject]
     private readonly GetWorldUseCase getWorldUseCase;
-
-    [Inject]
-    private readonly SelectLevelChoicesUseCase selectLevelChoicesUseCase;
 
     [Inject]
     private readonly CalculateLevelStateUsecase calculateLevelStateUsecase;
@@ -85,10 +81,7 @@ public class MainScript : MonoBehaviour
     private int worldIndex;
     private List<World> worlds;
 
-    // Level selection section
-    private int levelChoiceIndex;
-    private int levelIndex;
-    private List<Level> levelsToChooseFrom;
+    public ChooseLevelHandler chooseLevelHandler;
 
     // Reward selection section
     private int rewardIndex;
@@ -130,8 +123,12 @@ public class MainScript : MonoBehaviour
         }
 
         worldSelectorGameObject.Appear(gameState is GameState.ChooseWorldState);
-        levelSelectorGameObject.Appear(gameState is GameState.ChooseLevelState);
         rewardSelectorGameObject.Appear(gameState is GameState.ChooseRewardState);
+    }
+
+    private GameState GetGameState()
+    {
+        return gameState;
     }
 
     private void HandleAlphabetKeyPress(Key key)
@@ -234,7 +231,7 @@ public class MainScript : MonoBehaviour
         switch (levelState)
         {
             case FightEndStateEnum.Win:
-                levelChoiceIndex++;
+                chooseLevelHandler.NextLevelChoice();
                 UpdateUIState();
                 boardContainerGO.ClearEverything();
                 SetUpRewardSelection();
@@ -257,14 +254,12 @@ public class MainScript : MonoBehaviour
     private void SetUpLevelSelection()
     {
         gameState = new GameState.ChooseLevelState();
-        levelIndex = 0;
-        levelsToChooseFrom = selectLevelChoicesUseCase.Invoke(levelChoiceIndex, world.LevelChoices);
-        levelSelectorGameObject.SetUp(levelsToChooseFrom);
+        chooseLevelHandler.SetUpLevelSelection(world);
     }
 
     private void SelectLevel()
     {
-        Level level = levelsToChooseFrom[levelIndex];
+        Level level = chooseLevelHandler.GetLevel();
         if (level is Level.Fight)
         {
             gameState = new GameState.PlayingLevelState(LevelTypeEnum.Fight);
@@ -301,7 +296,7 @@ public class MainScript : MonoBehaviour
         }
         else if (gameState is GameState.ChooseLevelState)
         {
-            TargetNewLevel(key);
+            chooseLevelHandler.TargetNewLevel(key);
         }
         else if (gameState is GameState.ChooseRewardState)
         {
@@ -328,15 +323,6 @@ public class MainScript : MonoBehaviour
         );
     }
 
-    private void TargetNewLevel(Key key)
-    {
-        levelIndex = calculateNextIndexUsecase.Invoke(
-            key == Key.RightArrow,
-            levelIndex,
-            levelsToChooseFrom.Count
-        );
-    }
-
     private void TargetNewReward(Key key)
     {
         rewardIndex = calculateNextIndexUsecase.Invoke(
@@ -358,7 +344,7 @@ public class MainScript : MonoBehaviour
                     playerStatsContainerGameObject.UpdateState();
 
                     string word = GetCurrentWordListAsString();
-                    Debug.Log($"{playerManager.CurrentHealth}hp & Targeting: {attackIndex} & Level: {levelChoiceIndex + 1}\n{string.Join(" - ", enemies)}\n{string.Join("", allowedTiles)}\n{word}");
+                    Debug.Log($"{playerManager.CurrentHealth}hp & Targeting: {attackIndex}\n{string.Join(" - ", enemies)}\n{string.Join("", allowedTiles)}\n{word}");
                     break;
             }
         }
@@ -369,8 +355,7 @@ public class MainScript : MonoBehaviour
         }
         else if (gameState is GameState.ChooseLevelState)
         {
-            levelSelectorGameObject.UpdateState(levelsToChooseFrom[levelIndex]);
-            Debug.Log($"Picking level: {levelIndex}\n{string.Join(",", levelsToChooseFrom)}");
+            chooseLevelHandler.UpdateUIState();
         }
         else if (gameState is GameState.ChooseRewardState)
         {
@@ -404,8 +389,7 @@ public class MainScript : MonoBehaviour
         stageContainerGO.enemyHoverAction = EnemyHoverAction;
         playerStatsContainerGameObject.SetUp(playerManager);
         worldSelectorGameObject.SetUp(WorldAction);
-        levelSelectorGameObject.levelSelectedAction = LevelSelectedAction;
-        levelSelectorGameObject.levelHoverAction = LevelHoverAction;
+        chooseLevelHandler.Init(GetGameState, SelectLevel);
         rewardSelectorGameObject.rewardSelectedAction = RewardSelectedAction;
         rewardSelectorGameObject.rewardHoverAction = RewardHoverAction;
     }
@@ -414,8 +398,7 @@ public class MainScript : MonoBehaviour
     {
         attackIndex = 0;
         worldIndex = 0;
-        levelChoiceIndex = 0;
-        levelIndex = 0;
+        chooseLevelHandler.Reset();
         SetUpWorldSelection();
     }
 
@@ -430,7 +413,7 @@ public class MainScript : MonoBehaviour
     private void PopulateEnemies()
     {
         attackIndex = 0;
-        Level.Fight fightLevel = (Level.Fight)levelsToChooseFrom[levelIndex];
+        Level.Fight fightLevel = (Level.Fight) chooseLevelHandler.GetLevel();
         enemies = populateEnemiesUsecase.Invoke(fightLevel.Enemies);
         stageContainerGO.SetUp(enemies);
     }
@@ -498,33 +481,6 @@ public class MainScript : MonoBehaviour
         worldIndex = worlds.FindIndex(w => w.WorldEnum == worldEnum);
         SelectWorld();
         UpdateUIState();
-    }
-
-    private void LevelSelectedAction(Level level)
-    {
-        TargetNewLevel(level);
-        SelectLevel();
-        UpdateUIState();
-    }
-
-    private void LevelHoverAction(Level level)
-    {
-        int originalIndex = levelIndex;
-        TargetNewLevel(level);
-        if (originalIndex != levelIndex)
-        {
-            UpdateUIState();
-        }
-    }
-
-    private void TargetNewLevel(Level level)
-    {
-        int index = levelsToChooseFrom.IndexOf(level);
-        if (index < 0)
-        {
-            return;
-        }
-        levelIndex = index;
     }
 
     private void RewardSelectedAction(Reward reward)
