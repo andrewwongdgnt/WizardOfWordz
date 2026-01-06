@@ -4,17 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.LightTransport;
 using Zenject;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class MainScript : MonoBehaviour
 {
 
+    public ChooseWorldHandler chooseWorldHandler;
+    public ChooseLevelHandler chooseLevelHandler;
     public BoardContainerGameObject boardContainerGO;
     public StageContainerGameObject stageContainerGO;
     public PlayerStatsContainerGameObject playerStatsContainerGameObject;
-    public WorldSelectorGameObject worldSelectorGameObject;
     public RewardSelectorGameObject rewardSelectorGameObject;
 
     [Inject]
@@ -45,9 +44,6 @@ public class MainScript : MonoBehaviour
     private readonly CalculateEnemyMoveUsecase calculatePlayerDamageUsecase;
 
     [Inject]
-    private readonly GetWorldUseCase getWorldUseCase;
-
-    [Inject]
     private readonly CalculateLevelStateUsecase calculateLevelStateUsecase;
 
     [Inject]
@@ -76,12 +72,6 @@ public class MainScript : MonoBehaviour
     private readonly List<Tile> currentWordList = new();
     private Dictionary<string, Word> dictionary;
 
-    // World section
-    private World world;
-    private int worldIndex;
-    private List<World> worlds;
-
-    public ChooseLevelHandler chooseLevelHandler;
 
     // Reward selection section
     private int rewardIndex;
@@ -122,7 +112,6 @@ public class MainScript : MonoBehaviour
             }
         }
 
-        worldSelectorGameObject.Appear(gameState is GameState.ChooseWorldState);
         rewardSelectorGameObject.Appear(gameState is GameState.ChooseRewardState);
     }
 
@@ -140,7 +129,7 @@ public class MainScript : MonoBehaviour
         }
         else if (gameState is GameState.ChooseWorldState)
         {
-            SelectWorld();
+            SetUpLevelSelection();
         }
         else if (gameState is GameState.ChooseLevelState)
         {
@@ -245,15 +234,10 @@ public class MainScript : MonoBehaviour
         }
     }
 
-    private void SelectWorld()
-    {
-        world = worlds[worldIndex];
-        SetUpLevelSelection();
-    }
-
     private void SetUpLevelSelection()
     {
         gameState = new GameState.ChooseLevelState();
+        World world = chooseWorldHandler.GetWorld();
         chooseLevelHandler.SetUpLevelSelection(world);
     }
 
@@ -292,7 +276,7 @@ public class MainScript : MonoBehaviour
         }
         else if (gameState is GameState.ChooseWorldState)
         {
-            TargetNewWorld(key);
+            chooseWorldHandler.TargetNewWorld(key);
         }
         else if (gameState is GameState.ChooseLevelState)
         {
@@ -311,15 +295,6 @@ public class MainScript : MonoBehaviour
             key == Key.RightArrow,
             attackIndex,
             enemies
-        );
-    }
-
-    private void TargetNewWorld(Key key)
-    {
-        worldIndex = calculateNextIndexUsecase.Invoke(
-            key == Key.RightArrow,
-            worldIndex,
-            worlds.Count
         );
     }
 
@@ -350,7 +325,7 @@ public class MainScript : MonoBehaviour
         }
         else if (gameState is GameState.ChooseWorldState)
         {
-            Debug.Log($"Picking world: {worldIndex}\n{string.Join(",", worlds)}"); 
+            chooseWorldHandler.UpdateUIState();
             playerManager.FullHeath();
         }
         else if (gameState is GameState.ChooseLevelState)
@@ -388,7 +363,7 @@ public class MainScript : MonoBehaviour
         stageContainerGO.enemySelectedAction = EnemySelectedAction;
         stageContainerGO.enemyHoverAction = EnemyHoverAction;
         playerStatsContainerGameObject.SetUp(playerManager);
-        worldSelectorGameObject.SetUp(WorldAction);
+        chooseWorldHandler.Init(GetGameState, SetUpLevelSelection);
         chooseLevelHandler.Init(GetGameState, SelectLevel);
         rewardSelectorGameObject.rewardSelectedAction = RewardSelectedAction;
         rewardSelectorGameObject.rewardHoverAction = RewardHoverAction;
@@ -397,17 +372,15 @@ public class MainScript : MonoBehaviour
     private void ResetAllStates()
     {
         attackIndex = 0;
-        worldIndex = 0;
+        chooseWorldHandler.Reset();
         chooseLevelHandler.Reset();
         SetUpWorldSelection();
     }
 
     private void SetUpWorldSelection()
     {
-        worldIndex = 0;
         gameState = new GameState.ChooseWorldState();
-        worlds = Enum.GetValues(typeof(WorldEnum)).Cast<WorldEnum>().ToList()
-           .Select(w => getWorldUseCase.Invoke(w)).ToList();
+        chooseWorldHandler.SetUpWorldSelection();
     }
 
     private void PopulateEnemies()
@@ -474,13 +447,6 @@ public class MainScript : MonoBehaviour
             return;
         }
         attackIndex = index;
-    }
-
-    private void WorldAction(WorldEnum worldEnum)
-    {
-        worldIndex = worlds.FindIndex(w => w.WorldEnum == worldEnum);
-        SelectWorld();
-        UpdateUIState();
     }
 
     private void RewardSelectedAction(Reward reward)
