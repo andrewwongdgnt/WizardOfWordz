@@ -11,10 +11,10 @@ public class MainScript : MonoBehaviour
 
     public ChooseWorldHandler chooseWorldHandler;
     public ChooseLevelHandler chooseLevelHandler;
+    public ChooseRewardHandler chooseRewardHandler;
     public BoardContainerGameObject boardContainerGO;
     public StageContainerGameObject stageContainerGO;
     public PlayerStatsContainerGameObject playerStatsContainerGameObject;
-    public RewardSelectorGameObject rewardSelectorGameObject;
 
     [Inject]
     private readonly RetrieveWordsFromDictionaryUsecase retrieveWordsFromDictionaryUsecase;
@@ -49,9 +49,6 @@ public class MainScript : MonoBehaviour
     [Inject]
     private readonly PlayerManager playerManager;
 
-    [Inject]
-    private readonly RewardManager rewardManager;
-
     private readonly ISet<Key> monitoredKeys = new HashSet<Key>()
     {
         Key.A, Key.B, Key.C, Key.D, Key.E, Key.F, Key.G, Key.H, Key.I, Key.J,
@@ -71,11 +68,6 @@ public class MainScript : MonoBehaviour
     private List<Enemy> enemies;
     private readonly List<Tile> currentWordList = new();
     private Dictionary<string, Word> dictionary;
-
-
-    // Reward selection section
-    private int rewardIndex;
-    private List<Reward> rewardsToChooseFrom;
 
     private GameState gameState;
 
@@ -111,8 +103,6 @@ public class MainScript : MonoBehaviour
                 HandleArrowKeyPress(key);
             }
         }
-
-        rewardSelectorGameObject.Appear(gameState is GameState.ChooseRewardState);
     }
 
     private GameState GetGameState()
@@ -234,6 +224,12 @@ public class MainScript : MonoBehaviour
         }
     }
 
+    private void SetUpWorldSelection()
+    {
+        gameState = new GameState.ChooseWorldState();
+        chooseWorldHandler.SetUpWorldSelection();
+    }
+
     private void SetUpLevelSelection()
     {
         gameState = new GameState.ChooseLevelState();
@@ -255,15 +251,12 @@ public class MainScript : MonoBehaviour
     private void SetUpRewardSelection()
     {
         gameState = new GameState.ChooseRewardState();
-        rewardIndex = 0;
-        rewardsToChooseFrom = rewardManager.Present();
-        rewardSelectorGameObject.SetUp(rewardsToChooseFrom);
+        chooseRewardHandler.SetUpRewardSelection();
     }
 
     private void SelectReward()
     {
-        Reward reward = rewardsToChooseFrom[rewardIndex];
-        rewardManager.Pick(reward);
+        Reward reward = chooseRewardHandler.PickReward();
         playerManager.HandleReward(reward);
         SetUpLevelSelection();
     }
@@ -284,7 +277,7 @@ public class MainScript : MonoBehaviour
         }
         else if (gameState is GameState.ChooseRewardState)
         {
-            TargetNewReward(key);
+            chooseRewardHandler.TargetNewReward(key);
         }
         UpdateUIState();
     }
@@ -295,15 +288,6 @@ public class MainScript : MonoBehaviour
             key == Key.RightArrow,
             attackIndex,
             enemies
-        );
-    }
-
-    private void TargetNewReward(Key key)
-    {
-        rewardIndex = calculateNextIndexUsecase.Invoke(
-            key == Key.RightArrow,
-            rewardIndex,
-            rewardsToChooseFrom.Count
         );
     }
 
@@ -334,13 +318,7 @@ public class MainScript : MonoBehaviour
         }
         else if (gameState is GameState.ChooseRewardState)
         {
-            rewardSelectorGameObject.UpdateState(rewardsToChooseFrom[rewardIndex]);
-            List<string> rewardsDisplay = rewardsToChooseFrom.Select(r =>
-            {
-                (int, int) pair = rewardManager.GetCurrentAndFutureState(r);
-                return $"{r.Title}: {pair.Item1}=>{pair.Item2}";
-            }).ToList();
-            Debug.Log($"Picking reward: {rewardIndex}\n{string.Join(",", rewardsDisplay)}");
+            chooseRewardHandler.UpdateUIState();
         }
 
         if (gameState is not GameState.PlayingLevelState)
@@ -365,8 +343,7 @@ public class MainScript : MonoBehaviour
         playerStatsContainerGameObject.SetUp(playerManager);
         chooseWorldHandler.Init(GetGameState, SetUpLevelSelection);
         chooseLevelHandler.Init(GetGameState, SelectLevel);
-        rewardSelectorGameObject.rewardSelectedAction = RewardSelectedAction;
-        rewardSelectorGameObject.rewardHoverAction = RewardHoverAction;
+        chooseRewardHandler.Init(GetGameState, SelectReward);
     }
 
     private void ResetAllStates()
@@ -374,13 +351,8 @@ public class MainScript : MonoBehaviour
         attackIndex = 0;
         chooseWorldHandler.Reset();
         chooseLevelHandler.Reset();
+        chooseRewardHandler.Reset();
         SetUpWorldSelection();
-    }
-
-    private void SetUpWorldSelection()
-    {
-        gameState = new GameState.ChooseWorldState();
-        chooseWorldHandler.SetUpWorldSelection();
     }
 
     private void PopulateEnemies()
@@ -447,32 +419,5 @@ public class MainScript : MonoBehaviour
             return;
         }
         attackIndex = index;
-    }
-
-    private void RewardSelectedAction(Reward reward)
-    {
-        TargetNewReward(reward);
-        SelectReward();
-        UpdateUIState();
-    }
-
-    private void RewardHoverAction(Reward reward)
-    {
-        int originalIndex = rewardIndex;
-        TargetNewReward(reward);
-        if (originalIndex != rewardIndex)
-        {
-            UpdateUIState();
-        }
-    }
-
-    private void TargetNewReward(Reward reward)
-    {
-        int index = rewardsToChooseFrom.IndexOf(reward);
-        if (index < 0)
-        {
-            return;
-        }
-        rewardIndex = index;
     }
 }
