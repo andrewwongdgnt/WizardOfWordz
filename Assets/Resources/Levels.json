@@ -190,5 +190,25 @@
         "rarity": "Rare"
       }
     ]
+  },
+  "R_1_4_a": {
+    "type": "Rest",
+    "title": "Rest 4a",
+    "description": "Rest 4a Desc",
+    "choices": [
+      "heal",
+      "strengthen"
+    ]
+  },
+  "T_1_4_b": {
+    "type": "Timed",
+    "title": "Timed 4b",
+    "description": "Timed 4b Desc",
+    "enemies": [
+      {
+        "enemy": "BigNote",
+        "rarity": "Common"
+      }
+    ]
   }
 }

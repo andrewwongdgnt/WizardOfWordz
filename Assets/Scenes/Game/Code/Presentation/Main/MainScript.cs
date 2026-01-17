@@ -35,9 +35,6 @@ public class MainScript : MonoBehaviour
     private readonly GetNextTargetUsecase getNextTargetUsecase;
 
     [Inject]
-    private readonly CalculateNextIndexUsecase calculateNextIndexUsecase;
-
-    [Inject]
     private readonly CalculateTurnFromEnemiesUsecase calculateTurnFromEnemiesUsecase;
 
     [Inject]
