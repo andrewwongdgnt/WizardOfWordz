@@ -1,6 +1,4 @@
-using System;
 using Zenject;
-using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerManager
 {

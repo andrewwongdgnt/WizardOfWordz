@@ -4,8 +4,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
-using Zenject.Asteroids;
-using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 public class ChooseRewardHandler : MonoBehaviour
 {

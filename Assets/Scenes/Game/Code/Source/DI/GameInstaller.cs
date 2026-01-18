@@ -1,5 +1,3 @@
-using Unity.VisualScripting;
-using UnityEngine;
 using Zenject;
 
 public class GameInstaller : MonoInstaller

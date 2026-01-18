@@ -11,6 +11,7 @@ public class CalculateEnemyMoveUsecase
         PlayerManager playerManager
         )
     {
+
         if (movesPair.IsEmpty())
         {
             return;

@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.LightTransport;
 using Zenject;
-using Zenject.Asteroids;
 
 public class ChooseLevelHandler : MonoBehaviour
 {
