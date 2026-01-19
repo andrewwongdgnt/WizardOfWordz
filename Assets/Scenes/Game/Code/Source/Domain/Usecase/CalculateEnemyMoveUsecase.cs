@@ -1,14 +1,25 @@
+using ModestTree;
 using System.Collections.Generic;
 using System.Linq;
-using ModestTree;
 using UnityEngine;
+using Zenject;
 
 public class CalculateEnemyMoveUsecase
 {
+    private readonly IPlayerManager playerManager;
+
+
+    [Inject]
+    public CalculateEnemyMoveUsecase(
+      IPlayerManager playerManager
+      )
+    {
+        this.playerManager = playerManager;
+    }
+
     public void Invoke(
         List<(int enemyIndex, Enemy.Move move)> movesPair,
-        List<Enemy> enemies,
-        PlayerManager playerManager
+        List<Enemy> enemies
         )
     {
 

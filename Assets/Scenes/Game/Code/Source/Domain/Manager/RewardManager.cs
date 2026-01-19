@@ -6,13 +6,13 @@ using static Reward;
 
 public class RewardManager
 {
-    private readonly PlayerManager playerManager;
+    private readonly IPlayerManager playerManager;
 
     private Dictionary<RewardEnum, Reward> availableRewards;
     private readonly Random random = new();
     [Inject]
     public RewardManager(
-    PlayerManager playerManager,
+    IPlayerManager playerManager,
     RewardInfoRepository rewardInfoRepository
     )
     {

@@ -1,6 +1,6 @@
 using Zenject;
 
-public class PlayerManager
+public class PlayerManager: IPlayerManager
 {
     private readonly PlayerInfo playerInfo;
 

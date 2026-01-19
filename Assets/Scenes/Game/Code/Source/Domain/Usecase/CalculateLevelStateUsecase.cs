@@ -5,7 +5,7 @@ public class CalculateLevelStateUsecase
 {
     public FightEndStateEnum Invoke(
         List<Enemy> enemies,
-        PlayerManager playerManager
+        IPlayerManager playerManager
         )
     {
         if (enemies.All(e => e.IsDead()))

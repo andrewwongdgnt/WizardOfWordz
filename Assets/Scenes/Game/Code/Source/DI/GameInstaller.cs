@@ -14,7 +14,7 @@ public class GameInstaller : MonoInstaller
         Container.Bind<WorldInfoRepository>().To<WorldInfoRepositoryImpl>().AsSingle();
 
         // Manager
-        Container.Bind<PlayerManager>().AsSingle();
+        Container.Bind<IPlayerManager>().To<PlayerManager>().AsSingle();
         Container.Bind<RewardManager>().AsSingle();
 
         // Usecase

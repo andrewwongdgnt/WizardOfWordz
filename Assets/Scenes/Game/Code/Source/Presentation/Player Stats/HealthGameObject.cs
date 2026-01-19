@@ -6,18 +6,7 @@ public class HealthGameObject : MonoBehaviour
 
     public TextMeshProUGUI healthText;
 
-    private PlayerManager playerManager;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    private IPlayerManager playerManager;
 
     public void UpdateState()
     {
@@ -28,13 +17,13 @@ public class HealthGameObject : MonoBehaviour
         UpdateHealth(playerManager);
     }
 
-    public void Init(PlayerManager playerManager)
+    public void Init(IPlayerManager playerManager)
     {
         this.playerManager = playerManager;
         UpdateHealth(playerManager);
     }
 
-    private void UpdateHealth(PlayerManager playerManager)
+    private void UpdateHealth(IPlayerManager playerManager)
     {
         healthText.text = $"{playerManager.CurrentHealth}/{playerManager.MaxHealth}";
     }

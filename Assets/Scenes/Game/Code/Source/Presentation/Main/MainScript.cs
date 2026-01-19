@@ -37,13 +37,13 @@ public class MainScript : MonoBehaviour
     private readonly CalculateTurnFromEnemiesUsecase calculateTurnFromEnemiesUsecase;
 
     [Inject]
-    private readonly CalculateEnemyMoveUsecase calculatePlayerDamageUsecase;
+    private readonly CalculateEnemyMoveUsecase calculateEnemyMoveUsecase;
 
     [Inject]
     private readonly CalculateLevelStateUsecase calculateLevelStateUsecase;
 
     [Inject]
-    private readonly PlayerManager playerManager;
+    private readonly IPlayerManager playerManager;
 
     private readonly ISet<Key> monitoredKeys = new HashSet<Key>()
     {
@@ -191,10 +191,9 @@ public class MainScript : MonoBehaviour
         List<(int enemyIndex, Enemy.Move move)> movesPair = calculateTurnFromEnemiesUsecase.Invoke(
             enemies
             );
-        calculatePlayerDamageUsecase.Invoke(
+        calculateEnemyMoveUsecase.Invoke(
             movesPair,
-            enemies,
-            playerManager
+            enemies
             );
 
         return true;
