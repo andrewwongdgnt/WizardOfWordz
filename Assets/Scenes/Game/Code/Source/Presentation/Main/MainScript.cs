@@ -40,7 +40,7 @@ public class MainScript : MonoBehaviour
     private readonly CalculateEnemyMoveUsecase calculateEnemyMoveUsecase;
 
     [Inject]
-    private readonly CalculateLevelStateUsecase calculateLevelStateUsecase;
+    private readonly CalculateFightEndStateUsecase calculateFightEndStateUsecase;
 
     [Inject]
     private readonly IPlayerManager playerManager;
@@ -201,7 +201,7 @@ public class MainScript : MonoBehaviour
 
     private void ProcessLevelState()
     {
-        FightEndStateEnum levelState = calculateLevelStateUsecase.Invoke(enemies, playerManager);
+        FightEndStateEnum levelState = calculateFightEndStateUsecase.Invoke(enemies);
         switch (levelState)
         {
             case FightEndStateEnum.Win:

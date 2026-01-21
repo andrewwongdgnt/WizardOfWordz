@@ -8,7 +8,6 @@ public class CalculateEnemyMoveUsecase
 {
     private readonly IPlayerManager playerManager;
 
-
     [Inject]
     public CalculateEnemyMoveUsecase(
       IPlayerManager playerManager

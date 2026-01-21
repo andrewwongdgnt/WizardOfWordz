@@ -48,7 +48,7 @@ public class Enemy
             CurrentHealth = MaxHealth;
     }
 
-    public bool IsDead()
+    public virtual bool IsDead()
     {
         return CurrentHealth <= 0;
     }

@@ -15,13 +15,13 @@ public class CalculateEnemyMoveUsecaseTest
             yield return new TestCaseData(
                 new List<(int enemyIndex, Enemy.Move move)>
                 {
-                    generateMovePair(0, 1, MoveEnum.Heal),
-                    generateMovePair(1, 2, MoveEnum.Heal)
+                    GenerateMocks.GenerateMovePair(0, 1, MoveEnum.Heal),
+                    GenerateMocks.GenerateMovePair(1, 2, MoveEnum.Heal)
                 },
                 new List<Enemy>
                 {
-                    generateMockEnemy(),
-                    generateMockEnemy()
+                    GenerateMocks.GenerateMockEnemy(),
+                    GenerateMocks.GenerateMockEnemy()
                 },
                 new List<(MoveEnum moveEnum, int enemyIndex, int value, int repeats)>
                 {
@@ -33,13 +33,13 @@ public class CalculateEnemyMoveUsecaseTest
             yield return new TestCaseData(
                 new List<(int enemyIndex, Enemy.Move move)>
                 {
-                    generateMovePair(0, 2, MoveEnum.Heal),
-                    generateMovePair(1, 2, MoveEnum.Heal)
+                    GenerateMocks.GenerateMovePair(0, 2, MoveEnum.Heal),
+                    GenerateMocks.GenerateMovePair(1, 2, MoveEnum.Heal)
                 },
                 new List<Enemy>
                 {
-                    generateMockEnemy(),
-                    generateMockEnemy()
+                    GenerateMocks.GenerateMockEnemy(),
+                    GenerateMocks.GenerateMockEnemy()
                 },
                 new List<(MoveEnum moveEnum, int enemyIndex, int value, int repeats)>
                 {
@@ -51,13 +51,13 @@ public class CalculateEnemyMoveUsecaseTest
             yield return new TestCaseData(
                 new List<(int enemyIndex, Enemy.Move move)>
                 {
-                    generateMovePair(0, 1, MoveEnum.Attack),
-                    generateMovePair(1, 2, MoveEnum.Attack),
+                    GenerateMocks.GenerateMovePair(0, 1, MoveEnum.Attack),
+                    GenerateMocks.GenerateMovePair(1, 2, MoveEnum.Attack),
                 },
                 new List<Enemy>
                 {
-                    generateMockEnemy(),
-                    generateMockEnemy()
+                    GenerateMocks.GenerateMockEnemy(),
+                    GenerateMocks.GenerateMockEnemy()
                 },
                 new List<(MoveEnum moveEnum, int enemyIndex, int value, int repeats)>
                 {
@@ -69,15 +69,15 @@ public class CalculateEnemyMoveUsecaseTest
             yield return new TestCaseData(
                  new List<(int enemyIndex, Enemy.Move move)>
                  {
-                    generateMovePair(0, 9, MoveEnum.Attack),
-                    generateMovePair(1, 9, MoveEnum.Attack),
-                    generateMovePair(2, 9, MoveEnum.Attack)
+                    GenerateMocks.GenerateMovePair(0, 9, MoveEnum.Attack),
+                    GenerateMocks.GenerateMovePair(1, 9, MoveEnum.Attack),
+                    GenerateMocks.GenerateMovePair(2, 9, MoveEnum.Attack)
                  },
                  new List<Enemy>
                  {
-                    generateMockEnemy(),
-                    generateMockEnemy(),
-                    generateMockEnemy()
+                    GenerateMocks.GenerateMockEnemy(),
+                    GenerateMocks.GenerateMockEnemy(),
+                    GenerateMocks.GenerateMockEnemy()
                  },
                  new List<(MoveEnum moveEnum, int enemyIndex, int value, int repeats)>
                  {
@@ -88,14 +88,14 @@ public class CalculateEnemyMoveUsecaseTest
             yield return new TestCaseData(
                  new List<(int enemyIndex, Enemy.Move move)>
                  {
-                    generateMovePair(0, 2, MoveEnum.Attack),
-                    generateMovePair(2, 5, MoveEnum.Attack),
+                    GenerateMocks.GenerateMovePair(0, 2, MoveEnum.Attack),
+                    GenerateMocks.GenerateMovePair(2, 5, MoveEnum.Attack),
                  },
                  new List<Enemy>
                  {
-                    generateMockEnemy(),
-                    generateMockEnemy(),
-                    generateMockEnemy()
+                    GenerateMocks.GenerateMockEnemy(),
+                    GenerateMocks.GenerateMockEnemy(),
+                    GenerateMocks.GenerateMockEnemy()
                  },
                  new List<(MoveEnum moveEnum, int enemyIndex, int value, int repeats)>
                  {
@@ -107,14 +107,14 @@ public class CalculateEnemyMoveUsecaseTest
             yield return new TestCaseData(
                  new List<(int enemyIndex, Enemy.Move move)>
                  {
-                    generateMovePair(0, 2, MoveEnum.Attack),
-                    generateMovePair(1, 5, MoveEnum.Heal),
+                    GenerateMocks.GenerateMovePair(0, 2, MoveEnum.Attack),
+                    GenerateMocks.GenerateMovePair(1, 5, MoveEnum.Heal),
                  },
                  new List<Enemy>
                  {
-                    generateMockEnemy(),
-                    generateMockEnemy(),
-                    generateMockEnemy()
+                    GenerateMocks.GenerateMockEnemy(),
+                    GenerateMocks.GenerateMockEnemy(),
+                    GenerateMocks.GenerateMockEnemy()
                  },
                  new List<(MoveEnum moveEnum, int enemyIndex, int value, int repeats)>
                  {
@@ -130,13 +130,6 @@ public class CalculateEnemyMoveUsecaseTest
     {
         mockPlayerManager = Substitute.For<IPlayerManager>();
         sut = new(playerManager: mockPlayerManager);
-    }
-
-    [TearDown]
-    public void TearDown()
-    {
-        // Optional cleanup
-        // Example: reset static state, dispose resources
     }
 
     [Test]
@@ -167,36 +160,5 @@ public class CalculateEnemyMoveUsecaseTest
             }
         );
 
-    }
-
-    private static Enemy generateMockEnemy()
-    {
-        return Substitute.For<Enemy>(
-                        EnemyEnum.Note,
-                        RarityEnum.Common,
-                        "",
-                        "",
-                        100,
-                        new List<Move>() { }
-                    );
-    }
-
-    private static (int enemyIndex, Enemy.Move move) generateMovePair(
-        int enemyIndex,
-        int value,
-        MoveEnum moveEnum
-        )
-    {
-        return (
-                    enemyIndex,
-                    new(
-                        "",
-                        "",
-                        value: value,
-                        1,
-                        1,
-                        moveEnum
-                    )
-                );
     }
 }
