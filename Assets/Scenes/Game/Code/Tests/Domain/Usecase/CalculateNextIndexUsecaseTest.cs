@@ -1,5 +1,6 @@
 using NSubstitute;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using static Enemy;
 
@@ -71,5 +72,17 @@ public class CalculateNextIndexUsecaseTest
         )
     {
         Assert.AreEqual(expected, sut.Invoke(preferRight, currentIndex, max));
+    }
+
+    public static CalculateNextIndexUsecase GenerateMock()
+    {
+        return GenerateMock(_ => { });
+    }
+
+    public static CalculateNextIndexUsecase GenerateMock(Action<CalculateNextIndexUsecase> action)
+    {
+        CalculateNextIndexUsecase mock = Substitute.For<CalculateNextIndexUsecase>();
+        action(mock);
+        return mock;
     }
 }

@@ -1,12 +1,13 @@
 using NSubstitute;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using static Enemy;
 
 public class CalculateFightEndStateUsecaseTest
 {
     private CalculateFightEndStateUsecase sut;
-    private IPlayerManager mockPlayerManager;
+    private PlayerManager mockPlayerManager;
 
     public static IEnumerable<TestCaseData> InvokeTestCases
     {
@@ -15,13 +16,13 @@ public class CalculateFightEndStateUsecaseTest
             yield return new TestCaseData(
                 new List<Enemy>
                 {
-                    GenerateMocks.GenerateMockEnemy(e =>
+                    MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead().Returns(false);
+                        e.IsDead2().Returns(false);
                     }),  
-                    GenerateMocks.GenerateMockEnemy(e =>
+                    MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead().Returns(false);
+                        e.IsDead2().Returns(false);
                     })
                 },
                 false,
@@ -31,13 +32,13 @@ public class CalculateFightEndStateUsecaseTest
             yield return new TestCaseData(
                 new List<Enemy>
                 {
-                    GenerateMocks.GenerateMockEnemy(e =>
+                    MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead().Returns(false);
+                        e.IsDead2().Returns(false);
                     }),
-                    GenerateMocks.GenerateMockEnemy(e =>
+                    MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead().Returns(true);
+                        e.IsDead2().Returns(true);
                     })
                 },
                 false,
@@ -47,13 +48,13 @@ public class CalculateFightEndStateUsecaseTest
             yield return new TestCaseData(
                 new List<Enemy>
                 {
-                    GenerateMocks.GenerateMockEnemy(e =>
+                    MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead().Returns(true);
+                        e.IsDead2().Returns(true);
                     }),
-                    GenerateMocks.GenerateMockEnemy(e =>
+                    MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead().Returns(true);
+                        e.IsDead2().Returns(true);
                     })
                 },
                 false,
@@ -63,13 +64,13 @@ public class CalculateFightEndStateUsecaseTest
             yield return new TestCaseData(
                 new List<Enemy>
                 {
-                    GenerateMocks.GenerateMockEnemy(e =>
+                    MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead().Returns(false);
+                        e.IsDead2().Returns(false);
                     }),
-                    GenerateMocks.GenerateMockEnemy(e =>
+                    MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead().Returns(false);
+                        e.IsDead2().Returns(false);
                     })
                 },
                 true,
@@ -79,13 +80,13 @@ public class CalculateFightEndStateUsecaseTest
             yield return new TestCaseData(
                 new List<Enemy>
                 {
-                    GenerateMocks.GenerateMockEnemy(e =>
+                    MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead().Returns(false);
+                        e.IsDead2().Returns(false);
                     }),
-                    GenerateMocks.GenerateMockEnemy(e =>
+                    MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead().Returns(true);
+                        e.IsDead2().Returns(true);
                     })
                 },
                 true,
@@ -95,13 +96,13 @@ public class CalculateFightEndStateUsecaseTest
             yield return new TestCaseData(
                 new List<Enemy>
                 {
-                    GenerateMocks.GenerateMockEnemy(e =>
+                    MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead().Returns(true);
+                        e.IsDead2().Returns(true);
                     }),
-                    GenerateMocks.GenerateMockEnemy(e =>
+                    MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead().Returns(true);
+                        e.IsDead2().Returns(true);
                     })
                 },
                 true,
@@ -113,14 +114,14 @@ public class CalculateFightEndStateUsecaseTest
     [SetUp]
     public void SetUp()
     {
-        mockPlayerManager = Substitute.For<IPlayerManager>();
+        mockPlayerManager = PlayerManagerTest.GenerateMock();
         sut = new(playerManager: mockPlayerManager);
     }
 
     [Test]
     [TestCaseSource(nameof(InvokeTestCases))]
     public void TestInvoke(
-        List<Enemy> enemies,
+        List<Enemy> mockEnemies,
         bool isPlayerDead,
         FightEndStateEnum expected
         )
@@ -128,10 +129,25 @@ public class CalculateFightEndStateUsecaseTest
         mockPlayerManager.IsDead().Returns(isPlayerDead);
 
         FightEndStateEnum result = sut.Invoke(
-            enemies: enemies
+            enemies: mockEnemies
             );
 
         Assert.AreEqual(expected, result);
 
+        TestUtils.ClearReceivedCalls(mockEnemies);
+    }
+
+    public static CalculateFightEndStateUsecase GenerateMock()
+    {
+        return GenerateMock(_ => { });
+    }
+
+    public static CalculateFightEndStateUsecase GenerateMock(Action<CalculateFightEndStateUsecase> action)
+    {
+        CalculateFightEndStateUsecase mock = Substitute.For<CalculateFightEndStateUsecase>(
+             PlayerManagerTest.GenerateMock()
+             );
+        action(mock);
+        return mock;
     }
 }

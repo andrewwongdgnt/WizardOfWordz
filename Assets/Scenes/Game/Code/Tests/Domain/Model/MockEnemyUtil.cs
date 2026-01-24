@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using static Enemy;
 
-public class GenerateMocks
+public class MockEnemyUtil
 {
     public static Enemy GenerateMockEnemy()
     {

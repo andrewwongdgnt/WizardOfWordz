@@ -42,7 +42,7 @@ public class ProcessWordUsecase
                     return acc + adjustedScore;
                 });
             Debug.Log($"{word} is a word worth {score} and it is {foundWord.Tag}");
-            enemies[attackIndex].UpdateHealthBy(-score);
+            enemies[attackIndex].UpdateHealthBy2(-score);
         }
         else
         {

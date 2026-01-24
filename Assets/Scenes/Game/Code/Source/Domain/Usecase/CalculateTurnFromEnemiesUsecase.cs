@@ -18,7 +18,7 @@ public class CalculateTurnFromEnemiesUsecase
     {
 
         List<(int, Enemy)> aliveEnemies = enemies.Select((e, i) => (i, e))
-            .Where(p => !p.e.IsDead())
+            .Where(p => !p.e.IsDead2())
             .ToList();
 
         List<(int, Enemy.Move)> moveSet = new();

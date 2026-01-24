@@ -39,27 +39,27 @@ public class Enemy
         Moves = moves;
     }
 
-    public void UpdateHealthBy(int damage)
+    public virtual void UpdateHealthBy2(int damage)
     {
-        if (!IsDead())
+        if (!IsDead2())
             CurrentHealth += damage;
 
         if (CurrentHealth > MaxHealth)
             CurrentHealth = MaxHealth;
     }
 
-    public virtual bool IsDead()
+    public virtual bool IsDead2()
     {
         return CurrentHealth <= 0;
     }
 
-    public void SetCurrentMove(Enemy.Move move)
+    public virtual void SetCurrentMove(Enemy.Move move)
     {
         CurrentMove = move;
         TurnsRemaining = move.Wait;
     }
 
-    public string ShortLabel()
+    public virtual string ShortLabel()
     {
         return $"{RarityEnum} {Title}";
     }

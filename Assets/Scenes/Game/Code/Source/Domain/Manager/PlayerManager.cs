@@ -1,6 +1,6 @@
 using Zenject;
 
-public class PlayerManager: IPlayerManager
+public class PlayerManager
 {
     private readonly PlayerInfo playerInfo;
 
@@ -17,14 +17,14 @@ public class PlayerManager: IPlayerManager
         playerInfo = playerInfoRepository.Get();
     }
 
-    public void Init()
+    public virtual void Init()
     {
         MaxHealth = playerInfo.health;
         CurrentHealth = playerInfo.health;
         TileCount = playerInfo.tileCount;
     }
 
-    public void UpdateHealthBy(int value)
+    public virtual void UpdateHealthBy(int value)
     {
         CurrentHealth += value;
         if (CurrentHealth > MaxHealth)
@@ -33,18 +33,18 @@ public class PlayerManager: IPlayerManager
             CurrentHealth = 0;
     }
 
-    public bool IsDead()
+    public virtual bool IsDead()
     {
         return CurrentHealth <= 0;
     }
 
     // TODO temp code
-    public void FullHeath()
+    public virtual void FullHeath()
     {
         CurrentHealth = MaxHealth;
     }
 
-    public void HandleReward(Reward reward)
+    public virtual void HandleReward(Reward reward)
     {
         switch(reward.RewardEnum)
         {

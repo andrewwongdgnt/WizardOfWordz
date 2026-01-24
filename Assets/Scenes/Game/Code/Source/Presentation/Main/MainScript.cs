@@ -43,7 +43,7 @@ public class MainScript : MonoBehaviour
     private readonly CalculateFightEndStateUsecase calculateFightEndStateUsecase;
 
     [Inject]
-    private readonly IPlayerManager playerManager;
+    private readonly PlayerManager playerManager;
 
     private readonly ISet<Key> monitoredKeys = new HashSet<Key>()
     {
@@ -179,7 +179,7 @@ public class MainScript : MonoBehaviour
             attackIndex
             );
 
-        if (enemies[attackIndex].IsDead())
+        if (enemies[attackIndex].IsDead2())
         {
             attackIndex = getNextTargetUsecase.Invoke(
                 true,

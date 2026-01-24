@@ -4,11 +4,11 @@ using Zenject;
 
 public class CalculateFightEndStateUsecase
 {
-    private readonly IPlayerManager playerManager;
+    private readonly PlayerManager playerManager;
 
     [Inject]
     public CalculateFightEndStateUsecase(
-      IPlayerManager playerManager
+      PlayerManager playerManager
       )
     {
         this.playerManager = playerManager;
@@ -23,7 +23,7 @@ public class CalculateFightEndStateUsecase
             return FightEndStateEnum.Lose;
         }
 
-        if (enemies.All(e => e.IsDead()))
+        if (enemies.All(e => e.IsDead2()))
         {
 
             return FightEndStateEnum.Win;

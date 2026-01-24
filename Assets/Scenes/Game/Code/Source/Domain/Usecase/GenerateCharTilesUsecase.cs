@@ -7,14 +7,14 @@ public class GenerateCharTilesUsecase
 {
     private readonly GetTileAdjustedScoreUsecase getTileAdjustedScoreUsecase;
     private readonly LetterDistributionRepository letterDistributionRepository;
-    private readonly IPlayerManager playerManager;
+    private readonly PlayerManager playerManager;
     private readonly Random random = new();
 
     [Inject]
     public GenerateCharTilesUsecase(
         GetTileAdjustedScoreUsecase getTileAdjustedScoreUsecase,
         LetterDistributionRepository letterDistributionRepository,
-        IPlayerManager playerManager
+        PlayerManager playerManager
         )
     {
         this.getTileAdjustedScoreUsecase = getTileAdjustedScoreUsecase;

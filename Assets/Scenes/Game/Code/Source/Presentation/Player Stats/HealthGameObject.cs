@@ -6,7 +6,7 @@ public class HealthGameObject : MonoBehaviour
 
     public TextMeshProUGUI healthText;
 
-    private IPlayerManager playerManager;
+    private PlayerManager playerManager;
 
     public void UpdateState()
     {
@@ -17,13 +17,13 @@ public class HealthGameObject : MonoBehaviour
         UpdateHealth(playerManager);
     }
 
-    public void Init(IPlayerManager playerManager)
+    public void Init(PlayerManager playerManager)
     {
         this.playerManager = playerManager;
         UpdateHealth(playerManager);
     }
 
-    private void UpdateHealth(IPlayerManager playerManager)
+    private void UpdateHealth(PlayerManager playerManager)
     {
         healthText.text = $"{playerManager.CurrentHealth}/{playerManager.MaxHealth}";
     }

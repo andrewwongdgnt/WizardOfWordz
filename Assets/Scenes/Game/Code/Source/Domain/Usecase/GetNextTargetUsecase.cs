@@ -25,7 +25,7 @@ public class GetNextTargetUsecase
             {
                 newAttackIndex = enemyCount - 1;
             }
-            if (!enemies[newAttackIndex].IsDead())
+            if (!enemies[newAttackIndex].IsDead2())
             {
                 break;
             }

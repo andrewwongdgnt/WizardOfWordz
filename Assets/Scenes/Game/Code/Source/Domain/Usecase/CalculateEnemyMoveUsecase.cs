@@ -6,11 +6,11 @@ using Zenject;
 
 public class CalculateEnemyMoveUsecase
 {
-    private readonly IPlayerManager playerManager;
+    private readonly PlayerManager playerManager;
 
     [Inject]
     public CalculateEnemyMoveUsecase(
-      IPlayerManager playerManager
+      PlayerManager playerManager
       )
     {
         this.playerManager = playerManager;
@@ -39,7 +39,7 @@ public class CalculateEnemyMoveUsecase
                     playerManager.UpdateHealthBy(-value);
                     break;
                 case MoveEnum.Heal:
-                    enemy.UpdateHealthBy(value);
+                    enemy.UpdateHealthBy2(value);
                     break;
 
             }
