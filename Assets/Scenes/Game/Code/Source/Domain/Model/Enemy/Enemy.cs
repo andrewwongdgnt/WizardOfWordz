@@ -6,19 +6,19 @@ public class Enemy
     public EnemyEnum EnemyEnum { get; }
     public RarityEnum RarityEnum { get; }
 
-    public virtual string Title { get; }
+    public string Title { get; }
 
-    public virtual string Description { get; }
+    public string Description { get; }
 
-    public virtual int MaxHealth { get; }
+    public int MaxHealth { get; }
 
-    public virtual int CurrentHealth { get; private set; }
+    public int CurrentHealth { get; private set; }
 
-    public virtual int TurnsRemaining { get ; set; }
+    public int TurnsRemaining { get ; set; }
 
-    public virtual List<Move> Moves { get; }
+    public List<Move> Moves { get; }
 
-    public virtual Move CurrentMove { get; private set; }
+    public Move CurrentMove { get; private set; }
 
     public Enemy(
             EnemyEnum enemyEnum,
@@ -39,7 +39,7 @@ public class Enemy
         Moves = moves;
     }
 
-    public virtual void UpdateHealthBy(int damage)
+    public void UpdateHealthBy(int damage)
     {
         if (!IsDead())
             CurrentHealth += damage;
@@ -48,18 +48,18 @@ public class Enemy
             CurrentHealth = MaxHealth;
     }
 
-    public virtual bool IsDead()
+    public bool IsDead()
     {
         return CurrentHealth <= 0;
     }
 
-    public virtual void SetCurrentMove(Enemy.Move move)
+    public void SetCurrentMove(Enemy.Move move)
     {
         CurrentMove = move;
         TurnsRemaining = move.Wait;
     }
 
-    public virtual string ShortLabel()
+    public string ShortLabel()
     {
         return $"{RarityEnum} {Title}";
     }
@@ -71,17 +71,17 @@ public class Enemy
 
     public class Move
     {
-        public virtual string Title { get; }
+        public string Title { get; }
 
-        public virtual string Description { get; }
+        public string Description { get; }
 
-        public virtual int Value { get; }
+        public int Value { get; }
 
-        public virtual int Wait { get; }
+        public int Wait { get; }
 
-        public virtual int Weight { get; }
+        public int Weight { get; }
 
-        public virtual MoveEnum MoveEnum { get; }
+        public MoveEnum MoveEnum { get; }
 
         public Move(
             string title,

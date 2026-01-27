@@ -9,6 +9,33 @@ public class CalculateEnemyMoveUsecaseTest
     private CalculateEnemyMoveUsecase sut;
     private IPlayerManager mockPlayerManager;
 
+    public class MoveTestResult
+    {
+        MoveEnum moveEnum;
+        public class Attack : MoveTestResult
+        {
+            public int value;
+            public int repeats;
+            public Attack(int value, int repeats)
+            {
+                moveEnum = MoveEnum.Attack;
+                this.value = value;
+                this.repeats = repeats;
+            }
+        }
+        public class Heal : MoveTestResult
+        {
+            public int enemyIndex;
+            public int value;
+            public Heal(int enemyIndex, int value)
+            {
+                moveEnum = MoveEnum.Attack;
+                this.enemyIndex = enemyIndex;
+                this.value = value;
+            }
+        }
+    }
+
     public static IEnumerable<TestCaseData> InvokeTestCases
     {
         get
@@ -16,111 +43,111 @@ public class CalculateEnemyMoveUsecaseTest
             yield return new TestCaseData(
                 new List<(int enemyIndex, Enemy.Move move)>
                 {
-                    MockEnemyUtil.GenerateMovePair(0, 5, MoveEnum.Heal),
-                    MockEnemyUtil.GenerateMovePair(1, 2, MoveEnum.Heal)
+                    MockEnemyUtil.GenerateMovePair(enemyIndex: 0, value: 5, moveEnum: MoveEnum.Heal),
+                    MockEnemyUtil.GenerateMovePair(enemyIndex: 1, value: 2, moveEnum: MoveEnum.Heal)
                 },
                 new List<Enemy>
                 {
-                    MockEnemyUtil.GenerateMockEnemy(),
-                    MockEnemyUtil.GenerateMockEnemy()
+                    MockEnemyUtil.GenerateEnemy(),
+                    MockEnemyUtil.GenerateEnemy()
                 },
-                new List<(MoveEnum moveEnum, int enemyIndex, int value, int repeats)>
+                new List<MoveTestResult>
                 {
-                    (MoveEnum.Heal, 0, 5, 1),
-                    (MoveEnum.Heal, 1, 2, 1)
+                    new MoveTestResult.Heal(0, MockEnemyUtil.DEFAULT_STARTING_HEALTH + 5),
+                    new MoveTestResult.Heal(1, MockEnemyUtil.DEFAULT_STARTING_HEALTH + 2)
                 }
             ).SetName("2 unique heals");
 
             yield return new TestCaseData(
                 new List<(int enemyIndex, Enemy.Move move)>
                 {
-                    MockEnemyUtil.GenerateMovePair(0, 2, MoveEnum.Heal),
-                    MockEnemyUtil.GenerateMovePair(1, 2, MoveEnum.Heal)
+                    MockEnemyUtil.GenerateMovePair(enemyIndex: 0, value: 2, moveEnum: MoveEnum.Heal),
+                    MockEnemyUtil.GenerateMovePair(enemyIndex: 1, value: 2, moveEnum: MoveEnum.Heal)
                 },
                 new List<Enemy>
                 {
-                    MockEnemyUtil.GenerateMockEnemy(),
-                    MockEnemyUtil.GenerateMockEnemy()
+                    MockEnemyUtil.GenerateEnemy(),
+                    MockEnemyUtil.GenerateEnemy()
                 },
-                new List<(MoveEnum moveEnum, int enemyIndex, int value, int repeats)>
+                new List<MoveTestResult>
                 {
-                    (MoveEnum.Heal, 0, 2, 1),
-                    (MoveEnum.Heal, 1, 2, 1)
+                    new MoveTestResult.Heal(0, MockEnemyUtil.DEFAULT_STARTING_HEALTH + 2),
+                    new MoveTestResult.Heal(1, MockEnemyUtil.DEFAULT_STARTING_HEALTH + 2)
                 }
             ).SetName("2 same heals");
 
             yield return new TestCaseData(
                 new List<(int enemyIndex, Enemy.Move move)>
                 {
-                    MockEnemyUtil.GenerateMovePair(0, 1, MoveEnum.Attack),
-                    MockEnemyUtil.GenerateMovePair(1, 2, MoveEnum.Attack),
+                    MockEnemyUtil.GenerateMovePair(enemyIndex: 0, value: 1, moveEnum: MoveEnum.Attack),
+                    MockEnemyUtil.GenerateMovePair(enemyIndex: 1, value: 2, moveEnum: MoveEnum.Attack),
                 },
                 new List<Enemy>
                 {
-                    MockEnemyUtil.GenerateMockEnemy(),
-                    MockEnemyUtil.GenerateMockEnemy()
+                    MockEnemyUtil.GenerateEnemy(),
+                    MockEnemyUtil.GenerateEnemy()
                 },
-                new List<(MoveEnum moveEnum, int enemyIndex, int value, int repeats)>
+                new List<MoveTestResult>
                 {
-                    (MoveEnum.Attack, -1, 1, 1),
-                    (MoveEnum.Attack, -1, 2, 1)
+                    new MoveTestResult.Attack(1, 1),
+                    new MoveTestResult.Attack(2, 1)
                 }
             ).SetName("2 unique attacks");
 
             yield return new TestCaseData(
                  new List<(int enemyIndex, Enemy.Move move)>
                  {
-                    MockEnemyUtil.GenerateMovePair(0, 9, MoveEnum.Attack),
-                    MockEnemyUtil.GenerateMovePair(1, 9, MoveEnum.Attack),
-                    MockEnemyUtil.GenerateMovePair(2, 9, MoveEnum.Attack)
+                    MockEnemyUtil.GenerateMovePair(enemyIndex: 0, value: 9, moveEnum: MoveEnum.Attack),
+                    MockEnemyUtil.GenerateMovePair(enemyIndex: 1, value: 9, moveEnum: MoveEnum.Attack),
+                    MockEnemyUtil.GenerateMovePair(enemyIndex: 2, value: 9, moveEnum: MoveEnum.Attack)
                  },
                  new List<Enemy>
                  {
-                    MockEnemyUtil.GenerateMockEnemy(),
-                    MockEnemyUtil.GenerateMockEnemy(),
-                    MockEnemyUtil.GenerateMockEnemy()
+                    MockEnemyUtil.GenerateEnemy(),
+                    MockEnemyUtil.GenerateEnemy(),
+                    MockEnemyUtil.GenerateEnemy()
                  },
-                 new List<(MoveEnum moveEnum, int enemyIndex, int value, int repeats)>
+                 new List<MoveTestResult>
                  {
-                    (MoveEnum.Attack, -1, 9, 3),
+                   new MoveTestResult.Attack(9, 3),
                  }
              ).SetName("3 same attacks");
 
             yield return new TestCaseData(
                  new List<(int enemyIndex, Enemy.Move move)>
                  {
-                    MockEnemyUtil.GenerateMovePair(0, 2, MoveEnum.Attack),
-                    MockEnemyUtil.GenerateMovePair(2, 5, MoveEnum.Attack),
+                    MockEnemyUtil.GenerateMovePair(enemyIndex: 0, value: 2, moveEnum: MoveEnum.Attack),
+                    MockEnemyUtil.GenerateMovePair(enemyIndex: 2, value: 5, moveEnum: MoveEnum.Attack),
                  },
                  new List<Enemy>
                  {
-                    MockEnemyUtil.GenerateMockEnemy(),
-                    MockEnemyUtil.GenerateMockEnemy(),
-                    MockEnemyUtil.GenerateMockEnemy()
+                    MockEnemyUtil.GenerateEnemy(),
+                    MockEnemyUtil.GenerateEnemy(),
+                    MockEnemyUtil.GenerateEnemy()
                  },
-                 new List<(MoveEnum moveEnum, int enemyIndex, int value, int repeats)>
+                 new List<MoveTestResult>
                  {
-                    (MoveEnum.Attack, -1, 2, 1),
-                    (MoveEnum.Attack, -1, 5, 1),
+                    new MoveTestResult.Attack(2, 1),
+                    new MoveTestResult.Attack(5, 1),
                  }
              ).SetName("2 attacks with 3 enemies");
 
             yield return new TestCaseData(
                  new List<(int enemyIndex, Enemy.Move move)>
                  {
-                    MockEnemyUtil.GenerateMovePair(0, 2, MoveEnum.Attack),
-                    MockEnemyUtil.GenerateMovePair(1, 5, MoveEnum.Heal),
+                    MockEnemyUtil.GenerateMovePair(enemyIndex: 0, value: 2, moveEnum: MoveEnum.Attack),
+                    MockEnemyUtil.GenerateMovePair(enemyIndex: 1, value: 5, moveEnum: MoveEnum.Heal),
                  },
                  new List<Enemy>
                  {
-                    MockEnemyUtil.GenerateMockEnemy(),
-                    MockEnemyUtil.GenerateMockEnemy(),
-                    MockEnemyUtil.GenerateMockEnemy()
+                    MockEnemyUtil.GenerateEnemy(),
+                    MockEnemyUtil.GenerateEnemy(),
+                    MockEnemyUtil.GenerateEnemy()
                  },
-                 new List<(MoveEnum moveEnum, int enemyIndex, int value, int repeats)>
+                 new List<MoveTestResult>
                  {
-                    (MoveEnum.Attack, -1, 2, 1),
-                    (MoveEnum.Heal, 1, 5, 1),
+                   new MoveTestResult.Attack(2, 1),
+                   new MoveTestResult.Heal(1, MockEnemyUtil.DEFAULT_STARTING_HEALTH + 5),
                  }
              ).SetName("1 attack and 1 heal");
         }
@@ -129,7 +156,7 @@ public class CalculateEnemyMoveUsecaseTest
     [SetUp]
     public void SetUp()
     {
-        mockPlayerManager = PlayerManagerTest.GenerateMock();
+        mockPlayerManager = Substitute.For<IPlayerManager>();
         sut = new(playerManager: mockPlayerManager);
     }
 
@@ -137,44 +164,26 @@ public class CalculateEnemyMoveUsecaseTest
     [TestCaseSource(nameof(InvokeTestCases))]
     public void TestInvoke(
         List<(int enemyIndex, Enemy.Move move)> movesPair,
-        List<Enemy> mockEnemies,
-        List<(MoveEnum moveEnum, int enemyIndex, int value, int repeats)> expectedValues
+        List<Enemy> enemies,
+        List<MoveTestResult> expectedValues
         )
     {
         sut.Invoke(
             movesPair: movesPair,
-            enemies: mockEnemies
+            enemies: enemies
             );
 
         expectedValues.ForEach(ev =>
             {
-                switch (ev.moveEnum)
+                if (ev is MoveTestResult.Attack attackResult)
                 {
-                    case MoveEnum.Attack:
-                        mockPlayerManager.Received(ev.repeats).UpdateHealthBy(-ev.value);
-                        break;
-                    case MoveEnum.Heal:
-                        mockEnemies[ev.enemyIndex].Received(ev.repeats).UpdateHealthBy(ev.value);
-                        break;
+                    mockPlayerManager.Received(attackResult.repeats).UpdateHealthBy(-attackResult.value);
                 }
-
+                else if (ev is MoveTestResult.Heal healResult)
+                {
+                    Assert.AreEqual(enemies[healResult.enemyIndex].CurrentHealth, healResult.value);
+                }
             }
         );
-
-        TestUtils.ClearReceivedCalls(mockEnemies);
-    }
-
-    public static CalculateEnemyMoveUsecase GenerateMock()
-    {
-        return GenerateMock(_ => { });
-    }
-
-    public static CalculateEnemyMoveUsecase GenerateMock(Action<CalculateEnemyMoveUsecase> action)
-    {
-        CalculateEnemyMoveUsecase mock = Substitute.For<CalculateEnemyMoveUsecase>(
-             PlayerManagerTest.GenerateMock()
-             );
-        action(mock);
-        return mock;
     }
 }
