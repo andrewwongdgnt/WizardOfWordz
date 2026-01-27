@@ -5,7 +5,7 @@ public class GetNextEnemyMoveUsecase: IGetNextEnemyMoveUsecase
 {
     private readonly Random random = new();
 
-    public virtual Enemy.Move Invoke(Enemy enemy)
+    public Enemy.Move Invoke(Enemy enemy)
     {
         int totalWeight = enemy.Moves.Sum(m => m.Weight);
         int randomValue = random.Next(totalWeight);

@@ -30,7 +30,7 @@ public class CalculateTurnFromEnemiesUsecase: ICalculateTurnFromEnemiesUsecase
             
             if (enemy.CurrentMove != null)
             {
-                enemy.TurnsRemaining -= 3;
+                enemy.TurnsRemaining--;
             }
             
             if (enemy.TurnsRemaining <= 0)

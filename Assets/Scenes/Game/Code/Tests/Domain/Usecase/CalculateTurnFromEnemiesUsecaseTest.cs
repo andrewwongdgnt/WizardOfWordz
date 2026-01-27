@@ -1,77 +1,111 @@
 using NSubstitute;
 using NUnit.Framework;
-using System;
+using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using static Enemy;
 
 public class CalculateTurnFromEnemiesUsecaseTest
 {
-    //private CalculateTurnFromEnemiesUsecase sut;
-    //private GetNextEnemyMoveUsecase mockGetNextEnemyMoveUsecase;
+    private CalculateTurnFromEnemiesUsecase sut;
+    private IGetNextEnemyMoveUsecase mockGetNextEnemyMoveUsecase;
 
-    //public static IEnumerable<TestCaseData> InvokeTestCases
-    //{
-    //    get
-    //    {
-    //        yield return new TestCaseData(
-    //            new List<Enemy>
-    //            {
-    //                MockEnemyUtil.GenerateMockEnemy(e =>
-    //                {
-    //                    e.IsDead().Returns(false);
-    //                    Enemy.Move mockMove = MockEnemyUtil.GenerateMockMove();
-    //                    e.CurrentMove.Returns(mockMove);
-    //                    e.TurnsRemaining.Returns(11);
-    //                }),
-    //                MockEnemyUtil.GenerateMockEnemy(e =>
-    //                {
-    //                    e.IsDead().Returns(false);
-    //                    Enemy.Move mockMove = MockEnemyUtil.GenerateMockMove();
-    //                    e.CurrentMove.Returns(mockMove);
-    //                    e.TurnsRemaining.Returns(10);
-    //                })
-    //            },
-    //            new List<int>
-    //            {
-    //                1
-    //            }
-    //        ).SetName("2 alive enemies with 1 new move");
-    //    }
-    //}
+    public static IEnumerable<TestCaseData> InvokeTestCases
+    {
+        get
+        {
+            yield return new TestCaseData(
+                new List<(int turnsRemaining, bool alive)>
+                {
+                    (1, true),
+                    (1, true)
+                },
+                new List<int>
+                {
+                    0,
+                    1
+                }
+            ).SetName("2 alive enemies on last turn");
 
-    //[SetUp]
-    //public void SetUp()
-    //{
-    //    mockGetNextEnemyMoveUsecase = GetNextEnemyMoveUsecaseTest.GenerateMock();
-    //    sut = new(getNextEnemyMoveUsecase: mockGetNextEnemyMoveUsecase);
-    //}
+            yield return new TestCaseData(
+                new List<(int turnsRemaining, bool alive)>
+                {
+                    (5, true),
+                    (1, true)
+                },
+                new List<int>
+                {
+                    1
+                }
+            ).SetName("2 alive enemies with 1 on last turn");
 
-    //[Test]
-    //[TestCaseSource(nameof(InvokeTestCases))]
-    //public void TestInvoke(
-    //    List<Enemy> mockEnemies,
-    //    List<int> enemyIndices
-    //    )
-    //{
-    //    List<(int enemyIndex, Enemy.Move move)> expected = enemyIndices.Select(i =>
-    //        {
-    //            Enemy.Move mockNewMove = MockEnemyUtil.GenerateMockMove();
-    //            mockGetNextEnemyMoveUsecase.Invoke(mockEnemies[i]).Returns(mockNewMove);
-    //            return (i, mockNewMove);
-    //        }
-    //    ).ToList();
-    //    List<(int enemyIndex, Enemy.Move move)> result = sut.Invoke(enemies: mockEnemies);
+            yield return new TestCaseData(
+                new List<(int turnsRemaining, bool alive)>
+                {
+                    (5, true),
+                    (5, true)
+                },
+                new List<int>
+                {
+                    
+                }
+            ).SetName("2 alive enemies with none on last turn");
 
-    //    Assert.AreEqual(expected, result);
+            yield return new TestCaseData(
+                new List<(int turnsRemaining, bool alive)>
+                {
+                    (1, false),
+                    (1, true)
+                },
+                new List<int>
+                {
+                    1
+                }
+            ).SetName("1 dead, 1 alive enemies on last turn");
+        }
+    }
 
-    //    expected.ForEach(p =>
-    //    {
-    //        mockEnemies[p.enemyIndex].Received(1).SetCurrentMove(p.move);
-    //    }
-    //    );
+    [SetUp]
+    public void SetUp()
+    {
+        mockGetNextEnemyMoveUsecase = Substitute.For<IGetNextEnemyMoveUsecase>();
+        sut = new(getNextEnemyMoveUsecase: mockGetNextEnemyMoveUsecase);
+    }
 
-    //    TestUtils.ClearReceivedCalls(mockEnemies);
-    //    TestUtils.ClearReceivedCalls(new List<GetNextEnemyMoveUsecase> { mockGetNextEnemyMoveUsecase });
-    //}
+    [Test]
+    [TestCaseSource(nameof(InvokeTestCases))]
+    public void TestInvoke(
+        List<(int turnsRemaining, bool alive)> enemyParam,
+        List<int> enemyIndices
+        )
+    {
+        List<Enemy> enemies = enemyParam.Select(p =>
+        {
+            return MockEnemyUtil.GenerateEnemy(
+                startingHealth: p.alive ? MockEnemyUtil.DEFAULT_STARTING_HEALTH : 0,
+                action: e =>
+                {
+                    Move move = MockEnemyUtil.GenerateMove();
+                    e.SetCurrentMove(move);
+                    e.TurnsRemaining = p.turnsRemaining;
+                }
+            );
+        }).ToList();
+        List<(int enemyIndex, Enemy.Move move)> expected = enemyIndices.Select(i =>
+            {
+                Enemy.Move newMove = MockEnemyUtil.GenerateMove();
+                mockGetNextEnemyMoveUsecase.Invoke(enemies[i]).Returns(newMove);
+                return (i, newMove);
+            }
+        ).ToList();
+        List<(int enemyIndex, Enemy.Move move)> result = sut.Invoke(enemies: enemies);
+
+        Assert.AreEqual(expected, result);
+
+        enemyIndices.ForEach(i =>
+            {
+                mockGetNextEnemyMoveUsecase.Received(1).Invoke(enemies[i]);
+            }
+        );
+    }
 }

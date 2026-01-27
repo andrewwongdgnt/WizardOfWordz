@@ -2,6 +2,7 @@ using NSubstitute;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using static Enemy;
 
 public class CalculateFightEndStateUsecaseTest
@@ -14,60 +15,60 @@ public class CalculateFightEndStateUsecaseTest
         get
         {
             yield return new TestCaseData(
-                new List<Enemy>
+                new List<bool>
                 {
-                    MockEnemyUtil.GenerateEnemy(),
-                    MockEnemyUtil.GenerateEnemy()
+                    true,
+                    true
                 },
                 false,
                 FightEndStateEnum.Ongoing
             ).SetName("2 alive enemies, player is alive");
 
             yield return new TestCaseData(
-                new List<Enemy>
+                new List<bool>
                 {
-                    MockEnemyUtil.GenerateEnemy(startingHealth: 0),
-                    MockEnemyUtil.GenerateEnemy()
+                    false,
+                    true
                 },
                 false,
                 FightEndStateEnum.Ongoing
             ).SetName("1 dead and 1 alive enemy, player is alive");
 
             yield return new TestCaseData(
-                new List<Enemy>
+                new List<bool>
                 {
-                    MockEnemyUtil.GenerateEnemy(startingHealth: 0),
-                    MockEnemyUtil.GenerateEnemy(startingHealth: 0)
+                    false,
+                    false
                 },
                 false,
                 FightEndStateEnum.Win
             ).SetName("2 dead enemies, player is alive");
 
             yield return new TestCaseData(
-                new List<Enemy>
+                new List<bool>
                 {
-                    MockEnemyUtil.GenerateEnemy(),
-                    MockEnemyUtil.GenerateEnemy()
+                    true,
+                    true
                 },
                 true,
                 FightEndStateEnum.Lose
             ).SetName("2 alive enemies, player is dead");
 
             yield return new TestCaseData(
-                new List<Enemy>
+                new List<bool>
                 {
-                    MockEnemyUtil.GenerateEnemy(startingHealth: 0),
-                    MockEnemyUtil.GenerateEnemy()
+                    false,
+                    true
                 },
                 true,
                 FightEndStateEnum.Lose
             ).SetName("1 dead and 1 alive enemy, player is dead");
 
             yield return new TestCaseData(
-                new List<Enemy>
+                new List<bool>
                 {
-                    MockEnemyUtil.GenerateEnemy(startingHealth: 0),
-                    MockEnemyUtil.GenerateEnemy(startingHealth: 0)
+                    false,
+                    false
                 },
                 true,
                 FightEndStateEnum.Lose
@@ -85,11 +86,16 @@ public class CalculateFightEndStateUsecaseTest
     [Test]
     [TestCaseSource(nameof(InvokeTestCases))]
     public void TestInvoke(
-        List<Enemy> enemies,
+        List<bool> aliveState,
         bool isPlayerDead,
         FightEndStateEnum expected
         )
     {
+        List<Enemy> enemies = aliveState.Select(v =>
+        {
+            return v ? MockEnemyUtil.GenerateEnemy() : MockEnemyUtil.GenerateEnemy(startingHealth: 0);
+        }).ToList();
+
         mockPlayerManager.IsDead().Returns(isPlayerDead);
 
         FightEndStateEnum result = sut.Invoke(

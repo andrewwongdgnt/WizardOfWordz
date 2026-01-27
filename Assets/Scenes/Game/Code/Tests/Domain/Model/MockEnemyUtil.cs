@@ -15,7 +15,8 @@ public class MockEnemyUtil
             string description = "",
             int health = DEFAULT_MAX_HEALTH,
             int startingHealth = DEFAULT_STARTING_HEALTH,
-            List<Move>? moves = null
+            List<Move>? moves = null,
+            Action<Enemy>? action = null
         )
     {
         Enemy enemy = new(
@@ -27,10 +28,30 @@ public class MockEnemyUtil
                 moves: moves ?? new List<Move>() { }
             );
         enemy.UpdateHealthBy(startingHealth - health);
+        action?.Invoke(enemy);
         return enemy;
     }
 
-    public static (int enemyIndex, Enemy.Move move) GenerateMovePair(
+    public static Move GenerateMove(
+        string title = "",
+        string description = "",
+        int value = 0,
+        int wait = 1,
+        int weight = 1,
+        MoveEnum moveEnum = MoveEnum.Attack
+        )
+    {
+        return new(
+                    title: title,
+                    description: description,
+                    value: value,
+                    wait: wait,
+                    weight: weight,
+                    moveEnum
+                );
+    }
+
+    public static (int enemyIndex, Move move) GenerateMovePair(
         int enemyIndex,
         string title = "",
         string description = "",
@@ -42,7 +63,7 @@ public class MockEnemyUtil
     {
         return (
                 enemyIndex,
-                new(
+                GenerateMove(
                     title: title,
                     description: description,
                     value: value,
