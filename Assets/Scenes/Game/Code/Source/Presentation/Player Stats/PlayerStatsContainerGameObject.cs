@@ -9,7 +9,7 @@ public class PlayerStatsContainerGameObject : MonoBehaviour
         healthGO.UpdateState();
     }
 
-    public void SetUp(PlayerManager playerManager)
+    public void SetUp(IPlayerManager playerManager)
     {
         healthGO.Init(playerManager);
     }

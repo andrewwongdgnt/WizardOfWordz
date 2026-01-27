@@ -1,9 +1,6 @@
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using Zenject;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class RewardGameObject : MonoBehaviour
 {
@@ -21,17 +18,6 @@ public class RewardGameObject : MonoBehaviour
     public Action<Reward> rewardHoverAction;
 
     private Reward reward;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public void OnSelect()
     {
@@ -53,7 +39,7 @@ public class RewardGameObject : MonoBehaviour
     }
 
     public void Init(
-        RewardManager rewardManager,
+        IRewardManager rewardManager,
         Reward reward,
         Sprite mainSprite
         )
@@ -66,7 +52,7 @@ public class RewardGameObject : MonoBehaviour
     }
 
     private void InitText(
-        RewardManager rewardManager,
+        IRewardManager rewardManager,
         Reward reward
         )
     {

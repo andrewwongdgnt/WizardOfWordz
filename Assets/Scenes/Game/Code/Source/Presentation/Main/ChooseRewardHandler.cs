@@ -10,10 +10,10 @@ public class ChooseRewardHandler : MonoBehaviour
     public RewardSelectorGameObject rewardSelectorGameObject;
 
     [Inject]
-    private readonly CalculateNextIndexUsecase calculateNextIndexUsecase;
+    private readonly ICalculateNextIndexUsecase calculateNextIndexUsecase;
 
     [Inject]
-    private readonly RewardManager rewardManager;
+    private readonly IRewardManager rewardManager;
 
     private Func<GameState> getGameStateFunc;
     private Action selectRewardCallBack;

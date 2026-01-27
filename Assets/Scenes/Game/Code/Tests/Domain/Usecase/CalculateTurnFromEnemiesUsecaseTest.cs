@@ -2,6 +2,7 @@ using NSubstitute;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using static Enemy;
 
 public class CalculateTurnFromEnemiesUsecaseTest
@@ -18,36 +19,60 @@ public class CalculateTurnFromEnemiesUsecaseTest
                 {
                     MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead2().Returns(true);
-                    }),  
+                        e.IsDead().Returns(false);
+                        Enemy.Move mockMove = MockEnemyUtil.GenerateMockMove();
+                        e.CurrentMove.Returns(mockMove);
+                        e.TurnsRemaining.Returns(11);
+                    }),
                     MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead2().Returns(true);
+                        e.IsDead().Returns(false);
+                        Enemy.Move mockMove = MockEnemyUtil.GenerateMockMove();
+                        e.CurrentMove.Returns(mockMove);
+                        e.TurnsRemaining.Returns(10);
                     })
+                },
+                new List<int>
+                {
+                    1
                 }
-            ).SetName("DGNT");
+            ).SetName("2 alive enemies with 1 new move");
         }
     }
 
     [SetUp]
     public void SetUp()
     {
-        mockGetNextEnemyMoveUsecase = GetNextEnemyMoveUsecaseTest.GenerateMock(usecase =>
-        {
-
-        });
+        mockGetNextEnemyMoveUsecase = GetNextEnemyMoveUsecaseTest.GenerateMock();
         sut = new(getNextEnemyMoveUsecase: mockGetNextEnemyMoveUsecase);
     }
 
     [Test]
     [TestCaseSource(nameof(InvokeTestCases))]
     public void TestInvoke(
-        List<Enemy> enemies
+        List<Enemy> mockEnemies,
+        List<int> enemyIndices
         )
     {
-        //mockGetNextEnemyMoveUsecase.Invoke
+        List<(int enemyIndex, Enemy.Move move)> expected = enemyIndices.Select(i =>
+            {
+                Enemy.Move mockNewMove = MockEnemyUtil.GenerateMockMove();
+                mockGetNextEnemyMoveUsecase.Invoke(mockEnemies[i]).Returns(mockNewMove);
+                return (i, mockNewMove);
+            }
+        ).ToList();
+        List<(int enemyIndex, Enemy.Move move)> result = sut.Invoke(enemies: mockEnemies);
 
-        sut.Invoke(enemies);
+        Assert.AreEqual(expected, result);
+
+        expected.ForEach(p =>
+        {
+            mockEnemies[p.enemyIndex].Received(1).SetCurrentMove(p.move);
+        }
+        );
+
+        TestUtils.ClearReceivedCalls(mockEnemies);
+        TestUtils.ClearReceivedCalls(new List<GetNextEnemyMoveUsecase> { mockGetNextEnemyMoveUsecase });
     }
 
     public static CalculateTurnFromEnemiesUsecase GenerateMock()

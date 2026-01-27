@@ -1,13 +1,6 @@
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.Tilemaps;
-using UnityEngine.UI;
 
 public class BoardContainerGameObject : MonoBehaviour
 {
@@ -27,18 +20,6 @@ public class BoardContainerGameObject : MonoBehaviour
 
     private readonly Dictionary<Tile, Tile> wordTileToTile = new();
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public void UpdateState(
         List<Tile> currentWordList,

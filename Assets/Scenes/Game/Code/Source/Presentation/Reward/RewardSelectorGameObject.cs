@@ -23,20 +23,10 @@ public class RewardSelectorGameObject : MonoBehaviour
     public Action<Reward> rewardHoverAction;
 
     [Inject]
-    private readonly RewardManager rewardManager;
+    private readonly IRewardManager rewardManager;
 
     private readonly Dictionary<Reward, RewardGameObject> rewardMap = new();
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     public void UpdateState(Reward rewardThatIsTargeted)
     {
         foreach (var rewardGo in rewardMap.Values)

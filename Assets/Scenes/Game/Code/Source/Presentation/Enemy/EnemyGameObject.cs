@@ -71,7 +71,7 @@ public class EnemyGameObject : MonoBehaviour
 
     private void ApplyAction(Action<Enemy> action)
     {
-        if (enemy != null && !enemy.IsDead2())
+        if (enemy != null && !enemy.IsDead())
         {
             action(enemy);
         }

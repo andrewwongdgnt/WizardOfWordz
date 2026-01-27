@@ -1,4 +1,5 @@
 using NSubstitute;
+using NSubstitute.ClearExtensions;
 using NUnit.Framework;
 using System.Collections.Generic;
 
@@ -10,6 +11,7 @@ public class TestUtils
         foreach (var o in objects)
         {
             o.ClearReceivedCalls();
+            o.ClearSubstitute();
         }
     }
 }

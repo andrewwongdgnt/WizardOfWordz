@@ -16,34 +16,34 @@ public class MainScript : MonoBehaviour
     public PlayerStatsContainerGameObject playerStatsContainerGameObject;
 
     [Inject]
-    private readonly RetrieveWordsFromDictionaryUsecase retrieveWordsFromDictionaryUsecase;
+    private readonly IRetrieveWordsFromDictionaryUsecase retrieveWordsFromDictionaryUsecase;
 
     [Inject]
-    private readonly PickTileUsecase pickTileUsecase;
+    private readonly IPickTileUsecase pickTileUsecase;
 
     [Inject]
-    private readonly PopulateEnemiesUsecase populateEnemiesUsecase;
+    private readonly IPopulateEnemiesUsecase populateEnemiesUsecase;
 
     [Inject]
-    private readonly ProcessWordUsecase processWordUsecase;
+    private readonly IProcessWordUsecase processWordUsecase;
 
     [Inject]
-    private readonly GenerateCharTilesUsecase generateCharTilesUsecase;
+    private readonly IGenerateCharTilesUsecase generateCharTilesUsecase;
 
     [Inject]
-    private readonly GetNextTargetUsecase getNextTargetUsecase;
+    private readonly IGetNextTargetUsecase getNextTargetUsecase;
 
     [Inject]
-    private readonly CalculateTurnFromEnemiesUsecase calculateTurnFromEnemiesUsecase;
+    private readonly ICalculateTurnFromEnemiesUsecase calculateTurnFromEnemiesUsecase;
 
     [Inject]
-    private readonly CalculateEnemyMoveUsecase calculateEnemyMoveUsecase;
+    private readonly ICalculateEnemyMoveUsecase calculateEnemyMoveUsecase;
 
     [Inject]
-    private readonly CalculateFightEndStateUsecase calculateFightEndStateUsecase;
+    private readonly ICalculateFightEndStateUsecase calculateFightEndStateUsecase;
 
     [Inject]
-    private readonly PlayerManager playerManager;
+    private readonly IPlayerManager playerManager;
 
     private readonly ISet<Key> monitoredKeys = new HashSet<Key>()
     {
@@ -179,7 +179,7 @@ public class MainScript : MonoBehaviour
             attackIndex
             );
 
-        if (enemies[attackIndex].IsDead2())
+        if (enemies[attackIndex].IsDead())
         {
             attackIndex = getNextTargetUsecase.Invoke(
                 true,

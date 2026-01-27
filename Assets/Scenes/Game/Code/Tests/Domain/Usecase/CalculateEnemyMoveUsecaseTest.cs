@@ -7,7 +7,7 @@ using static Enemy;
 public class CalculateEnemyMoveUsecaseTest
 {
     private CalculateEnemyMoveUsecase sut;
-    private PlayerManager mockPlayerManager;
+    private IPlayerManager mockPlayerManager;
 
     public static IEnumerable<TestCaseData> InvokeTestCases
     {
@@ -154,7 +154,7 @@ public class CalculateEnemyMoveUsecaseTest
                         mockPlayerManager.Received(ev.repeats).UpdateHealthBy(-ev.value);
                         break;
                     case MoveEnum.Heal:
-                        mockEnemies[ev.enemyIndex].Received(ev.repeats).UpdateHealthBy2(ev.value);
+                        mockEnemies[ev.enemyIndex].Received(ev.repeats).UpdateHealthBy(ev.value);
                         break;
                 }
 

@@ -19,18 +19,6 @@ public class StageContainerGameObject : MonoBehaviour
 
     private readonly Dictionary<Enemy, EnemyGameObject> enemyMap = new();
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void UpdateState(Enemy enemyThatIsTargeted)
     {
         foreach (var enemyGo in enemyMap.Values)

@@ -6,19 +6,19 @@ public class Enemy
     public EnemyEnum EnemyEnum { get; }
     public RarityEnum RarityEnum { get; }
 
-    public string Title { get; }
+    public virtual string Title { get; }
 
-    public string Description { get; }
+    public virtual string Description { get; }
 
-    public int MaxHealth { get; }
+    public virtual int MaxHealth { get; }
 
-    public int CurrentHealth { get; private set; }
+    public virtual int CurrentHealth { get; private set; }
 
-    public int TurnsRemaining { get; set; }
+    public virtual int TurnsRemaining { get ; set; }
 
-    public List<Move> Moves { get; }
+    public virtual List<Move> Moves { get; }
 
-    public Move CurrentMove { get; private set; }
+    public virtual Move CurrentMove { get; private set; }
 
     public Enemy(
             EnemyEnum enemyEnum,
@@ -39,16 +39,16 @@ public class Enemy
         Moves = moves;
     }
 
-    public virtual void UpdateHealthBy2(int damage)
+    public virtual void UpdateHealthBy(int damage)
     {
-        if (!IsDead2())
+        if (!IsDead())
             CurrentHealth += damage;
 
         if (CurrentHealth > MaxHealth)
             CurrentHealth = MaxHealth;
     }
 
-    public virtual bool IsDead2()
+    public virtual bool IsDead()
     {
         return CurrentHealth <= 0;
     }
@@ -71,17 +71,17 @@ public class Enemy
 
     public class Move
     {
-        public string Title { get; }
+        public virtual string Title { get; }
 
-        public string Description { get; }
+        public virtual string Description { get; }
 
-        public int Value { get; }
+        public virtual int Value { get; }
 
-        public int Wait { get; }
+        public virtual int Wait { get; }
 
-        public int Weight { get; }
+        public virtual int Weight { get; }
 
-        public MoveEnum MoveEnum { get; }
+        public virtual MoveEnum MoveEnum { get; }
 
         public Move(
             string title,

@@ -18,11 +18,11 @@ public class CalculateFightEndStateUsecaseTest
                 {
                     MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead2().Returns(false);
+                        e.IsDead().Returns(false);
                     }),  
                     MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead2().Returns(false);
+                        e.IsDead().Returns(false);
                     })
                 },
                 false,
@@ -34,11 +34,11 @@ public class CalculateFightEndStateUsecaseTest
                 {
                     MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead2().Returns(false);
+                        e.IsDead().Returns(false);
                     }),
                     MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead2().Returns(true);
+                        e.IsDead().Returns(true);
                     })
                 },
                 false,
@@ -50,11 +50,11 @@ public class CalculateFightEndStateUsecaseTest
                 {
                     MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead2().Returns(true);
+                        e.IsDead().Returns(true);
                     }),
                     MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead2().Returns(true);
+                        e.IsDead().Returns(true);
                     })
                 },
                 false,
@@ -66,11 +66,11 @@ public class CalculateFightEndStateUsecaseTest
                 {
                     MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead2().Returns(false);
+                        e.IsDead().Returns(false);
                     }),
                     MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead2().Returns(false);
+                        e.IsDead().Returns(false);
                     })
                 },
                 true,
@@ -82,11 +82,11 @@ public class CalculateFightEndStateUsecaseTest
                 {
                     MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead2().Returns(false);
+                        e.IsDead().Returns(false);
                     }),
                     MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead2().Returns(true);
+                        e.IsDead().Returns(true);
                     })
                 },
                 true,
@@ -98,11 +98,11 @@ public class CalculateFightEndStateUsecaseTest
                 {
                     MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead2().Returns(true);
+                        e.IsDead().Returns(true);
                     }),
                     MockEnemyUtil.GenerateMockEnemy(e =>
                     {
-                        e.IsDead2().Returns(true);
+                        e.IsDead().Returns(true);
                     })
                 },
                 true,

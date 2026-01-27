@@ -11,10 +11,10 @@ public class ChooseLevelHandler : MonoBehaviour
     public LevelSelectorGameObject levelSelectorGameObject;
 
     [Inject]
-    private readonly SelectLevelChoicesUseCase selectLevelChoicesUseCase;
+    private readonly ISelectLevelChoicesUseCase selectLevelChoicesUseCase;
 
     [Inject]
-    private readonly CalculateNextIndexUsecase calculateNextIndexUsecase;
+    private readonly ICalculateNextIndexUsecase calculateNextIndexUsecase;
 
     private Func<GameState> getGameStateFunc;
     private Action selectLevelCallBack;

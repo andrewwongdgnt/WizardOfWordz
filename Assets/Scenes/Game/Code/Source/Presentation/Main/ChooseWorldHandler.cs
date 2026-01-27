@@ -11,10 +11,10 @@ public class ChooseWorldHandler : MonoBehaviour
     public WorldSelectorGameObject worldSelectorGameObject;
 
     [Inject]
-    private readonly GetWorldUseCase getWorldUseCase;
+    private readonly IGetWorldUseCase getWorldUseCase;
 
     [Inject]
-    private readonly CalculateNextIndexUsecase calculateNextIndexUsecase;
+    private readonly ICalculateNextIndexUsecase calculateNextIndexUsecase;
 
     private Func<GameState> getGameStateFunc;
     private Action selectWorldCallBack;
