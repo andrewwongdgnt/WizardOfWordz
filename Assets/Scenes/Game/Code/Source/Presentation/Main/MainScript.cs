@@ -336,9 +336,9 @@ public class MainScript : MonoBehaviour
         stageContainerGO.enemySelectedAction = EnemySelectedAction;
         stageContainerGO.enemyHoverAction = EnemyHoverAction;
         playerStatsContainerGameObject.SetUp(playerManager);
-        chooseWorldHandler.Init(GetGameState, SetUpLevelSelection);
-        chooseLevelHandler.Init(GetGameState, SelectLevel);
-        chooseRewardHandler.Init(GetGameState, SelectReward);
+        chooseWorldHandler.Init(GetGameState, UpdateUIState, SetUpLevelSelection);
+        chooseLevelHandler.Init(GetGameState, UpdateUIState, SelectLevel);
+        chooseRewardHandler.Init(GetGameState, UpdateUIState, SelectReward);
     }
 
     private void ResetAllStates()

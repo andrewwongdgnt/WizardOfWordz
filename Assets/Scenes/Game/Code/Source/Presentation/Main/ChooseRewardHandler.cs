@@ -16,6 +16,7 @@ public class ChooseRewardHandler : MonoBehaviour
     private readonly IRewardManager rewardManager;
 
     private Func<GameState> getGameStateFunc;
+    private Action<Tile> mainUpdateUIState;
     private Action selectRewardCallBack;
     private int rewardIndex;
     private List<Reward> rewardsToChooseFrom;
@@ -27,10 +28,12 @@ public class ChooseRewardHandler : MonoBehaviour
     }
     public void Init(
     Func<GameState> getGameStateFunc,
+    Action<Tile> mainUpdateUIState,
     Action selectRewardCallBack
     )
     {
         this.getGameStateFunc = getGameStateFunc;
+        this.mainUpdateUIState = mainUpdateUIState;
         this.selectRewardCallBack = selectRewardCallBack;
         rewardSelectorGameObject.rewardSelectedAction = RewardSelectedAction;
         rewardSelectorGameObject.rewardHoverAction = RewardHoverAction;
@@ -79,7 +82,7 @@ public class ChooseRewardHandler : MonoBehaviour
     {
         TargetNewReward(reward);
         selectRewardCallBack();
-        UpdateUIState();
+        mainUpdateUIState(null);
     }
 
     private void RewardHoverAction(Reward reward)

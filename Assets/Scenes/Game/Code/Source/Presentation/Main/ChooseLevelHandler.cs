@@ -17,13 +17,12 @@ public class ChooseLevelHandler : MonoBehaviour
     private readonly ICalculateNextIndexUsecase calculateNextIndexUsecase;
 
     private Func<GameState> getGameStateFunc;
+    private Action<Tile> mainUpdateUIState;
     private Action selectLevelCallBack;
     private int levelChoiceIndex;
     private int levelIndex;
     private List<Level> levelsToChooseFrom;
 
-
-    // Update is called once per frame
     void Update()
     {
         levelSelectorGameObject.Appear(getGameStateFunc() is GameState.ChooseLevelState);
@@ -31,10 +30,12 @@ public class ChooseLevelHandler : MonoBehaviour
 
     public void Init(
         Func<GameState> getGameStateFunc,
+        Action<Tile> mainUpdateUIState,
         Action selectLevelCallBack
         )
     {
         this.getGameStateFunc = getGameStateFunc;
+        this.mainUpdateUIState = mainUpdateUIState;
         this.selectLevelCallBack = selectLevelCallBack;
         levelSelectorGameObject.levelSelectedAction = LevelSelectedAction;
         levelSelectorGameObject.levelHoverAction = LevelHoverAction;
@@ -82,7 +83,7 @@ public class ChooseLevelHandler : MonoBehaviour
     {
         TargetNewLevel(level);
         selectLevelCallBack();
-        UpdateUIState();
+        mainUpdateUIState(null);
     }
 
     private void LevelHoverAction(Level level)

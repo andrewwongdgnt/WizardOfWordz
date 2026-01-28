@@ -17,22 +17,24 @@ public class ChooseWorldHandler : MonoBehaviour
     private readonly ICalculateNextIndexUsecase calculateNextIndexUsecase;
 
     private Func<GameState> getGameStateFunc;
+    private Action<Tile> mainUpdateUIState;
     private Action selectWorldCallBack;
     private int worldIndex;
     private List<World> worlds;
 
-    // Update is called once per frame
     void Update()
     {
         worldSelectorGameObject.Appear(getGameStateFunc() is GameState.ChooseWorldState);
     }
 
     public void Init(
-       Func<GameState> getGameStateFunc,
+        Func<GameState> getGameStateFunc,
+        Action<Tile> mainUpdateUIState,
         Action selectWorldCallBack
        )
     {
         this.getGameStateFunc = getGameStateFunc;
+        this.mainUpdateUIState = mainUpdateUIState;
         this.selectWorldCallBack = selectWorldCallBack;
         worldSelectorGameObject.SetUp(WorldAction);
     }
@@ -71,6 +73,6 @@ public class ChooseWorldHandler : MonoBehaviour
     {
         worldIndex = worlds.FindIndex(w => w.WorldEnum == worldEnum);
         selectWorldCallBack();
-        UpdateUIState();
+        mainUpdateUIState(null);
     }
 }
