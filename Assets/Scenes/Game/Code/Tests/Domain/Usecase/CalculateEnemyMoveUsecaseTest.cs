@@ -12,14 +12,12 @@ public class CalculateEnemyMoveUsecaseTest
 
     public class MoveTestResult
     {
-        MoveEnum moveEnum;
+        public int value;
         public class Attack : MoveTestResult
         {
             public int repeats;
-            public int value;
             public Attack(int repeats, int value)
             {
-                moveEnum = MoveEnum.Attack;
                 this.repeats = repeats;
                 this.value = value;
             }
@@ -27,10 +25,8 @@ public class CalculateEnemyMoveUsecaseTest
         public class Heal : MoveTestResult
         {
             public int enemyIndex;
-            public int value;
             public Heal(int enemyIndex, int value)
             {
-                moveEnum = MoveEnum.Attack;
                 this.enemyIndex = enemyIndex;
                 this.value = value;
             }

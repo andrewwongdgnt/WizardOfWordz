@@ -8,18 +8,20 @@ public class GenerateCharTilesUsecase: IGenerateCharTilesUsecase
     private readonly IGetTileAdjustedScoreUsecase getTileAdjustedScoreUsecase;
     private readonly ILetterDistributionRepository letterDistributionRepository;
     private readonly IPlayerManager playerManager;
-    private readonly Random random = new();
+    private readonly IGenerateRandomNumberUsecase generateRandomNumberUsecase;
 
     [Inject]
     public GenerateCharTilesUsecase(
         IGetTileAdjustedScoreUsecase getTileAdjustedScoreUsecase,
         ILetterDistributionRepository letterDistributionRepository,
-        IPlayerManager playerManager
+        IPlayerManager playerManager,
+        IGenerateRandomNumberUsecase generateRandomNumberUsecase
         )
     {
         this.getTileAdjustedScoreUsecase = getTileAdjustedScoreUsecase;
         this.letterDistributionRepository = letterDistributionRepository;
         this.playerManager = playerManager;
+        this.generateRandomNumberUsecase = generateRandomNumberUsecase;
     }
 
     public List<Tile> Invoke()
@@ -41,7 +43,7 @@ public class GenerateCharTilesUsecase: IGenerateCharTilesUsecase
         return Enumerable.Repeat(tiles, tileCount)
             .Select(ts =>
                 {
-                    int index = random.Next(ts.Count);
+                    int index = generateRandomNumberUsecase.Invoke(ts.Count);
                     Tile pickedTile = ts[index];
                     ts.RemoveAt(index);
                     return pickedTile;

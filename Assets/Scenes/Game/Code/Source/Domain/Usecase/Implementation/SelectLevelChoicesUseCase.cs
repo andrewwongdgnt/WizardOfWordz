@@ -1,10 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Zenject;
 
 public class SelectLevelChoicesUseCase: ISelectLevelChoicesUseCase
 {
-    private readonly Random random = new();
+    private readonly IGenerateRandomNumberUsecase generateRandomNumberUsecase;
+
+    [Inject]
+    public SelectLevelChoicesUseCase(
+        IGenerateRandomNumberUsecase generateRandomNumberUsecase
+        )
+    {
+        this.generateRandomNumberUsecase = generateRandomNumberUsecase;
+    }
 
     public List<Level> Invoke(int levelChoiceIndex, List<World.LevelChoice> levelChoices)
     {
@@ -21,7 +30,7 @@ public class SelectLevelChoicesUseCase: ISelectLevelChoicesUseCase
         // Fisher–Yates shuffle
         for (int i = copy.Count - 1; i > 0; i--)
         {
-            int j = random.Next(i + 1);
+            int j = generateRandomNumberUsecase.Invoke(i + 1);
             (copy[i], copy[j]) = (copy[j], copy[i]); // swap
         }
 

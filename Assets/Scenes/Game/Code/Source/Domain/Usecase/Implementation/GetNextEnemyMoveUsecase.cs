@@ -1,14 +1,23 @@
 using System;
 using System.Linq;
+using Zenject;
 
 public class GetNextEnemyMoveUsecase: IGetNextEnemyMoveUsecase
 {
-    private readonly Random random = new();
+    private readonly IGenerateRandomNumberUsecase generateRandomNumberUsecase;
+
+    [Inject]
+    public GetNextEnemyMoveUsecase(
+        IGenerateRandomNumberUsecase generateRandomNumberUsecase
+        )
+    {
+        this.generateRandomNumberUsecase = generateRandomNumberUsecase;
+    }
 
     public Enemy.Move Invoke(Enemy enemy)
     {
         int totalWeight = enemy.Moves.Sum(m => m.Weight);
-        int randomValue = random.Next(totalWeight);
+        int randomValue = generateRandomNumberUsecase.Invoke(totalWeight);
 
         int cumulative = 0;
         foreach (var move in enemy.Moves)
@@ -18,6 +27,6 @@ public class GetNextEnemyMoveUsecase: IGetNextEnemyMoveUsecase
                 return move;
         }
 
-        return enemy.Moves[random.Next(enemy.Moves.Count)];
+        return enemy.Moves[generateRandomNumberUsecase.Invoke(enemy.Moves.Count)];
     }
 }

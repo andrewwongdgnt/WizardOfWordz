@@ -23,6 +23,7 @@ public class GameInstaller : MonoInstaller
         Container.Bind<ICalculateNextIndexUsecase>().To<CalculateNextIndexUsecase>().AsSingle();
         Container.Bind<ICalculateTurnFromEnemiesUsecase>().To<CalculateTurnFromEnemiesUsecase>().AsSingle();
         Container.Bind<IGenerateCharTilesUsecase>().To<GenerateCharTilesUsecase>().AsSingle();
+        Container.Bind<IGenerateRandomNumberUsecase>().To<GenerateRandomNumberUsecase>().AsSingle();
         Container.Bind<IGetNextEnemyMoveUsecase>().To<GetNextEnemyMoveUsecase>().AsSingle();
         Container.Bind<IGetNextTargetUsecase>().To<GetNextTargetUsecase>().AsSingle();
         Container.Bind<IGetTileAdjustedScoreUsecase>().To<GetTileAdjustedScoreUsecase>().AsSingle();

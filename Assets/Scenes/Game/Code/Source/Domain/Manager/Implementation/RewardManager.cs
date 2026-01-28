@@ -7,23 +7,25 @@ using static Reward;
 public class RewardManager: IRewardManager
 {
     private readonly IPlayerManager playerManager;
+    private readonly IGenerateRandomNumberUsecase generateRandomNumberUsecase;
 
     private Dictionary<RewardEnum, Reward> availableRewards;
-    private readonly Random random = new();
     [Inject]
     public RewardManager(
     IPlayerManager playerManager,
+    IGenerateRandomNumberUsecase generateRandomNumberUsecase,
     IRewardInfoRepository rewardInfoRepository
     )
     {
         this.playerManager = playerManager;
+        this.generateRandomNumberUsecase = generateRandomNumberUsecase;
         Init(rewardInfoRepository.Get());
     }
 
     public List<Reward> Present()
     {
         int count = Math.Min(3, availableRewards.Count);
-        return availableRewards.Values.OrderBy(r => random.Next()).Take(count).ToList();
+        return availableRewards.Values.OrderBy(r => generateRandomNumberUsecase.Invoke()).Take(count).ToList();
     }
 
     public void Pick(Reward reward)
