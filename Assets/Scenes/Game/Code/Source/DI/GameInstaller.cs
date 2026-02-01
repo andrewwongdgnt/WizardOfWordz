@@ -27,7 +27,7 @@ public class GameInstaller : MonoInstaller
         Container.Bind<IGetNextEnemyMoveUsecase>().To<GetNextEnemyMoveUsecase>().AsSingle();
         Container.Bind<IGetNextTargetUsecase>().To<GetNextTargetUsecase>().AsSingle();
         Container.Bind<IGetTileAdjustedScoreUsecase>().To<GetTileAdjustedScoreUsecase>().AsSingle();
-        Container.Bind<IGetWorldUseCase>().To<GetWorldUseCase>().AsSingle();
+        Container.Bind<IGetWorldUseCase>().To<GetWorldUsecase>().AsSingle();
         Container.Bind<IPickTileUsecase>().To<PickTileUsecase>().AsSingle();
         Container.Bind<IPopulateEnemiesUsecase>().To<PopulateEnemiesUsecase>().AsSingle();
         Container.Bind<IProcessWordUsecase>().To<ProcessWordUsecase>().AsSingle();

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Zenject;
 
-public class GetWorldUseCase: IGetWorldUseCase
+public class GetWorldUsecase: IGetWorldUseCase
 {
     private readonly WorldInfo worldInfo;
     private readonly LevelInfo levelInfo;
 
     [Inject]
-    public GetWorldUseCase(
+    public GetWorldUsecase(
     IWorldInfoRepository worldInfoRepository,
     ILevelInfoRepository levelInfoRepository
     )
@@ -64,9 +64,10 @@ public class GetWorldUseCase: IGetWorldUseCase
             LevelEnum.F_1_3_c => levelInfo.F_1_3_c,
             _ => throw new NotImplementedException(),
         };
-        return levelDetail.type switch
+        LevelTypeEnum levelTypeEnum = (LevelTypeEnum) Enum.Parse(typeof(LevelTypeEnum), levelDetail.type);
+        return levelTypeEnum switch
         {
-            LevelTypeEnumConstants.FIGHT => CreateFightLevel(levelEnum, levelDetail),
+            LevelTypeEnum.Fight => CreateFightLevel(levelEnum, levelDetail),
             _ => throw new NotImplementedException()
         };
     }
