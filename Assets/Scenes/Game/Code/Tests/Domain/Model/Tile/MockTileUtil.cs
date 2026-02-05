@@ -17,4 +17,19 @@ public class MockTileUtil
         action?.Invoke(tileInfo);
         return tileInfo;
     }
+
+    public static Tile GenerateTile(
+        char value = 'A',
+        int score = 1,
+        bool pickable = true
+        )
+    {
+        return new(
+            value: value,
+            score: score
+            )
+        {
+            pickable = pickable
+        };
+    }
 }
