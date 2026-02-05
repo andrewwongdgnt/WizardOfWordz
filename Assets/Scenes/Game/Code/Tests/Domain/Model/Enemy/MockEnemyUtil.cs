@@ -73,4 +73,34 @@ public class MockEnemyUtil
                 )
             );
     }
+
+    public static EnemyInfo GenerateEnemyInfo()
+    {
+        EnemyInfo.DetailInfo.RarityInfo mockHealth = new()
+        {
+            common = 1,
+            uncommon = 1,
+            rare = 1,
+            epic = 1,
+            legendary = 1
+        };
+        return new()
+        {
+            Note = new()
+            {
+                title = "noteTitle",
+                description = "noteDescription",
+                health = mockHealth,
+                moves = new()
+
+            },
+            Notebook = new()
+            {
+                title = "noteBookTitle",
+                description = "notebookDescription",
+                health = mockHealth,
+                moves = new()
+            }
+        };
+    }
 }

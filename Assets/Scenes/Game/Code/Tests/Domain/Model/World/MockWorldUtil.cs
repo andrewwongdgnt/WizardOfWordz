@@ -59,7 +59,7 @@ public class MockWorldUtil
 
         return new()
         {
-            Library = new()
+            Library = worldEnum != WorldEnum.Library ? null : new()
             {
                 title = title,
                 description = description,

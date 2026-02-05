@@ -17,11 +17,7 @@ public class PopulateEnemiesUsecase: IPopulateEnemiesUsecase
         )
     {
         EnemyInfo enemyInfo = enemyInfoRepository.Get();
-        enemyInfoMap = new()
-        {
-            {EnemyEnum.Note, enemyInfo.Note },
-            {EnemyEnum.Notebook, enemyInfo.Notebook }
-        };
+        enemyInfoMap = EnemyInfo.GetEnemyInfoMap(enemyInfo);
         this.getNextEnemyMoveUsecase = getNextEnemyMoveUsecase;
     }
 
@@ -32,26 +28,23 @@ public class PopulateEnemiesUsecase: IPopulateEnemiesUsecase
             EnemyEnum enemyEnum = e.EnemyEnum;
             RarityEnum enemyRarity = e.RarityEnum;
             EnemyInfo.DetailInfo statsInfo = enemyInfoMap[enemyEnum];
-            int health = GetRarityValue(enemyRarity, statsInfo.health);
+            int health = GetHealthValue(enemyRarity, statsInfo.health);
 
-            List<Enemy.Move> moves = new();
-            statsInfo.moves.ForEach(m =>
+            List<Enemy.Move> moves = statsInfo.moves.Select(m =>
             {
-
                 Enum.TryParse(m.type, out MoveEnum moveEnum);
 
                 Enemy.Move move = new(
                             m.title,
                             m.description,
-                            GetRarityValue(enemyRarity, m.value),
-                            GetRarityValue(enemyRarity, m.wait),
-                           GetRarityValue(enemyRarity, m.weight),
+                            GetHealthValue(enemyRarity, m.value),
+                            GetHealthValue(enemyRarity, m.wait),
+                           GetHealthValue(enemyRarity, m.weight),
                            moveEnum
                     );
 
-
-                moves.Add(move);
-            });
+                return move;
+            }).ToList();
             Enemy enemy = new(
                 enemyEnum,
                 enemyRarity,
@@ -67,7 +60,7 @@ public class PopulateEnemiesUsecase: IPopulateEnemiesUsecase
         }).ToList();
     }
 
-    private int GetRarityValue(
+    private int GetHealthValue(
         RarityEnum rarity,
         EnemyInfo.DetailInfo.RarityInfo rarityInfo
         )

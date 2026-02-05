@@ -43,4 +43,13 @@ public class EnemyInfo
             public int legendary;
         }
     }
+
+    public static Dictionary<EnemyEnum, DetailInfo> GetEnemyInfoMap(EnemyInfo enemyInfo)
+    {
+        return new()
+        {
+            {EnemyEnum.Note, enemyInfo.Note },
+            {EnemyEnum.Notebook, enemyInfo.Notebook }
+        };
+    }
 }
