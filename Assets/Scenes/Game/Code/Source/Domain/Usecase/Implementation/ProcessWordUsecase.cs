@@ -1,6 +1,7 @@
 
 
 
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -12,18 +13,21 @@ public class ProcessWordUsecase: IProcessWordUsecase
 
     private readonly Dictionary<char, int> tileScoreMap;
 
+    private readonly Dictionary<string, Word> dictionary;
+
     [Inject]
     public ProcessWordUsecase(
         ILetterDistributionRepository letterDistributionRepository,
-        IGetTileAdjustedScoreUsecase getTileAdjustedScoreUsecase
+        IGetTileAdjustedScoreUsecase getTileAdjustedScoreUsecase,
+        IRetrieveWordsFromDictionaryUsecase retrieveWordsFromDictionaryUsecase
         )
     {
+        dictionary = retrieveWordsFromDictionaryUsecase.Invoke();
         tileScoreMap = letterDistributionRepository.Get().ToDictionary(t => t.Value, t => t.Score);
         this.getTileAdjustedScoreUsecase = getTileAdjustedScoreUsecase;
     }
     public void Invoke(
         string word,
-        Dictionary<string, Word> dictionary,
         List<Enemy> enemies,
         int attackIndex
         )

@@ -63,15 +63,13 @@ public class MainScript : MonoBehaviour
     private List<Tile> allowedTiles;
     private List<Enemy> enemies;
     private readonly List<Tile> currentWordList = new();
-    private Dictionary<string, Word> dictionary;
 
     private GameState gameState;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        playerManager.Init();
-        dictionary = retrieveWordsFromDictionaryUsecase.Invoke();
+        playerManager.Init();        
         SetUp();
         ResetAllStates();
         UpdateUIState();
@@ -174,7 +172,6 @@ public class MainScript : MonoBehaviour
         currentWordList.Clear();
         processWordUsecase.Invoke(
             word,
-            dictionary,
             enemies,
             attackIndex
             );
