@@ -1,6 +1,7 @@
 using NSubstitute;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using static Enemy;
 
 public class MockEnemyUtil
@@ -30,6 +31,14 @@ public class MockEnemyUtil
         enemy.UpdateHealthBy(startingHealth - health);
         action?.Invoke(enemy);
         return enemy;
+    }
+
+    public static List<Enemy> GenerateEnemies(int count)
+    {
+        return Enumerable.Range(1, count).Select(i =>
+        {
+            return MockEnemyUtil.GenerateEnemy();
+        }).ToList();
     }
 
     public static Move GenerateMove(

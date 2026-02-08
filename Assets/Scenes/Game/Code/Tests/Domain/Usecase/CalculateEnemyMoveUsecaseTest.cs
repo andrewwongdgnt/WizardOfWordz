@@ -144,10 +144,7 @@ public class CalculateEnemyMoveUsecaseTest
             return MockEnemyUtil.GenerateMovePair(enemyIndex: param.enemyIndex, value: param.value, moveEnum: param.moveEnum);
         }).ToList();
 
-        List<Enemy> enemies = Enumerable.Range(1, enemyCount).Select(i =>
-        {
-            return MockEnemyUtil.GenerateEnemy();
-        }).ToList();
+        List<Enemy> enemies = MockEnemyUtil.GenerateEnemies(enemyCount);
 
         sut.Invoke(
             movesPair: movesPair,

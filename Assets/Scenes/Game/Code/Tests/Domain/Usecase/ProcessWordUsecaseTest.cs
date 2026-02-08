@@ -67,10 +67,7 @@ public class ProcessWordUsecaseTest
             retrieveWordsFromDictionaryUsecase: mockRetrieveWordsFromDictionaryUsecase
             );
 
-        List<Enemy> enemies = Enumerable.Range(1, enemyCount).Select(i =>
-        {
-            return MockEnemyUtil.GenerateEnemy();
-        }).ToList();
+        List<Enemy> enemies = MockEnemyUtil.GenerateEnemies(enemyCount);
 
         sut.Invoke(
             word: word,
