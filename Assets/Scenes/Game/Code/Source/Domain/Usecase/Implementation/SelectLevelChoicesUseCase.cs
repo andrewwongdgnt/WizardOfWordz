@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Zenject;
 
-public class SelectLevelChoicesUseCase: ISelectLevelChoicesUseCase
+public class SelectLevelChoicesUseCase : ISelectLevelChoicesUseCase
 {
     private readonly IGenerateRandomNumberUsecase generateRandomNumberUsecase;
 
@@ -18,7 +17,7 @@ public class SelectLevelChoicesUseCase: ISelectLevelChoicesUseCase
     public List<Level> Invoke(int levelChoiceIndex, List<World.LevelChoice> levelChoices)
     {
 
-        if (levelChoiceIndex <0 || levelChoiceIndex >= levelChoices.Count)
+        if (levelChoiceIndex < 0 || levelChoiceIndex >= levelChoices.Count)
         {
             return new();
         }
