@@ -1,6 +1,4 @@
-using NUnit.Framework;
 using System.Collections.Generic;
-using static Enemy;
 
 public abstract class Level
 {

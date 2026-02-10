@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Zenject;
 
-public class SelectLevelChoicesUseCase : ISelectLevelChoicesUseCase
+public class SelectLevelChoicesUsecase : ISelectLevelChoicesUseCase
 {
     private readonly IGenerateRandomNumberUsecase generateRandomNumberUsecase;
 
     [Inject]
-    public SelectLevelChoicesUseCase(
+    public SelectLevelChoicesUsecase(
         IGenerateRandomNumberUsecase generateRandomNumberUsecase
         )
     {

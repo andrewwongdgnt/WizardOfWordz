@@ -32,7 +32,7 @@ public class GameInstaller : MonoInstaller
         Container.Bind<IPopulateEnemiesUsecase>().To<PopulateEnemiesUsecase>().AsSingle();
         Container.Bind<IProcessWordUsecase>().To<ProcessWordUsecase>().AsSingle();
         Container.Bind<IRetrieveWordsFromDictionaryUsecase>().To<RetrieveWordsFromDictionaryUsecase>().AsSingle();
-        Container.Bind<ISelectLevelChoicesUseCase>().To<SelectLevelChoicesUseCase>().AsSingle();
+        Container.Bind<ISelectLevelChoicesUseCase>().To<SelectLevelChoicesUsecase>().AsSingle();
 
         // Component
         Container.Bind<MainScript>().FromComponentInHierarchy().AsSingle();

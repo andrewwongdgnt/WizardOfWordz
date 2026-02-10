@@ -1,7 +1,27 @@
+using System;
 using System.Collections.Generic;
+using static Level.Fight;
 
 public class MockLevelUtil
 {
+    public static Level GenerateLevel(
+        LevelTypeEnum levelTypeEnum = LevelTypeEnum.Fight,
+        string title = ""
+        )
+    {
+        return levelTypeEnum switch
+        {
+            LevelTypeEnum.Fight => new Level.Fight(
+                                levelEnum: LevelEnum.F_1_1_a,
+                                title: title,
+                                description: "",
+                                enemies: new List<EnemySummary>(),
+                                topRarity: RarityEnum.Common
+                                ),
+            _ => throw new Exception(),
+        };
+    }
+
     public static LevelInfo GenerateMockLevelInfo()
     {
         return new()
