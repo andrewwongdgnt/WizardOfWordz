@@ -1,18 +1,31 @@
 using System;
+using System.Collections.Generic;
 using static Reward;
 
 public class MockRewardUtil
 {   public static RewardValue GenerateRewardValue(
             int value = 1,
-            RarityEnum rarityEnum = RarityEnum.Common,
-            Action<RewardValue>? action = null
+            RarityEnum rarityEnum = RarityEnum.Common
         )
     {
-        RewardValue rewardValue = new(
+        return new(
                 value: value,
                 rarityEnum: rarityEnum
             );
-        action?.Invoke(rewardValue);
-        return rewardValue;
+    }
+
+    public static Reward GenerateReward(
+        RewardEnum rewardEnum = RewardEnum.MaxHealth,
+        string title = "",
+        string description = "",
+        List<RewardValue>? values = null
+        )
+    {
+        return new(
+            rewardEnum: rewardEnum,
+            title: title,
+            description: description,
+            values: values ?? new List<RewardValue> { GenerateRewardValue() }
+            );
     }
 }

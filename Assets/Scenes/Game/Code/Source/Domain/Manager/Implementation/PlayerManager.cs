@@ -1,6 +1,6 @@
 using Zenject;
 
-public class PlayerManager: IPlayerManager
+public class PlayerManager : IPlayerManager
 {
     private readonly PlayerInfo playerInfo;
 
@@ -45,7 +45,7 @@ public class PlayerManager: IPlayerManager
 
     public void HandleReward(Reward reward)
     {
-        switch(reward.RewardEnum)
+        switch (reward.RewardEnum)
         {
             case RewardEnum.MaxHealth:
                 IncreaseMaxHealth(reward.GetCurrentValue().Value);
