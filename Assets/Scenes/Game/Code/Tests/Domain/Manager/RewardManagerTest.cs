@@ -1,6 +1,8 @@
 using NSubstitute;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class RewardManagerTest
 {
@@ -8,31 +10,61 @@ public class RewardManagerTest
     private IPlayerManager mockPlayerManager;
     private IGenerateRandomNumberUsecase mockGenerateRandomNumberUsecase;
 
-    //public static IEnumerable<TestCaseData> InvokeTestCasesForPresent
-    //{
-    //    get
-    //    {
-    //        yield return new TestCaseData(
-    //            -10,
-    //            MockPlayerUtil.DEFAULT_HEALTH-10
-    //        ).SetName("Lose 10 health");
+    public static IEnumerable<TestCaseData> InvokeTestCasesForDifferentRewardStates
+    {
+        get
+        {
+            yield return new TestCaseData(
+                RewardEnum.UpgradeLNRST,
+                new List<int>() {1, 2},
+                (1, 3)
+            ).SetName("UpgradeLNRST with values of 1, 2");
 
-    //        yield return new TestCaseData(
-    //            10,
-    //            MockPlayerUtil.DEFAULT_HEALTH
-    //        ).SetName("Gain 10 health while at max");
+            yield return new TestCaseData(
+                RewardEnum.UpgradeBCDGMP,
+                new List<int>() { 1, 2 },
+                (1, 3)
+            ).SetName("UpgradeBCDGMP with values of 1, 2");
 
-    //        yield return new TestCaseData(
-    //            -1000,
-    //            0
-    //        ).SetName("Lose 1000 health while at 100");
-    //    }
-    //}
+            yield return new TestCaseData(
+                RewardEnum.UpgradeFKHVWY,
+                new List<int>() { 1, 2 },
+                (1, 3)
+            ).SetName("UpgradeFKHVWY with values of 1, 2");
+
+            yield return new TestCaseData(
+                RewardEnum.UpgradeJXQZ,
+                new List<int>() { 1, 2 },
+                (1, 3)
+            ).SetName("UpgradeJXQZ with values of 1, 2");
+
+            yield return new TestCaseData(
+                RewardEnum.UpgradeAEIOU,
+                new List<int>() { 1, 2 },
+                (1, 3)
+            ).SetName("UpgradeAEIOU with values of 1, 2");
+
+            yield return new TestCaseData(
+                RewardEnum.MaxHealth,
+                new List<int>() { 1, 2 },
+                (1, 3)
+            ).SetName("MaxHealth with values of 1, 2");
+
+            yield return new TestCaseData(
+                RewardEnum.MaxTile,
+                new List<int>() { 1, 2 },
+                (1, 3)
+            ).SetName("MaxTile with values of 1, 2");
+
+        }
+    }
 
     [SetUp]
     public void SetUp()
     {
         mockPlayerManager = Substitute.For<IPlayerManager>();
+        mockPlayerManager.MaxHealth.Returns(1);
+        mockPlayerManager.TileCount.Returns(1);
         mockGenerateRandomNumberUsecase = Substitute.For<IGenerateRandomNumberUsecase>();
         IRewardInfoRepository mockRewardInfoRepository = Substitute.For<IRewardInfoRepository>();
         mockRewardInfoRepository.Get().Returns(MockRewardUtil.GenerateRewordInfo());
@@ -79,17 +111,21 @@ public class RewardManagerTest
     }
 
     [Test]
-    public void TestDifferentRewardStates()
+    [TestCaseSource(nameof(InvokeTestCasesForDifferentRewardStates))]
+    public void TestDifferentRewardStates(
+        RewardEnum rewardEnum,
+        List<int> rewardValues,
+        (int, int) expected
+        )
     {
-        mockGenerateRandomNumberUsecase.Invoke().Returns(1); 
-        List<Reward> rewards = sut.Present();
-        sut.Pick(rewards[0]);
-        Reward.RewardValue rv = sut.GetCurrentValue(rewards[0].RewardEnum);
-        Assert.AreEqual(1, rv.Value);
-        Assert.AreEqual(RarityEnum.Common, rv.RarityEnum);
-
-
-        (int, int) currentAndFutureState = sut.GetCurrentAndFutureState(rewards[0]);
-        Assert.AreEqual((1, 3), currentAndFutureState);
+        Reward reward = MockRewardUtil.GenerateReward(
+            rewardEnum: rewardEnum,
+            values: rewardValues.Select(r =>
+                    new Reward.RewardValue(r, RarityEnum.Common)
+                ).ToList()
+            );
+        sut.Pick(reward);
+        (int, int) result = sut.GetCurrentAndFutureState(reward);
+        Assert.AreEqual(expected, result);
     }
 }
