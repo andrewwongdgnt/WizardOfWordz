@@ -4,12 +4,14 @@ using System.Linq;
 using Zenject;
 using static Reward;
 
-public class RewardManager: IRewardManager
+public class RewardManager : IRewardManager
 {
+    public const int MAX_REWARD_PRESENTABLE = 3;
+
     private readonly IPlayerManager playerManager;
     private readonly IGenerateRandomNumberUsecase generateRandomNumberUsecase;
 
-    private Dictionary<RewardEnum, Reward> availableRewards;
+    private Dictionary<RewardEnum, Reward> allRewards;
     [Inject]
     public RewardManager(
     IPlayerManager playerManager,
@@ -24,18 +26,21 @@ public class RewardManager: IRewardManager
 
     public List<Reward> Present()
     {
-        int count = Math.Min(3, availableRewards.Count);
-        return availableRewards.Values.OrderBy(r => generateRandomNumberUsecase.Invoke()).Take(count).ToList();
+        List<Reward> availableRewards = allRewards.Values.Where(r => r.Pickable()).ToList();
+        int count = Math.Min(MAX_REWARD_PRESENTABLE, availableRewards.Count);
+        return availableRewards.OrderBy(r => generateRandomNumberUsecase.Invoke()).Take(count).ToList();
     }
 
     public void Pick(Reward reward)
     {
-        reward.Pick();
-
+        if (reward.Pickable())
+        {
+            reward.Pick();
+        }
     }
     public RewardValue GetCurrentValue(RewardEnum rewardEnum)
     {
-        return availableRewards[rewardEnum].GetCurrentValue();
+        return allRewards[rewardEnum].GetCurrentValue();
     }
 
     public (int, int) GetCurrentAndFutureState(Reward reward)
@@ -55,7 +60,7 @@ public class RewardManager: IRewardManager
 
     private void Init(RewardInfo rewardInfo)
     {
-        availableRewards = new() {
+        allRewards = new() {
             { RewardEnum.UpgradeLNRST, InitReward(rewardInfo.UpgradeLNRST, RewardEnum.UpgradeLNRST) },
             { RewardEnum.UpgradeBCDGMP, InitReward(rewardInfo.UpgradeBCDGMP, RewardEnum.UpgradeBCDGMP) },
             { RewardEnum.UpgradeFKHVWY, InitReward(rewardInfo.UpgradeFKHVWY, RewardEnum.UpgradeFKHVWY) },

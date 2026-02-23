@@ -29,7 +29,7 @@ public class Reward
 
     public bool Pickable()
     {
-        return currentValueIndex < values.Count;
+        return currentValueIndex < values.Count - 1;
     }
 
     public RewardValue GetCurrentValue()
