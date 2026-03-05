@@ -22,7 +22,7 @@ public class GetWorldUsecase : IGetWorldUseCase
     {
         WorldInfo.DetailInfo detailInfo = worldEnum switch
         {
-            WorldEnum.Library => worldInfo.Library,
+            WorldEnum.Classroom => worldInfo.Classroom,
             _ => throw new System.NotImplementedException(),
         };
 

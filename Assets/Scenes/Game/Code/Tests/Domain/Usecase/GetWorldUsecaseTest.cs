@@ -14,7 +14,7 @@ public class GetWorldUsecaseTest
         get
         {
             yield return new TestCaseData(
-                WorldEnum.Library,
+                WorldEnum.Classroom,
                 (
                 "Lib",
                 "Lib desc",
@@ -24,7 +24,7 @@ public class GetWorldUsecaseTest
             ).SetName("Library 1");
 
             yield return new TestCaseData(
-                WorldEnum.Library,
+                WorldEnum.Classroom,
                 (
                 "Lib",
                 "Lib desc",
@@ -76,7 +76,7 @@ public class GetWorldUsecaseTest
     {
         WorldInfo worldInfo = worldEnum switch
         {
-            WorldEnum.Library => MockWorldUtil.GenerateWorldInfoForLibrary(
+            WorldEnum.Classroom => MockWorldUtil.GenerateWorldInfoForLibrary(
                 title: worldInfoParam.title,
                 description: worldInfoParam.description,
                 levelPicks: worldInfoParam.levelPicks,

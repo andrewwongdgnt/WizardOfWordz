@@ -1,7 +1,7 @@
 {
-  "Library": {
-    "title": "Library",
-    "description": "Lots of books",
+  "Classroom": {
+    "title": "Classroom",
+    "description": "classroom description",
     "levels": [
       {
         "pick": 3,

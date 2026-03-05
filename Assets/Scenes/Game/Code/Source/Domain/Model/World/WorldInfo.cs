@@ -4,7 +4,7 @@ using System.Collections.Generic;
 [System.Serializable]
 public class WorldInfo
 {
-    public DetailInfo Library;
+    public DetailInfo Classroom;
 
     [System.Serializable]
     public class DetailInfo

@@ -12,7 +12,7 @@ public class MockWorldUtil
         )
     {
         return GenerateWorldInfo(
-            worldEnum: WorldEnum.Library,
+            worldEnum: WorldEnum.Classroom,
             title: title,
             description: description,
             levelPicks: levelPicks,
@@ -59,7 +59,7 @@ public class MockWorldUtil
 
         return new()
         {
-            Library = worldEnum != WorldEnum.Library ? null : new()
+            Classroom = worldEnum != WorldEnum.Classroom ? null : new()
             {
                 title = title,
                 description = description,
