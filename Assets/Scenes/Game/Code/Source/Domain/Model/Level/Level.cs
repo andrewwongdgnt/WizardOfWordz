@@ -8,19 +8,19 @@ public abstract class Level
 
     public string Description { get; protected set; }
 
-    public class Fight: Level
+    public class Fight : Level
     {
         public List<EnemySummary> Enemies { get; }
 
         public RarityEnum RarityEnum { get; }
 
         public Fight(
-        LevelEnum levelEnum,
-        string title,
-        string description,
-        List<EnemySummary> enemies,
-        RarityEnum topRarity
-    )
+            LevelEnum levelEnum,
+            string title,
+            string description,
+            List<EnemySummary> enemies,
+            RarityEnum topRarity
+        )
         {
             LevelEnum = levelEnum;
             Title = title;
@@ -43,10 +43,32 @@ public abstract class Level
                 RarityEnum = rarityEnum;
             }
         }
+    }
 
-        public override string ToString()
+    public class Rest : Level
+    {
+        public int Heal { get; }
+        public int MaxHealth { get; }
+
+        public Rest(
+           LevelEnum levelEnum,
+           string title,
+           string description,
+           int heal,
+           int maxHealth
+       )
         {
-            return Title;
+            LevelEnum = levelEnum;
+            Title = title;
+            Description = description;
+            Heal = heal;
+            MaxHealth = maxHealth;
         }
     }
+
+    public override string ToString()
+    {
+        return Title;
+    }
+
 }

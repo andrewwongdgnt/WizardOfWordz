@@ -62,20 +62,22 @@ public class GetWorldUsecase : IGetWorldUseCase
             LevelEnum.F_1_3_a => levelInfo.F_1_3_a,
             LevelEnum.F_1_3_b => levelInfo.F_1_3_b,
             LevelEnum.F_1_3_c => levelInfo.F_1_3_c,
+            LevelEnum.R_1_4_a => levelInfo.R_1_4_a,
             _ => throw new NotImplementedException(),
         };
         LevelTypeEnum levelTypeEnum = (LevelTypeEnum)Enum.Parse(typeof(LevelTypeEnum), levelDetail.type);
         return levelTypeEnum switch
         {
-            LevelTypeEnum.Fight => CreateFightLevel(levelEnum, levelDetail),
+            LevelTypeEnum.Fight => CreateFightLevel(levelEnum, levelDetail as LevelInfo.DetailInfo.FightInfo),
+            LevelTypeEnum.Rest => CreateRestLevel(levelEnum, levelDetail as LevelInfo.DetailInfo.RestInfo),
             _ => throw new NotImplementedException()
         };
     }
 
     private Level.Fight CreateFightLevel(
         LevelEnum levelEnum,
-        LevelInfo.DetailInfo levelDetail
-        )
+        LevelInfo.DetailInfo.FightInfo levelDetail
+    )
     {
         List<Level.Fight.EnemySummary> enemySummaries = levelDetail.enemies.Select(GetEnemySummary).ToList();
 
@@ -88,11 +90,25 @@ public class GetWorldUsecase : IGetWorldUseCase
          );
     }
 
-    private Level.Fight.EnemySummary GetEnemySummary(LevelInfo.DetailInfo.EnemyArg enemyArg)
+    private Level.Fight.EnemySummary GetEnemySummary(LevelInfo.DetailInfo.FightInfo.EnemyArg enemyArg)
     {
         return new Level.Fight.EnemySummary(
             (EnemyEnum)Enum.Parse(typeof(EnemyEnum), enemyArg.enemy),
             (RarityEnum)Enum.Parse(typeof(RarityEnum), enemyArg.rarity)
             );
+    }
+
+    private Level.Rest CreateRestLevel(
+        LevelEnum levelEnum,
+        LevelInfo.DetailInfo.RestInfo levelDetail
+    )
+    {
+        return new(
+         levelEnum,
+         levelDetail.title,
+         levelDetail.description,
+         levelDetail.heal,
+         levelDetail.maxHealth
+         );
     }
 }

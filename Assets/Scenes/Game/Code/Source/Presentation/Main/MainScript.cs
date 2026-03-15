@@ -232,11 +232,18 @@ public class MainScript : MonoBehaviour
     private void SelectLevel()
     {
         Level level = chooseLevelHandler.GetLevel();
-        if (level is Level.Fight)
+
+        switch (level)
         {
-            gameState = new GameState.PlayingLevelState(LevelTypeEnum.Fight);
-            PopulateEnemies();
-            RestartAllowedTiles();
+            case Level.Fight:
+                gameState = new GameState.PlayingLevelState(LevelTypeEnum.Fight);
+                PopulateEnemies();
+                RestartAllowedTiles();
+                break;
+            case Level.Rest:
+                gameState = new GameState.PlayingLevelState(LevelTypeEnum.Rest);
+                // TODO handle rest level
+                break;
         }
     }
 

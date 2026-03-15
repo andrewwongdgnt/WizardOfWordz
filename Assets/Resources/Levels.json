@@ -195,10 +195,8 @@
     "type": "Rest",
     "title": "Rest 4a",
     "description": "Rest 4a Desc",
-    "choices": [
-      "heal",
-      "strengthen"
-    ]
+	"heal": 25,
+	"maxHealth": 10
   },
   "T_1_4_b": {
     "type": "Timed",

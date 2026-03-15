@@ -41,14 +41,14 @@ public class MockLevelUtil
         };
     }
 
-    private static LevelInfo.DetailInfo GenerateMockFight(string id)
+    private static LevelInfo.DetailInfo.FightInfo GenerateMockFight(string id)
     {
         return new()
         {
             type = LevelTypeEnum.Fight.ToString(),
             title = id,
             description = id + " Desc",
-            enemies = new List<LevelInfo.DetailInfo.EnemyArg>()
+            enemies = new List<LevelInfo.DetailInfo.FightInfo.EnemyArg>()
             {
                 new()
                 {
