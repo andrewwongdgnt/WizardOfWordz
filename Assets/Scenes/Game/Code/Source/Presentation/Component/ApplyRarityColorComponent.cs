@@ -4,20 +4,7 @@ using UnityEngine.UI;
 public class ApplyRarityColorComponent : MonoBehaviour
 {
 
-    public Image image;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    public Image image; 
     public void Apply(RarityEnum rarityEnum)
     {
         image.color = rarityEnum switch

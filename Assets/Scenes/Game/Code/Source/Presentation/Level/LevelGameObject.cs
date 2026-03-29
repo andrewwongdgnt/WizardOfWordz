@@ -1,8 +1,5 @@
 using System;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class LevelGameObject : MonoBehaviour
 {
@@ -11,23 +8,13 @@ public class LevelGameObject : MonoBehaviour
     public AdjustSizeComponent adjustSizeForBaseComponent;
     public AdjustSizeComponent adjustmentSizeForRarityComponent;
     public SelectIndicatorComponent selectIndicatorComponent;
-    public ApplyRarityColorComponent applyRarityComponent;
+    public ApplyRarityColorComponent applyRarityColorComponent;
 
     public Action<Level> levelSelectedAction;
     public Action<Level> levelHoverAction;
 
     private Level level;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void OnSelect()
     {
@@ -55,17 +42,20 @@ public class LevelGameObject : MonoBehaviour
         )
     {
         this.level = level;
-        ApplyRarity(level); 
+        ApplyRarity(level);
         applySpriteForBaseComponent.Apply(baseSprite);
-        applySpriteForRarityComponent.Apply(rarityElementSprite);
         adjustSizeForBaseComponent.Apply(baseSprite, GetComponent<RectTransform>());
-        adjustmentSizeForRarityComponent.Apply(rarityElementSprite, GetComponent<RectTransform>());
+        if (rarityElementSprite != null)
+        {
+            applySpriteForRarityComponent.Apply(rarityElementSprite);
+            adjustmentSizeForRarityComponent.Apply(rarityElementSprite, GetComponent<RectTransform>());
+        }
     }
     private void ApplyRarity(Level level)
     {
         if (level is Level.Fight fightLevel)
         {
-            applyRarityComponent.Apply(fightLevel.RarityEnum);
+            applyRarityColorComponent.Apply(fightLevel.RarityEnum);
         }
     }
 

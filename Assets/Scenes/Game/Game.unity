@@ -1405,6 +1405,7 @@ MonoBehaviour:
   levelContainer: {fileID: 1711619859}
   levelGO: {fileID: 8779569740804142632, guid: 6a18eee50a83f894dbebddd192abbd35, type: 3}
   fightLevelSprite: {fileID: 21300000, guid: 6f31257fcf1ad4441b72e1653f2d0d10, type: 3}
+  restLevelSprite: {fileID: 21300000, guid: 553474149e30bd04384512beae27ac0f, type: 3}
 --- !u!95 &1453657670
 Animator:
   serializedVersion: 7

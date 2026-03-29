@@ -11,6 +11,7 @@ public class LevelSelectorGameObject : MonoBehaviour
     public LevelGameObject levelGO;
 
     public Sprite fightLevelSprite;
+    public Sprite restLevelSprite;
 
     public Action<Level> levelSelectedAction;
     public Action<Level> levelHoverAction;
@@ -40,21 +41,18 @@ public class LevelSelectorGameObject : MonoBehaviour
 
         levels.ForEach(level =>
         {
-            (Sprite, Sprite) spritePair;
+            (Sprite baseSprite, Sprite raritysprite) spritePair;
 
-
-            if (level is Level.Fight fightLevel)
+            spritePair = level switch
             {
-                spritePair = (fightLevelSprite, fightLevelSprite);
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
+                Level.Fight => (fightLevelSprite, fightLevelSprite),
+                Level.Rest => (restLevelSprite, restLevelSprite),
+                _ => throw new NotImplementedException(),
+            };
 
             LevelGameObject newLevelGO = Instantiate(levelGO, levelContainer.transform.position, Quaternion.identity);
             newLevelGO.transform.SetParent(levelContainer.transform);
-            newLevelGO.Init(level, spritePair.Item1, spritePair.Item2);
+            newLevelGO.Init(level, spritePair.baseSprite, spritePair.raritysprite);
             levelMap[level] = newLevelGO;
             newLevelGO.levelSelectedAction = levelSelectedAction;
             newLevelGO.levelHoverAction = levelHoverAction;

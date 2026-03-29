@@ -160,7 +160,7 @@ MonoBehaviour:
   adjustSizeForBaseComponent: {fileID: 5824593731622969450}
   adjustmentSizeForRarityComponent: {fileID: 7535428153551910983}
   selectIndicatorComponent: {fileID: 111140824861043442}
-  applyRarityComponent: {fileID: 803549010877445802}
+  applyRarityColorComponent: {fileID: 803549010877445802}
 --- !u!114 &1746113719801065647
 MonoBehaviour:
   m_ObjectHideFlags: 0
