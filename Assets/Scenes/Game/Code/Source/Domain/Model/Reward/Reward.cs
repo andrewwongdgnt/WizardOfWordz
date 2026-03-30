@@ -51,10 +51,10 @@ public class Reward
         return new(0, RarityEnum.Common);
     }
 
-    public class RewardValue
+    public class RewardValue : IRarityHolder
     {
-        public int Value;
-        public RarityEnum RarityEnum;
+        public int Value { get; }
+        public RarityEnum RarityEnum { get; }
 
         public RewardValue(
             int value,
@@ -64,5 +64,6 @@ public class Reward
             Value = value;
             RarityEnum = rarityEnum;
         }
+
     }
 }

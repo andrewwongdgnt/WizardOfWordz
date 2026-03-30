@@ -8,7 +8,7 @@ public abstract class Level
 
     public string Description { get; protected set; }
 
-    public class Fight : Level
+    public class Fight : Level,  IRarityHolder
     {
         public List<EnemySummary> Enemies { get; }
 

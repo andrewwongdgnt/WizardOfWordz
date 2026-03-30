@@ -17,17 +17,7 @@ public class LevelSelectorGameObject : MonoBehaviour
     public Action<Level> levelHoverAction;
 
     private readonly Dictionary<Level, LevelGameObject> levelMap = new();
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     public void UpdateState(Level levelThatIsTargeted)
     {
         foreach (var levelGo in levelMap.Values)

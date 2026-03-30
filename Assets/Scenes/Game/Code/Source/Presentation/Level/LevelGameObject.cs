@@ -53,9 +53,9 @@ public class LevelGameObject : MonoBehaviour
     }
     private void ApplyRarity(Level level)
     {
-        if (level is Level.Fight fightLevel)
+        if (level is IRarityHolder holder)
         {
-            applyRarityColorComponent.Apply(fightLevel.RarityEnum);
+            applyRarityColorComponent.Apply(holder.RarityEnum);
         }
     }
 

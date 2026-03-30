@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using System.Linq.Expressions;
 
-public class Enemy
+public class Enemy : IRarityHolder
 {
     public EnemyEnum EnemyEnum { get; }
     public RarityEnum RarityEnum { get; }
