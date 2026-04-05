@@ -4,7 +4,7 @@ using System.Linq;
 
 public class MockWorldUtil
 {
-    public static WorldInfo GenerateWorldInfoForLibrary(
+    public static WorldInfo GenerateWorldInfoForClassroom(
         string title = "",
         string description = "",
         List<int>? levelPicks = null,
@@ -54,6 +54,10 @@ public class MockWorldUtil
                 "F_1_3_a",
                 "F_1_3_b",
                 "F_1_3_c",
+            },
+            new() {
+                "R_1_4_a",
+                "F_1_3_b",
             },
         };
 

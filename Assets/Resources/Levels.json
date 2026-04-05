@@ -195,8 +195,22 @@
     "type": "Rest",
     "title": "Rest 4a",
     "description": "Rest 4a Desc",
-	"heal": 25,
-	"maxHealth": 10
+    "choices": [
+      "Heal",
+      "Strengthen"
+    ],
+    "letterPool": [
+      "AERTLNS",
+      "AERTCHS",
+      "AERTMOF",
+      "AELPNAT",
+      "AERDOBS",
+      "AERTDIN",
+      "AELISTN",
+      "AERTGIN",
+      "AERSUTN",
+      "AELDROW"
+    ]
   },
   "T_1_4_b": {
     "type": "Timed",

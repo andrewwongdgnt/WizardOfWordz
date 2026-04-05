@@ -41,8 +41,8 @@ public class LevelInfo
         [System.Serializable]
         public class RestInfo : DetailInfo
         {
-            public int heal;
-            public int maxHealth;
+            public List<string> choices;
+            public List<string> letterPool;
         }
     }
 }

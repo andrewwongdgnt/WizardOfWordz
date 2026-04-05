@@ -38,6 +38,7 @@ public class MockLevelUtil
             F_1_3_a = GenerateMockFight(LevelEnum.F_1_3_a.ToString()),
             F_1_3_b = GenerateMockFight(LevelEnum.F_1_3_b.ToString()),
             F_1_3_c = GenerateMockFight(LevelEnum.F_1_3_c.ToString()),
+            R_1_4_a = GenerateMockRest(LevelEnum.R_1_4_a.ToString()),
         };
     }
 
@@ -55,6 +56,26 @@ public class MockLevelUtil
                     enemy = EnemyEnum.Note.ToString(),
                     rarity = RarityEnum.Common.ToString()
                 }
+            }
+        };
+    }
+
+    private static LevelInfo.DetailInfo.RestInfo GenerateMockRest(string id)
+    {
+        return new()
+        {
+            type = LevelTypeEnum.Rest.ToString(),
+            title = id,
+            description = id + " Desc",
+            choices = new List<String>()
+            {
+                "Heal",
+                "Strengthen"
+            },
+            letterPool = new List<String>() 
+            { 
+                "ABC",
+                "DEFG"
             }
         };
     }

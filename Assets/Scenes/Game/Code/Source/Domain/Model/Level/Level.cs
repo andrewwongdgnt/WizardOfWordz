@@ -47,22 +47,22 @@ public abstract class Level
 
     public class Rest : Level
     {
-        public int Heal { get; }
-        public int MaxHealth { get; }
+        public List<RestChoiceEnum> Choices { get; }
+        public List<char[]> LetterPool { get; }
 
         public Rest(
            LevelEnum levelEnum,
            string title,
            string description,
-           int heal,
-           int maxHealth
+           List<RestChoiceEnum> choices,
+           List<char[]> letterPool
        )
         {
             LevelEnum = levelEnum;
             Title = title;
             Description = description;
-            Heal = heal;
-            MaxHealth = maxHealth;
+            Choices = choices;
+            LetterPool = letterPool;
         }
     }
 

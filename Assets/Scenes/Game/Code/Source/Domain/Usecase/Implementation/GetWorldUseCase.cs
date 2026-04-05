@@ -107,8 +107,14 @@ public class GetWorldUsecase : IGetWorldUseCase
          levelEnum,
          levelDetail.title,
          levelDetail.description,
-         levelDetail.heal,
-         levelDetail.maxHealth
+         levelDetail.choices.Select(GetRestChoiceEnum).ToList(),
+         levelDetail.letterPool.Select(s => s.ToCharArray()).ToList()
          );
+    }
+
+    private RestChoiceEnum GetRestChoiceEnum(string value)
+    {
+        Enum.TryParse(value, out RestChoiceEnum result);
+        return result;
     }
 }

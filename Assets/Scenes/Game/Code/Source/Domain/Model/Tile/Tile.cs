@@ -1,7 +1,7 @@
 public class Tile
 {
     public char Value { get; }
-    public int Score {get;}
+    public int Score { get; }
     public bool pickable;
 
     public Tile(

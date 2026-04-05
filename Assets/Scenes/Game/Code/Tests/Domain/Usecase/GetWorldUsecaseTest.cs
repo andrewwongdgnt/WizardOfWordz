@@ -16,23 +16,24 @@ public class GetWorldUsecaseTest
             yield return new TestCaseData(
                 WorldEnum.Classroom,
                 (
-                "Lib",
-                "Lib desc",
+                "Classroom",
+                "Classroom desc",
                 (List<int>)null,
                 (List<List<string>>)null
                 )
-            ).SetName("Library 1");
+            ).SetName("Classroom 1");
 
             yield return new TestCaseData(
                 WorldEnum.Classroom,
                 (
-                "Lib",
-                "Lib desc",
+                "Classroom",
+                "Classroom desc",
                  new List<int>
                  {
                     2,
                     4,
-                    3
+                    3,
+                    2
                  },
                  new List<List<string>>
                  {
@@ -54,9 +55,13 @@ public class GetWorldUsecaseTest
                         "F_1_3_b",
                         "F_1_3_c",
                     },
+                    new() {
+                        "R_1_4_a",
+                        "F_1_3_b",
+                    },
                  }
                 )
-            ).SetName("Library 2");
+            ).SetName("Classroom 2");
         }
     }
 
@@ -76,7 +81,7 @@ public class GetWorldUsecaseTest
     {
         WorldInfo worldInfo = worldEnum switch
         {
-            WorldEnum.Classroom => MockWorldUtil.GenerateWorldInfoForLibrary(
+            WorldEnum.Classroom => MockWorldUtil.GenerateWorldInfoForClassroom(
                 title: worldInfoParam.title,
                 description: worldInfoParam.description,
                 levelPicks: worldInfoParam.levelPicks,
